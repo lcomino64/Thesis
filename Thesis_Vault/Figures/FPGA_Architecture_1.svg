@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="365pt" height="258pt" viewBox="0.00 0.00 365.23 257.50">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 253.5)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-253.5 361.235,-253.5 361.235,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_0</title>
+<polygon fill="none" stroke="#000000" points="8,-132.5 8,-241.5 349.235,-241.5 349.235,-132.5 8,-132.5"/>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_1</title>
+<polygon fill="none" stroke="#000000" points="181.7104,-147.5 181.7104,-225.5 341.235,-225.5 341.235,-147.5 181.7104,-147.5"/>
+<text text-anchor="middle" x="261.4727" y="-208.9" font-family="Times,serif" font-size="14.00" fill="#000000">Shared Memory</text>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_1</title>
+<polygon fill="none" stroke="#000000" points="198.8247,-46.5 198.8247,-124.5 324.1207,-124.5 324.1207,-46.5 198.8247,-46.5"/>
+<text text-anchor="middle" x="261.4727" y="-107.9" font-family="Times,serif" font-size="14.00" fill="#000000">Peripherals</text>
+</g>
+<!-- C1 -->
+<g id="node1" class="node">
+<title>C1</title>
+<polygon fill="none" stroke="#000000" points="24.1662,-196.5 24.1662,-232.5 145.5442,-232.5 145.5442,-196.5 24.1662,-196.5"/>
+<text text-anchor="middle" x="84.8552" y="-210.4" font-family="Times,serif" font-size="14.00" fill="#000000">Core 0: Main CPU</text>
+</g>
+<!-- SM -->
+<g id="node3" class="node">
+<title>SM</title>
+<polygon fill="none" stroke="#000000" points="189.7104,-156.5 189.7104,-192.5 333.235,-192.5 333.235,-156.5 189.7104,-156.5"/>
+<text text-anchor="middle" x="261.4727" y="-170.4" font-family="Times,serif" font-size="14.00" fill="#000000">Shared Memory Block</text>
+</g>
+<!-- C1&#45;&gt;SM -->
+<g id="edge1" class="edge">
+<title>C1-&gt;SM</title>
+<path fill="none" stroke="#000000" d="M145.6369,-200.7343C156.596,-198.2523 168.1834,-195.628 179.6254,-193.0366"/>
+<polygon fill="#000000" stroke="#000000" points="180.6438,-196.3947 189.6237,-190.7722 179.0975,-189.5676 180.6438,-196.3947"/>
+</g>
+<!-- P1 -->
+<g id="node4" class="node">
+<title>P1</title>
+<polygon fill="none" stroke="#000000" points="206.8247,-55.5 206.8247,-91.5 316.1207,-91.5 316.1207,-55.5 206.8247,-55.5"/>
+<text text-anchor="middle" x="261.4727" y="-69.4" font-family="Times,serif" font-size="14.00" fill="#000000">VGA, GPIO etc.</text>
+</g>
+<!-- C1&#45;&gt;P1 -->
+<g id="edge2" class="edge">
+<title>C1-&gt;P1</title>
+<path fill="none" stroke="#000000" d="M140.3783,-196.4371C145.1181,-193.8136 149.6464,-190.8465 153.7104,-187.5 171.6039,-172.7654 166.6257,-161.0993 181.7104,-143.5 196.0047,-126.8227 214.2838,-110.4974 229.7362,-97.813"/>
+<polygon fill="#000000" stroke="#000000" points="231.9389,-100.533 237.523,-91.5293 227.5429,-95.0855 231.9389,-100.533"/>
+</g>
+<!-- T1 -->
+<g id="node2" class="node">
+<title>T1</title>
+<polygon fill="none" stroke="#000000" points="16,-141.5 16,-177.5 153.7104,-177.5 153.7104,-141.5 16,-141.5"/>
+<text text-anchor="middle" x="84.8552" y="-155.4" font-family="Times,serif" font-size="14.00" fill="#000000">Core 1: TCP/IP Stack</text>
+</g>
+<!-- T1&#45;&gt;SM -->
+<g id="edge3" class="edge">
+<title>T1-&gt;SM</title>
+<path fill="none" stroke="#000000" d="M153.899,-165.3638C162.3132,-166.0785 170.9727,-166.8139 179.5514,-167.5425"/>
+<polygon fill="#000000" stroke="#000000" points="179.3051,-171.0341 189.5655,-168.393 179.8976,-164.0592 179.3051,-171.0341"/>
+</g>
+<!-- P2 -->
+<g id="node5" class="node">
+<title>P2</title>
+<polygon fill="none" stroke="#000000" points="229.7609,-.5 229.7609,-36.5 293.1845,-36.5 293.1845,-.5 229.7609,-.5"/>
+<text text-anchor="middle" x="261.4727" y="-14.4" font-family="Times,serif" font-size="14.00" fill="#000000">Ethernet</text>
+</g>
+<!-- T1&#45;&gt;P2 -->
+<g id="edge4" class="edge">
+<title>T1-&gt;P2</title>
+<path fill="none" stroke="#000000" d="M95.1965,-141.1954C110.6969,-115.4004 142.3789,-68.5959 181.7104,-42.5 193.025,-34.9929 206.7703,-29.764 219.6409,-26.1521"/>
+<polygon fill="#000000" stroke="#000000" points="220.8842,-29.4473 229.7123,-23.5894 219.158,-22.6635 220.8842,-29.4473"/>
+</g>
+</g>
+</svg>

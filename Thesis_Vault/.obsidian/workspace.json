@@ -1,0 +1,172 @@
+{
+  "main": {
+    "id": "e2f66dacd7d5629c",
+    "type": "split",
+    "children": [
+      {
+        "id": "300339f21af5da2a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b858dcbe5be27641",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Draft Proposal Notes.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "efe3548a9a75a4ef",
+    "type": "split",
+    "children": [
+      {
+        "id": "fcf9c209e0f638ab",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6221d33c288001a7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "9c273622f2b9b2b4",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "70e77a6db7467eda",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200,
+    "collapsed": true
+  },
+  "right": {
+    "id": "3871146c797d8bbd",
+    "type": "split",
+    "children": [
+      {
+        "id": "a0f81e87ad577a0e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0493b8dc5a0db358",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Draft Proposal Notes.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "afe7ca10ab67e88b",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Draft Proposal Notes.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "ddde1cfd25ed7fed",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "536043b94fd777c5",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Draft Proposal Notes.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "b858dcbe5be27641",
+  "lastOpenFiles": [
+    "Figures/FPGA_Architecture_1.svg",
+    "Figures/FPGA_Architecture_1 Code.md",
+    "Draft Proposal Notes.md",
+    "Figures/Network_Overview.svg",
+    "Thesis Sources List.md",
+    "Figures/Network_Overview Code.md",
+    "Figures/tcp-ip-end-to-end.png",
+    "Figures/FPGA_Architecture_2.svg",
+    "Figures/FPGA_Architecture_2 Code.md",
+    "Figures/Unconfirmed 767005.crdownload",
+    "Figures/Unconfirmed 820128.crdownload",
+    "Figures/Unconfirmed 925885.crdownload",
+    "Figures/Unconfirmed 340647.crdownload",
+    "Figures/Unconfirmed 932486.crdownload",
+    "Figures/Unconfirmed 536058.crdownload",
+    "Figures",
+    "Unconfirmed 738353.crdownload",
+    "Thesis Topic Desc..md",
+    "Welcome.md"
+  ]
+}
