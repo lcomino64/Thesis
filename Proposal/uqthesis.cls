@@ -10,11 +10,11 @@
 % Class structure: identification part
 %*************************************
 
-\ProvidesClass{uqthesis}[2018/06/26 version 1.01 UQ PhD and Masters thesis style]
+\ProvidesClass{uqthesis}[2018/06/26 version 1.01 UQ Undergraduate thesis style]
 \NeedsTeXFormat{LaTeX2e}[2016/05/16]
 
 %Load the memoir class.
-\LoadClass[12pt, a4paper]{memoir}
+\LoadClass[12pt, a4paper, openany]{memoir}
 
 %*************************************
 % Load packages
@@ -87,15 +87,13 @@
 
 % ********* Chapter and section style **********
 \makechapterstyle{mychapterstyle}{%
+\let\cleardoublepage\clearpage
     \renewcommand{\chapnamefont}{\LARGE\rmfamily\bfseries}%
     \renewcommand{\chapnumfont}{\LARGE\rmfamily\bfseries}%
     \renewcommand{\chaptitlefont}{\Huge\rmfamily\bfseries}%
     \renewcommand{\printchaptertitle}[1]{%
         \chaptitlefont\hrule height 0.5pt \vspace{1em}%
         {##1}\vspace{1em}\hrule height 0.5pt%
-        }%
-    \renewcommand{\printchapternum}{%
-        \chapnumfont\thechapter%
         }%
 }
 

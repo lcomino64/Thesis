@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="442pt" height="212pt" viewBox="0.00 0.00 442.49 212.00">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 208)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-208 438.4854,-208 438.4854,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_0</title>
+<polygon fill="none" stroke="#000000" points="8,-8 8,-196 256.8514,-196 256.8514,-8 8,-8"/>
+<text text-anchor="middle" x="132.4257" y="-179.4" font-family="Times,serif" font-size="14.00" fill="#000000">Local Network</text>
+</g>
+<!-- FPGA -->
+<g id="node1" class="node">
+<title>FPGA</title>
+<polygon fill="none" stroke="#000000" points="16,-127 16,-163 157.9664,-163 157.9664,-127 16,-127"/>
+<text text-anchor="middle" x="86.9832" y="-140.9" font-family="Times,serif" font-size="14.00" fill="#000000">FPGA and Peripherals</text>
+</g>
+<!-- Switch -->
+<g id="node2" class="node">
+<title>Switch</title>
+<polygon fill="none" stroke="#000000" points="193.9664,-72 193.9664,-108 248.8514,-108 248.8514,-72 193.9664,-72"/>
+<text text-anchor="middle" x="221.4089" y="-85.9" font-family="Times,serif" font-size="14.00" fill="#000000">Switch</text>
+</g>
+<!-- FPGA&#45;&gt;Switch -->
+<g id="edge3" class="edge">
+<title>FPGA-&gt;Switch</title>
+<path fill="none" stroke="#000000" d="M135.6089,-126.8897C143.1206,-123.981 150.7701,-120.9543 157.9664,-118 166.6361,-114.4408 175.8994,-110.4572 184.5936,-106.6364"/>
+<polygon fill="#000000" stroke="#000000" points="186.0229,-109.8313 193.7494,-102.582 183.1886,-103.4308 186.0229,-109.8313"/>
+</g>
+<!-- Router -->
+<g id="node5" class="node">
+<title>Router</title>
+<polygon fill="none" stroke="#000000" points="284.8514,-72 284.8514,-108 338.9538,-108 338.9538,-72 284.8514,-72"/>
+<text text-anchor="middle" x="311.9026" y="-85.9" font-family="Times,serif" font-size="14.00" fill="#000000">Router</text>
+</g>
+<!-- Switch&#45;&gt;Router -->
+<g id="edge4" class="edge">
+<title>Switch-&gt;Router</title>
+<path fill="none" stroke="#000000" d="M249.0517,-90C257.1074,-90 266.0452,-90 274.5928,-90"/>
+<polygon fill="#000000" stroke="#000000" points="274.74,-93.5001 284.74,-90 274.74,-86.5001 274.74,-93.5001"/>
+</g>
+<!-- MC1 -->
+<g id="node3" class="node">
+<title>MC1</title>
+<polygon fill="none" stroke="#000000" points="26.3012,-72 26.3012,-108 147.6652,-108 147.6652,-72 26.3012,-72"/>
+<text text-anchor="middle" x="86.9832" y="-85.9" font-family="Times,serif" font-size="14.00" fill="#000000">Micro-Computer 1</text>
+</g>
+<!-- MC1&#45;&gt;Switch -->
+<g id="edge1" class="edge">
+<title>MC1-&gt;Switch</title>
+<path fill="none" stroke="#000000" d="M147.9031,-90C160.1163,-90 172.6091,-90 183.7495,-90"/>
+<polygon fill="#000000" stroke="#000000" points="183.9627,-93.5001 193.9627,-90 183.9627,-86.5001 183.9627,-93.5001"/>
+</g>
+<!-- MC2 -->
+<g id="node4" class="node">
+<title>MC2</title>
+<polygon fill="none" stroke="#000000" points="26.3012,-17 26.3012,-53 147.6652,-53 147.6652,-17 26.3012,-17"/>
+<text text-anchor="middle" x="86.9832" y="-30.9" font-family="Times,serif" font-size="14.00" fill="#000000">Micro-Computer 2</text>
+</g>
+<!-- MC2&#45;&gt;Switch -->
+<g id="edge2" class="edge">
+<title>MC2-&gt;Switch</title>
+<path fill="none" stroke="#000000" d="M133.2563,-53.047C141.5013,-56.3212 149.9989,-59.7339 157.9664,-63 166.4965,-66.4968 175.6361,-70.3333 184.2464,-73.9886"/>
+<polygon fill="#000000" stroke="#000000" points="183.1106,-77.3091 193.6822,-78.0108 185.8556,-70.8697 183.1106,-77.3091"/>
+</g>
+<!-- Internet -->
+<g id="node6" class="node">
+<title>Internet</title>
+<polygon fill="none" stroke="#000000" points="374.9538,-72 374.9538,-108 434.4854,-108 434.4854,-72 374.9538,-72"/>
+<text text-anchor="middle" x="404.7196" y="-85.9" font-family="Times,serif" font-size="14.00" fill="#000000">Internet</text>
+</g>
+<!-- Router&#45;&gt;Internet -->
+<g id="edge5" class="edge">
+<title>Router-&gt;Internet</title>
+<path fill="none" stroke="#000000" d="M339.2487,-90C347.1562,-90 355.9574,-90 364.4764,-90"/>
+<polygon fill="#000000" stroke="#000000" points="364.6487,-93.5001 374.6487,-90 364.6487,-86.5001 364.6487,-93.5001"/>
+</g>
+</g>
+</svg>

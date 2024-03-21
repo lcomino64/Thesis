@@ -3,7 +3,7 @@
 
 The RISC-V processor is an open source Soft Core processor. This project involves investigating how the RISC-V processor can be used for network security with zephyr RTOS for an embedded IOT application. The involves implementing a RISC-V processor with open source tools such as SCALA HDL and Chisel. The processor must be extended to include custom peripherals that can be added.
 
-This project will use the Artyx S7 FPGA board. 
+This project will use the Arty S7 FPGA board. 
 
 **Further Information**:  
 [https://riscv.org/](https://riscv.org/)  
