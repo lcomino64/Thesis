@@ -44,6 +44,8 @@ Here, the local network refers to the arrangement of the edge devices in the net
 
 \subsection{FPGA Processor}
 The FPGA will be running a real-time operating system, Zephyr. Zephyr has support for multicore designs as well as support for many types of peripherals and networking services. Functionality will be split across two cores as seen in figure \ref{Fig:2}. Core 0, will be the main core which will handle task-dispatching as well as peripheral interfacing (VGA, GPIO \etc). Like Core 1, which will handle the networking stack, it has access to a unified, shared memory block allowing it to subsequently access the processed packets. As the project progresses, the resource allocation for each core will be adjusted exclusively to their requirements.
+\subsection{Microcomputers}
+Basic software containers, deployed via Kubernetes, will run on the Microcomputers. These images will contain established libraries that provide TCP/IP stack interfacing as well as the ability to send/receive packets.
 \begin{figure}[h]
     \begin{center}
     \caption{High-Level FPGA Architecture Overview}
@@ -51,12 +53,10 @@ The FPGA will be running a real-time operating system, Zephyr. Zephyr has suppor
     \label{Fig:2}
     \end{center}
 \end{figure}
-\subsection{Microcomputers}
-Basic software containers, deployed via Kubernetes, will run on the Microcomputers. These images will contain established libraries that provide TCP/IP stack interfacing as well as the ability to send/receive packets.
 \subsection{Switch}
 It has not been decided yet which switch will be used. Furthermore, communication protocols for the chosen commercial switch will need to be researched.
 \subsection{Router}
-It has not been decided yet which router will be used.
+Same as the switch, it has not been decided yet which router will be used.
 \subsection{Chosen Network Security Method}
 To emphasise the network security aspect of the project, an additional layer of network security will be designed and implemented. It has not yet been decided which network security method will be used. Here, a custom hardware component will be designed that implements a typical network security method such as an accelerated cryptographic processor or a firewall that filters packets. The possible options are elaborated on in \ref{subsection:Network Security Methods}
 \clearpage
