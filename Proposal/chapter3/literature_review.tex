@@ -1,0 +1,16 @@
+\chapter[Literature Review]{Literature Review}
+\label{Chap:Literature Review}
+
+\section{Pre-Existing Projects/Solutions}
+This section pertains to three recent and unique approaches to the "FPGA RISC-V Softcore processor IoT Application" space. These papers explore the use of RISC-V processors, FPGAs, and accompanying hardware acceleration techniques for network security in resource-constrained edge devices.
+
+\subsection{Cryptography Integration for Edge Devices}
+One notable study by Zang \etal \cite{Zang2019} focuses on using existing cryptographic modules with an FPGA-based RISC-V processor. The authors demonstrate high speed and minimal overhead with an AES SoC accompanied with a RV32I processing core, compared to software-based solutions. However, even though the architecture for the RV32I is programmable and extensible, its only purpose is to interface and test the AES SoC and does not address other aspects of IoT, such as real-time applications or peripherals. Overall, though, it shows us the theoretical maximum for speed in cryptography regarding FPGA boards clocked at approximately 100MHz.
+
+Another article by Yang \etal \cite{Yang2023} proposes another similar IoT framework using a RISC-V processor and hardware encryption accelerators on an FPGA. Their system leverages the flexibility of FPGAs to implement hardware-based security primitives, of which they describe more-indepth than Zang \etal \cite{Zang2019}. While their approach also shows significant speed-ups compared to software-based approaches, once again it does not specifically target network security challenges or the impacts on performance once there's integration with an RTOS.
+
+\subsection{Additional Security Methods at the Hardware-Level}
+For cybersecurity concerns other than encryption there's project by Haj-Yahya \etal \cite{Haj-Yahya2019} which demonstrates a custom lightweight RISC-V processor focussing on secure booting. The architecture incorporates efficient implementations of the Elliptic Curve Digital Signature Algorithm (ECDSA) for authentication, the Secure Hash Algorithm 3 (SHA3) for hashing, and DMA for improved performance. As a result, these components can be adapted to any RISC-V architecture, creating a robust and secure boot process for the device.
+
+\subsection{Summary}
+While these studies provide valuable insights into the use of RISC-V processors and FPGAs for IoT security, still there remains gaps in the research that this project will focus on. Firstly, the integration of RISC-V processors with real-time operating systems like Zephyr, which is crucial for gneral-purpose computing and IoT applications, is not thoroughly explored. While yes, there is a significant speed-up in optomising hardware for specific applications, it is equally important to consider the flexibility and adaptability of the system to handle a wide range of IoT scenarios and future security challenges. And secondly, most of the reviewed studies do not investigate the potential of multi-core design in RISC-V processors for parallel processing, they only target hardware-acceleration instead. This project aims to address these gaps by developing a multi-core RISC-V processor system running Zephyr, demonstrating a flexible and scalable solution that emphasises network security.

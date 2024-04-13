@@ -6,57 +6,56 @@ In recent years, growth of the Internet of Things (IoT) has led to an unpreceden
 
 Trends in the IoT space such as edge computing, 5G networks, and artificial intelligence (AI) are sky-rocketing the demand for highly-performant processing solutions \cite{Nuttall2018} while traditional software-based security approaches often struggle to keep up with the real-time requirements and resource constraints of IoT devices \cite{Frustaci2018}. Frustaci et al. \cite{Frustaci2018} highlight the limited memory, processing power, and energy resources of IoT devices make it challenging to implement strong security measures using software alone without compromising performance and battery life. This is where FPGAs can offer a solution. By leveraging the flexibility of FPGAs, it is possible to create an optomised and dedicated network security solution.
 
-This thesis proposes the development of a RISC-V softcore processor specifically designed for network security in embedded IoT applications. The use of RISC-V has several advantages over other contemporary architectures. For one, it is an open-source instruction set architecture that is concise, modular, and extensible \cite{Patterson2017}. Its open nature allows for customization of the processor design to meet specific requirements, while its modular design enables the addition of custom instructions and extensions to emphasise security-related tasks \cite{Waterman2016}. With this, the project aims to show how a dedicated solution can mitigate potential threats at the hardware level.
-\clearpage
+This thesis proposes the development of a RISC-V softcore processor that prioritises network security in embedded IoT applications. The use of RISC-V has several advantages over other contemporary architectures. For one, it is an open-source instruction set architecture that is concise, modular, and extensible \cite{Patterson2017}. Its open nature allows for customization of the processor design to meet specific requirements, while its modular design enables the addition of custom instructions and extensions to emphasise security-related tasks \cite{Waterman2016}. With this, the project aims to show how a dedicated solution can be highly-performant while also mitigating potential threats at the hardware level.
 
 \subsection{Aims}
-The aims for a successful FPGA-based edge device are as follows:
+A successful FPGA-based softcore processor for network security is:
 \begin{enumerate}
-    \item Increase network security.
-    \item Minimise processing latency.
-    \item Maximise power efficiency.
-    \item Minimise Resource Utilisation.
+    \item Secure within networks.
+    \item Low-latency.
+    \item Power efficient.
+    \item Resource-minimising.
+    \item And scalable to peripherals/add-ons.
 \end{enumerate}
 
 \subsection{Key Performance Indicators}
-The previous aims will then be evaluated against the following criteria:
+The previous aims will be evaluated against the following criteria:
 \begin{enumerate}
-    \item\textbf{Network Security:}\newline Penetration testing and vulnerability assessments will be conducted against a chosen network security method, see section ~\ref{sec:Project Overview}. The number and severity of detected security threats will gauge the effectiveness of the security features. The subsequent key performance indicators also contribute to overall network security.
-    \item\textbf{Processing Latency:}\newline packet processing time will be measured under various idle, average and peak network conditions. This will involve testing the system with different packet sizes and security features enabled to assess the impact on latency. The latency results will also be compared with similar security solutions to benchmark the performance of the FPGA-based processor.
-    \item\textbf{Power Efficiency:}\newline Power consumption will be measured during idle, average, and peak loads. The energy efficiency ratio (performance per watt) will be calculated to provide a standardized metric for comparison. The power efficiency of the system will be compared with other FPGA-based and software-based solutions to assess its relative performance. Also, a thermal camera will be used to visualise the heat radiation from the FPGA. There is also the possibility of using the integrated temperature sensor on the Arty S7 Board \cite{ArtyS7RefManual} for plots.
-    \item\textbf{Resource Utilisation:}\newline Resource utilization will be evaluated by measuring the counts of FPGA resources in the FPGA design software, such as look-up tables (LUTs), flip-flops and block RAM (BRAM). Memory and CPU utilization on the target IoT devices will also be observed to ensure the system does not overburden the limited resources available.
+    \item\textbf{Network Security:}\newline Packet sniffing and interception testing will be conducted against the ingoing/outgoing encrypted packets, see section ~\ref{sec:Project Overview}. The subsequent key performance indicators also contribute to overall network security.
+    \item\textbf{Processing Latency:}\newline Packet processing time will be measured under idle, average and peak network conditions. This will involve testing the system with differing packet amounts and sizes with security features enabled/disabled to assess any performance bottlenecks. The latency results will also be compared with pre-existing security solutions to benchmark the performance of the softcore processor.
+    \item\textbf{Power Efficiency:}\newline Power consumption will be measured also during idle, average, and peak loads. The energy efficiency ratio (performance per watt) will be calculated to provide a standardized metric for comparison. The power efficiency of the system will be compared with other FPGA-based and software-based solutions to assess its relative performance. There's also the possibility of a thermal camera will be used to visualise the heat radiation from the FPGA. There is also the possibility of using the integrated temperature sensor on the Arty S7 Board \cite{ArtyS7RefManual} for plots.
+    \item\textbf{Resource Utilisation:}\newline Resource utilization will be evaluated by measuring the counts of FPGA resources in the FPGA design software, such as look-up tables (LUTs), flip-flops and block RAM (BRAM). Memory and CPU utilization on the target IoT devices will also be observed to ensure the system does not overburden the resources available.
 \end{enumerate}
-\clearpage
 
 \section{Project Overview}
 \label{sec:Project Overview}
 This section will now pertain to the complete hardware and software stack of of the proposed solution. A high-level overview of which can be seen in figure \ref{Fig:1}.
-
-\begin{figure}[h]
+\begin{figure}[ht]
     \begin{center}
-    \caption{High-Level Network Overview}
-    \includegraphics[width=1.0\textwidth]{./Figures/Network_Overview.png}
-    \label{Fig:1}
+        \caption{High-Level Network Overview}
+        \includegraphics[width=0.8\textwidth]{./Figures/Network_Overview.png}
+        \label{Fig:1}
     \end{center}
 \end{figure}
 
-Here, the local network refers to the arrangement of the edge devices in the network (left-hand side). It consists of the project's primary focus, the RISC-V softcore processor as well as two microcomputers which will be implemented as Raspberry Pis, (RPis). On the right hand side is the router which will interface the local network with the external internet structure, allowing packets to be received externally.
+Here, the local network refers to the arrangement of the edge devices in the network (left-hand side). It consists of the project's primary focus, the RISC-V softcore processor as well as a Kubernetes cluster network which is scalable to any number of test edge devices. On the right hand side is the router which will interface the local network with the external internet structure, allowing external communications.
 
-\subsection{FPGA Processor}
-The FPGA will be running a real-time operating system, Zephyr. Zephyr has support for multicore designs as well as support for many types of peripherals and networking services. Functionality will be split across two cores as seen in figure \ref{Fig:2}. Core 0, will be the main core which will handle task-dispatching as well as peripheral interfacing (VGA, GPIO \etc). Like Core 1, which will handle the networking stack, it has access to a unified, shared memory block allowing it to subsequently access the processed packets. As the project progresses, the resource allocation for each core will be adjusted exclusively to their requirements.
-\subsection{Microcomputers}
-Basic software containers, deployed via Kubernetes, will run on the Microcomputers. These images will contain established libraries that provide TCP/IP stack interfacing as well as the ability to send/receive packets.
 \begin{figure}[h]
     \begin{center}
     \caption{High-Level FPGA Architecture Overview}
-    \includegraphics[width=1.0\textwidth]{./Figures/FPGA_Architecture_High_Level.png}
+    \includegraphics[width=0.8\textwidth]{./Figures/FPGA_Architecture_High_Level.png}
     \label{Fig:2}
     \end{center}
 \end{figure}
-\subsection{Switch}
-It has not been decided yet which switch will be used. Furthermore, communication protocols for the chosen commercial switch will need to be researched.
-\subsection{Router}
-Same as the switch, it has not been decided yet which router will be used.
-\subsection{Chosen Network Security Method}
-To emphasise the network security aspect of the project, an additional layer of network security will be designed and implemented. It has not yet been decided which network security method will be used. Here, a custom hardware component will be designed that implements a typical network security method such as an accelerated cryptographic processor or a firewall that filters packets. The possible options are elaborated on in \ref{subsection:Network Security Methods}
-\clearpage
+
+\subsection{Softcore Processor for Network Security, (SCPNS)}
+The processor will be running a real-time operating system, Zephyr. Zephyr has support for multicore designs as well as support for many types of peripherals and networking services. Functionality will be split across two cores as seen in figure \ref{Fig:2}. Core 0 will be the main core which will handle task-dispatching, an integrated shell and peripheral interfacing (VGA, GPIO \etc). Core 1 will handle the TCP/IP network stack as well as interfacing with the AES engine for capabilities regarding cryptography. Lastly, both cores will have direct communication to each other, allowing the sending/receiving of packets. As the project progresses, the resource allocation for each core will be adjusted exclusively to their requirements.
+
+\subsection{Cluster Network}
+Basic software containers, deployed and managed via Kubernetes, will run in the same network alongside the SCPNS. These containers will use custom images consisting of established libraries that provide TCP/IP stack interfacing, as well as the ability to send/receive test packets. The deployment of these containers can also be scaled, allowing any strains to the SCPNS to be observed.
+
+\subsection{Cryptographic Accelerator, (AES Engine)}
+To emphasise the network security aspect of the project, an additional layer of cryptographic protection will be implemented in the form of a AES engine SoC (Advanced Encryption Standard) \cite{CASTInc2024}, see section \ref{subsection:Network Security Methods}. Basically, everytime the network core, Core 1, needs encyption/decryption capabilities it can send data to the SoC via UART. The SoC will be implemented as part of the FPGA architecture as well, ensuring closeness to the network core, akin to Zang \etal \cite{Zang2019}. 
+
+\subsection{Ethernet MAC}
+Architecturally, the ethernet MAC module will be placed near the ethernet port on the Arty S7 board, and then be connected directly to the network core (Core 1). Here, the core will have priority access to any incoming or outgoing packets, ensuring that any TCP/IP stack management is fully-offloaded from the main core.

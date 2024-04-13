@@ -26,3 +26,6 @@ High-level overview:
 [[Thesis Sources List]]
 
 ## Literature Review:
+How to incorporate previous pre-existing solutions and literature explaining different terms.
+
+

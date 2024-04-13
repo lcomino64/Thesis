@@ -96,7 +96,7 @@
         {##1}\vspace{1em}\hrule height 0.5pt%
         }%
 }
-
+\raggedbottom
 \chapterstyle{mychapterstyle}
 
 \setsecheadstyle{\Large\rmfamily\bfseries}

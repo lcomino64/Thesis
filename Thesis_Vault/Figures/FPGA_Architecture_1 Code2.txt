@@ -1,0 +1,23 @@
+digraph G {
+    rankdir=LR;
+    node [shape=record];
+
+    subgraph cluster_0 {
+        label=<<B>SCPNS Architecture</B>>;
+        style=dashed;
+        C0 [label="Core 0:\nMain CPU", width=1.5];
+        C1 [label="Core 1:\nTCP/IP Stack", width=1.5];
+        E1 [label="AES Engine"];
+    }
+
+    P1 [label="Peripherals\nVGA, GPIO etc.", width=1.1];
+
+    splines=ortho;
+    C0 -> C1 [dir=both, arrowsize=0.5];
+    C0 -> P1 [arrowhead=none];
+    C1 -> E1 [dir=both, arrowsize=0.5];
+
+    P2 [label="Ethernet", width=1.1];
+    C1 -> P2 [arrowhead=none];
+
+}

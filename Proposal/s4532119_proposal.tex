@@ -1,29 +1,15 @@
 \documentclass[final]{uqthesis} 
 \input{LaTexPackages.tex}
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries}{}{0pt}{\huge}
 
-\title{Title here: }
-\author{Name}
-\currentdegrees{Candidate’s academic degrees}
-\orcid{\href{add your ORCID url here}{Candidate's ORCID}}
-\date{\{year\}}
-\submittedfor{Doctor \{Master\}}
-\school{Name of the Enrolling Unit}
 \begin{document}
-\frontmatter
-\maketitle
-\clearpage
-
-% Lists
-\tableofcontents
-	\clearpage
-\listoffigures
-\listoftables
 
 % Report
-\mainmatter
 \input{./chapter1/introduction.tex}
-\input{./chapter2/literature_review.tex}
-\input{./chapter3/project_plan.tex}
+\input{./chapter2/background.tex}
+\input{./chapter3/literature_review.tex}
+\input{./chapter4/project_plan.tex}
 
 % References
 \bibliographystyle{ieeetr}
