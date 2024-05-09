@@ -4,33 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "300339f21af5da2a",
+        "id": "d4222baaf7404eb5",
         "type": "tabs",
         "children": [
           {
-            "id": "b858dcbe5be27641",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Draft Proposal Notes.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "5ddb537c6b70bd61",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.5.12"
-              }
-            }
-          },
-          {
-            "id": "091ead6aa5936a91",
+            "id": "62676d5a0b4e6066",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -40,9 +18,21 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "e8260657486d5499",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Microk8s kubectl Management Commands.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -92,7 +82,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "3871146c797d8bbd",
@@ -108,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Proposal Feedback.md",
+                "file": "Microk8s kubectl Management Commands.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -125,7 +116,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Proposal Feedback.md",
+                "file": "Microk8s kubectl Management Commands.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -148,7 +139,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Proposal Feedback.md"
+                "file": "Microk8s kubectl Management Commands.md"
               }
             }
           }
@@ -169,11 +160,15 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "091ead6aa5936a91",
+  "active": "e8260657486d5499",
   "lastOpenFiles": [
+    "Seminar Notes.md",
+    "Microk8s kubectl Management Commands.md",
+    "Proposal Feedback.md",
+    "Draft Proposal Notes.md",
+    "Figures/tcp-ip-end-to-end.png",
     "Thesis Sources List.md",
     "Pasted image 20240401142642.png",
-    "Figures/tcp-ip-end-to-end.png",
     "Figures/Network_Overview 1.svg",
     "Figures/Network_Overview.svg",
     "Figures/FPGA_Architecture_1.svg",
@@ -182,8 +177,6 @@
     "Figures/FPGA_Architecture_1 Code2.txt",
     "Figures/FPGA_Architecture_1 Code.txt",
     "Figures/Untitled.md",
-    "Proposal Feedback.md",
-    "Draft Proposal Notes.md",
     "Figures/FPGA_Architecture_2.svg",
     "Figures/FPGA_Architecture_2 Code.md",
     "Figures/Unconfirmed 767005.crdownload",

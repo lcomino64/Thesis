@@ -2,29 +2,60 @@
 \label{Chap:Project Outline}
 
 \section{Milestones and Timeline}
-Below is the full outline and expected completion for each milestone:
+Table \ref{table:Milestones} is the full outline and expected completion for each milestone. The idea is to ensure the surrounding testbed is functioning correctly before designing the processor itself.
 \begin{table}[hbt!]
-    \centering%
+    \centering
         \caption{Proposed Milestone Timeline}\label{table:Milestones}
         \begin{tabularx}{\textwidth}{ lXll }
             \hline
-            Task & Description & Due (by end of week) \\ 
+            \textit{Task} & \textit{Description} & \textit{Due} \\ 
             \hline
-            Proposal* & Project proposal & Sem 1, Week 8 \\
-            Program Microcomputers & Deploy Kubernetes cluster to microcomputers & Sem1, Week 9 \\
-            Interface Microcomputers & Have the local area network completely set up and RPis interfaced to switch & Sem1, Week 10 \\
-            Seminar* & Present Seminar & Week 11 \\
-            Design the RISC-V softcore Processor & Implement proposed FPGA design & Break, Week 1 \\
-            Run Zephyr & Flash and run Zephyr on the softcore processor. & Break Week 2 \\
-            Interface TCP/IP stack core & Get the FPGA interfaced in the LAN  & Break, Week 3 \\ 
-            Create Network Security Component & Create and implement the chosen network security method & Break Week, 3-4 \\ 
-            Experimentation & Start taking measurements & Sem 2, Week 1 \\ 
-            Measure and Compare &  Compare measurements to pre-existing solutions & Sem 2, Week 2 \\ 
-            Poster \& Demonstration* & Thesis project demonstration & Sem 2, Week 11 \\
-            Thesis* & Thesis Write-up & Sem 2, Week 14 \\
+            \textit{Semester 1} \\
+            \hline
+            \textbf{Proposal} & Project proposal & Week 8 \\
+            Interface RPi/s & Have the local area network set up and RPis interfaced to switch, ready to run the Kubernetes cluster & Week 9 \\
+            Set up Cluster Network & Deploy Kubernetes cluster, creating the testbed & Week 10 \\
+            \textbf{Seminar} & Seminar presentation & Week 11 \\
+            \hline
+            \textit{Mid-year Break} \\
+            \hline
+            Create the SCPNS & Implement proposed design & Week 1 \\
+            Run Zephyr & Flash and run Zephyr on the softcore processor. & Week 2 \\
+            Interface Network Core & Get the SCPNS interfaced in the LAN  & Week 3 \\ 
+            AES Encryption Engine & Implement the AES engine & Week 3-4 \\ 
+            \hline
+            \textit{Semester 2} \\
+            \hline
+            Experimentation & Start benchmarking and taking measurements & Week 1 \\ 
+            Measure and Compare &  Compare measurements to pre-existing solutions & Week 2 \\ 
+            \textbf{Poster \& Demonstration} & Thesis project demonstration & Week 11 \\
+            \textbf{Thesis} & Thesis Write-up & Week 14 \\
             \hline
             \end{tabularx}
     \end{table}
 
 \clearpage
 \section{Project Risks}
+This project is low-risk and does contain any ethical concerns as the project is focused on digital programming and interfacing. However, there are still risks which are outlined in table \ref{table:Project Risks}.
+
+\begin{table}[hbt!]
+    \centering
+        \caption{Project Risks}\label{table:Project Risks}
+        \begin{tabularx}{\textwidth}{ lllX }
+            \hline
+            \textit{Risk} & \textit{Likelihood} & \textit{Severity} & \textit{Mitigation \& Prevention} \\ 
+            \hline
+            Missing Milestones & Likely & Moderate & Perfectionism will be avoided as much as possible, completing milestones will be emphasised instead. There are also several weeks of time in semester 2 that can be extended into if needed. \\
+            \hline
+            Losing Work & Catastrophic & Unlikely & Every increment of progress will be committed to an online Git Repository, off-loading work from any local devices. \\
+            \hline
+            Hardware Damage & Moderate & Unlikely & Electrical connections to hardware such as the FPGA board will be scrutinised before powering on. As for workstations, work will always be committed online so no progress is lost. \\
+            \hline
+            Improper Licensing & Minor & Unlikely & Even though the majority of software that will be used is open-source, licenses will be checked if the use-case is permissible. If not, then alternatives can be sought. \\
+            \hline
+            Health Risks & Moderate & High & Breaks/pauses from working time will be allocated. As there will be a lot of sitting, an exercise routine will be maintained outside of working times. \\
+            \hline
+            Working Outside Scope & Unlikely & Moderate & The milestones and topic definition will be closely adhered to. In case there's any additions to the scope, it will always be consulted by the supervisor first. \\
+            \hline
+        \end{tabularx}
+    \end{table}

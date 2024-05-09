@@ -1,7 +1,10 @@
-\documentclass[final]{uqthesis} 
+\documentclass[instructions]{uqthesis} 
 \input{LaTexPackages.tex}
+
+% Remove chapter headings and extra spacing
 \titleformat{\chapter}[display]
-  {\normalfont\bfseries}{}{0pt}{\huge}
+  {\normalfont\bfseries}{}{0pt}{\Huge}
+  \titlespacing*{\chapter}{0pt}{-50pt}{40pt}
 
 \begin{document}
 
@@ -17,7 +20,6 @@
 
 % Appendix
 % \include{./Appendix/Appendix}
-
 % \include{./Examples/ExampleOfCitations}
 % \include{./Examples/ExampleOfCode}
 % \include{./Examples/ExampleOfEquations}
