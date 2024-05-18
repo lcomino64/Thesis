@@ -14,7 +14,11 @@
 
 ## Topic Defintion
 
-## Progress So Far
-Virtual Test-bed results
+### Hardware Overview
 
-FPGA architecture mock-up
+### Progress Plan
+Go through entire plan
+## Progress So Far
+Virtual Test-bed creation, Kubernetes orchestration and containers
+Containers
+
