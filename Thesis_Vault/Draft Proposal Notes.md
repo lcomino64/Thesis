@@ -16,14 +16,11 @@ https://www.chisel-lang.org/
 ### Segmented TCP/IP stack across multiple cores:
 High-level overview:
 ![image info](./Figures/FPGA_Architecture_1.svg)
-[[FPGA_Architecture_1 Code]]
 ### Network Overview
 ![image info](./Figures/Network_Overview.svg)
-[[Network_Overview Code]]
 #### TCP/IP stack example
 ![image info](./Figures/tcp-ip-end-to-end.png)
 ## Background:
-[[Thesis Sources List]]
 
 ## Literature Review:
 How to incorporate previous pre-existing solutions and literature explaining different terms.

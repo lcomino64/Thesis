@@ -4,18 +4,59 @@
     "type": "split",
     "children": [
       {
-        "id": "aa397fdb1faee9fe",
+        "id": "359e603aef9638fd",
         "type": "tabs",
         "children": [
           {
-            "id": "80f3491ace4bf99e",
+            "id": "33a5e4fbc7f68074",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "README Dependencies.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "6220e235913d9620",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README Dependencies.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "2efa058022aeab91",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README Microk8s kubectl Management Commands.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "238cd0c802f8a249",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README Kubernetes Cluster.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -65,8 +106,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "3871146c797d8bbd",
@@ -82,6 +122,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "README Microk8s kubectl Management Commands.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -98,6 +139,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "README Microk8s kubectl Management Commands.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -119,7 +161,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "README Microk8s kubectl Management Commands.md"
+              }
             }
           }
         ]
@@ -139,18 +183,24 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "80f3491ace4bf99e",
+  "active": "2efa058022aeab91",
   "lastOpenFiles": [
-    "Microk8s kubectl Management Commands.md",
-    "Seminar Notes.md",
-    "Proposal Feedback.md",
+    "README Kubernetes Cluster.md",
+    "README Microk8s kubectl Management Commands.md",
+    "README Dependencies.md",
     "Draft Proposal Notes.md",
+    "README FPGA Development Notes.md",
+    "Seminar Feedback.md",
+    "Proposal Feedback.md",
+    "Network_Overview Code.md",
+    "Seminar Notes.md",
+    "Figures/FPGA_Architecture_1.svg",
     "Figures/tcp-ip-end-to-end.png",
-    "Thesis Sources List.md",
-    "Pasted image 20240401142642.png",
     "Figures/Network_Overview 1.svg",
     "Figures/Network_Overview.svg",
-    "Figures/FPGA_Architecture_1.svg",
+    "FPGA_Architecture_1 Code.md",
+    "Proposal Sources List.md",
+    "Pasted image 20240401142642.png",
     "Figures/Network_Overview Code.md",
     "Figures/FPGA_Architecture_1 Code.md",
     "Figures/FPGA_Architecture_1 Code2.txt",

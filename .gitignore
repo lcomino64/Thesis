@@ -13,3 +13,4 @@
 *.toc
 *.fdb_latexmk
 *.cut
+*.tar # For docker image builds

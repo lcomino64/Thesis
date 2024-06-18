@@ -8,7 +8,6 @@
 	- Full FPGA architecture and mock-up first draft
 	- Virtual Test-bed
 		- Get software-based results
-		- 
 1. Q&A
 
 
@@ -22,3 +21,5 @@ Go through entire plan
 Virtual Test-bed creation, Kubernetes orchestration and containers
 Containers
 
+# Schedule
+9th of May 2024, @ 4:00pm in 46-968
