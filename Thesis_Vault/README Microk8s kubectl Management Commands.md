@@ -57,3 +57,30 @@ microk8s kubectl patch configmap client-config -p '{"data":{"MESSAGING_ENABLED":
 ```shell
 microk8s kubectl patch configmap client-config -p '{"data"{"ENCRYPTION_ENABLED":"false"}}'
 ```
+
+```shell
+microk8s kubectl scale deployment client --replicas=$replicas
+```
+### For Raspberry Pis
+Just run to transfer changes:
+```shell
+./build_and_transfer_images.sh
+```
+Make sure Docker is running
+
+Then on home directory of master Pi:
+```shell
+user$ ./kclient.sh
+```
+
+Help for kclient.sh
+```shell
+Usage: kclient [options]
+
+Options:
+  -f <seconds>  Set the message frequency (in seconds)
+  -m <text>     Set the message to send
+  -s <on|off>   Toggle messaging on or off
+  -e <on|off>   Toggle encryption on or off
+  -h            Display this help message
+```

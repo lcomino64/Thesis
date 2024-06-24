@@ -94,7 +94,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "3871146c797d8bbd",
@@ -171,7 +172,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "2efa058022aeab91",
+  "active": "6221d33c288001a7",
   "lastOpenFiles": [
     "README Dependencies.md",
     "README Microk8s kubectl Management Commands.md",

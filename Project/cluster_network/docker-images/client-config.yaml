@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-config
+data:
+  MESSAGE_FREQUENCY: "1"
+  MESSAGE: "Default message"
+  MESSAGING_ENABLED: "false"
+  ENCRYPTION_ENABLED: "true"
+
