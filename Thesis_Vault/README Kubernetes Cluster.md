@@ -1,8 +1,11 @@
 ~~Switch IP: 192.168.1.234~~
 
 
-User user
+U: user 
+P: user
 
 Macbook 0 @ 192.168.1.10
-raspberry 1 @ 192.168.1.11
-raspberry 2 @ 192.168.1.12
+raspberry1 @ 192.168.1.11
+raspberry2 @ 192.168.1.12
+...
+raspberry$N$ @ 192.168.1.1$N$ $(if\ N<9)$

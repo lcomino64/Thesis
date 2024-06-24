@@ -15,9 +15,7 @@ sdk install sbt
 brew install git make autoconf gcc flex bison
 git clone http://git.veripool.org/git/verilator   # Only first time
 ```
-## FPGA Software
-Follow:
-https://docs.zephyrproject.org/latest/develop/getting_started/index.html
+
 ### Demo CPU Setup
 > Clone VexRiscv
 ```shell
@@ -28,6 +26,12 @@ git clone https://github.com/SpinalHDL/VexRiscv.git
 sbt "runMain vexriscv.demo.GenSmallest"
 ```
 This will compile the smallest possible CPU configuration
+### From Litex Repo
+
+
+## FPGA Software
+Follow:
+https://docs.zephyrproject.org/latest/develop/getting_started/index.html
 ## Kubernetes Cluster
 [[README Microk8s kubectl Management Commands]]
 Follow for setting up Raspberry Pis
