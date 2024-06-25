@@ -4,16 +4,12 @@ SERVER_HOST=server-service
 SERVER_PORT=8080
 
 while true; do
-    if [[ "$MESSAGING_ENABLED" == "true" ]]; then
-        MESSAGE="${MESSAGE:-Default message}"
+    MESSAGE="With a PID of: $$"
 
-        if [[ "$ENCRYPTION_ENABLED" == "true" ]]; then
-            ENCRYPTED_MESSAGE=$(echo "$MESSAGE" | openssl enc -aes-128-cbc -a -salt -pbkdf2 -pass pass:secretpassword)
-            echo "$ENCRYPTED_MESSAGE" | ncat --send-only $SERVER_HOST $SERVER_PORT
-        else
-            echo "$MESSAGE" | ncat --send-only $SERVER_HOST $SERVER_PORT
-        fi
-    fi
+    ENCRYPTED_MESSAGE=$(echo "$MESSAGE" | openssl enc -aes-128-cbc -a -salt -pbkdf2 -pass pass:secretpassword)
 
-    sleep "${MESSAGE_FREQUENCY:-1}"
+    echo "$ENCRYPTED_MESSAGE" | ncat --send-only $SERVER_HOST $SERVER_PORT
+
+    sleep 1 
 done
+

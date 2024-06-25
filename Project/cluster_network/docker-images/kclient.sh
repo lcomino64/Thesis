@@ -22,7 +22,7 @@ function toggle_encryption() {
 
 function scale_replicas() {
     replicas=$1
-    kubectl scale deployment client --replicas=$replicas
+    microk8s kubectl scale deployment client --replicas=$replicas
     echo "Scaled client deployment to $replicas replicas."
 }
 
