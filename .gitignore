@@ -14,3 +14,4 @@
 *.fdb_latexmk
 *.cut
 *.tar # For docker image builds
+.DS_Store
