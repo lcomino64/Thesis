@@ -83,4 +83,6 @@ Options:
   -s <on|off>   Toggle messaging on or off
   -e <on|off>   Toggle encryption on or off
   -h            Display this help message
+``````shell
+docker build . -t server-image:local
 ```
