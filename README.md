@@ -6,18 +6,31 @@
 - Run multiple containers per pod instead of 1 container per pod
 
 - Figure out how to get performance metrics
+    - Do completely software-based test (server-image)
+    - Then hardware FPGA test
 
 #### SCNP Jobs:
-~~- CLEANUP BUILD FOLDERS, AND DTS FILES. sTART AN ACTUAL PROJECT OUT OF THESIS REPO~~
+- Download Vivado, use vivado toolchain instead from now on
 
-- Figure out why the json2dts generates extra unfounded node labels
+- Build linux-on-litex to see hopefully if switching to Vivado fixed everything
 
-- Make a dual-core Vexriscv processor
+- Figure out why the json2dts generates extra unfounded node labels??
 
-- Add AES-128-cbc encrypt/decrypt module to FPGA
+- Make a dual-core VexRiscV SMP processor with these features:
+    - 100MHz sys-clk
+    - Ethernet
+    - xadc (for reading temps)
+    - AES Instruction Plugin 
 
-- Get SCPNS to display a MAC address on ethernet
+- Generate Zephyr DTS overlay + config
 
-- Set up unit testing for hardware configuration & Zephyr code
+- Make a single custom LiteX target file with all of this ^^
+
+- Zephyr software:
+    - Add multicore utilisation
+    - Interface with AES instruction plugin
+    - Interface with Ethernet
+    - Interface with xadc
+    - Create Shell
 
 - Figure out how to get performance metrics
