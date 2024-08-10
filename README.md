@@ -4,6 +4,7 @@
 - Research and add config files, making clients configurable (helm)
 
 - Run multiple containers per pod instead of 1 container per pod
+    - Probably make pods be able to run multiple processor clients
 
 - Figure out how to get performance metrics
     - Do completely software-based test (server-image)
