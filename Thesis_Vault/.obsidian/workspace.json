@@ -11,11 +11,48 @@
             "id": "b4c78bd848b8e550",
             "type": "leaf",
             "state": {
-              "type": "empty",
+              "type": "markdown",
+              "state": {
+                "file": "README FPGA Development Notes.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "8e781b633fb363eb",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Report Planning.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "70be61141dc8b379",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Report Planning.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "acd08c913681c5ee",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
               "state": {}
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -65,8 +102,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 229.5
   },
   "right": {
     "id": "3871146c797d8bbd",
@@ -82,6 +118,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Report Planning.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -98,6 +135,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "Report Planning.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -119,7 +157,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "Report Planning.md"
+              }
             }
           }
         ]
@@ -139,15 +179,17 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "b4c78bd848b8e550",
+  "active": "70be61141dc8b379",
   "lastOpenFiles": [
-    "README Kubernetes Cluster.md",
-    "README FPGA Development Notes.md",
-    "README Dependencies.md",
+    "Report Planning.md",
     "README Microk8s kubectl Management Commands.md",
-    "Draft Proposal Notes.md",
+    "Figures/example network overview.png",
     "Seminar Feedback.md",
+    "Draft Proposal Notes.md",
     "Proposal Feedback.md",
+    "README FPGA Development Notes.md",
+    "README Kubernetes Cluster.md",
+    "README Dependencies.md",
     "Network_Overview Code.md",
     "Seminar Notes.md",
     "Figures/FPGA_Architecture_1.svg",
