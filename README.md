@@ -11,19 +11,14 @@
     - Then hardware FPGA test
 
 #### SCNP Jobs:
-- Download Vivado, use vivado toolchain instead from now on
-
-- Build linux-on-litex to see hopefully if switching to Vivado fixed everything
-
-- Figure out why the json2dts generates extra unfounded node labels??
+- Figure out why the json2dts generates extra unfounded node labels
 
 - Make a dual-core VexRiscV SMP processor with these features:
     - 100MHz sys-clk
     - Ethernet
     - xadc (for reading temps)
-    - AES Instruction Plugin 
-
-- Generate Zephyr DTS overlay + config
+    - AES Instruction Plugin
+    - Extendable to peripherals, I2C, SPI etc. 
 
 - Make a single custom LiteX target file with all of this ^^
 
@@ -34,4 +29,8 @@
     - Interface with xadc
     - Create Shell
 
+- Figure out how to load gateware+software into ROM so FPGA doesn't lose everything
+
 - Figure out how to get performance metrics
+
+- REMEMBER BSD-2-Clause license for using linux-on-litex-vexriscv

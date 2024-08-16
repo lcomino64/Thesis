@@ -3,6 +3,8 @@
 U : user 
 P: user
 
+SCPNS @ 192.168.1.50
+
 Macbook 0 @ 192.168.1.10
 
 raspberry1 @ 192.168.1.11

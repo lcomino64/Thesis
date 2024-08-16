@@ -15,3 +15,6 @@
 *.cut
 *.tar # For docker image builds
 .DS_Store
+
+build/
+__pycache__/

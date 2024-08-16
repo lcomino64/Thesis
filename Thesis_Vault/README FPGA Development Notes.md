@@ -37,3 +37,8 @@ Then boot from serial port:
 ```shell
 litex_term /dev/ttyUSBX --speed 115200 --kernel path/to/zephyr.bin
 ```
+
+## Latest FPGA build command
+```shell
+./make.py --board=arty_a7 --toolchain=vivado --cpu-count=2 --aes-instruction=True --build
+```
