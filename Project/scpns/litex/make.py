@@ -72,8 +72,8 @@ def main():
     # soc.add_mmcm(2)
     soc.add_rgb_led()
     soc.add_switches()
-    # soc.add_spi(SPI_DATA_WIDTH, SPI_CLK_FREQ)
-    # soc.add_i2c()
+    soc.add_spi(SPI_DATA_WIDTH, SPI_CLK_FREQ)
+    soc.add_i2c()
     soc.add_xadc()
 
     # Build

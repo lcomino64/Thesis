@@ -11,17 +11,6 @@
     - Then hardware FPGA test
 
 #### SCNP Jobs:
-- Figure out why the json2dts generates extra unfounded node labels
-
-- Make a dual-core VexRiscV SMP processor with these features:
-    - 100MHz sys-clk
-    - Ethernet
-    - xadc (for reading temps)
-    - AES Instruction Plugin
-    - Extendable to peripherals, I2C, SPI etc. 
-
-- Make a single custom LiteX target file with all of this ^^
-
 - Zephyr software:
     - Add multicore utilisation
     - Interface with AES instruction plugin
