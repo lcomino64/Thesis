@@ -1,0 +1,11 @@
+# Copyright (c) 2018 - 2019 Antmicro <www.antmicro.com>
+# SPDX-License-Identifier: Apache-2.0
+
+config SOC_LITEX_VEXRISCV_SMP
+        bool
+        help
+          LiteX VexRiscv SMP system implementation
+
+config SOC
+        default "litex_vexriscv_smp" if SOC_LITEX_VEXRISCV_SMP
+

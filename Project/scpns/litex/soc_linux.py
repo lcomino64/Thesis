@@ -121,7 +121,7 @@ def SoCLinux(soc_cls, **kwargs):
         # DTS generation ---------------------------------------------------------------------------
         def generate_dts(self, board_name):
             json_src = os.path.join("build", board_name, "csr.json")
-            dts = os.path.join("build", board_name, "{}.dts".format(board_name))
+            dts = os.path.join("build", board_name, "{}.dtsi".format(board_name))
 
             with open(json_src) as json_file, open(dts, "w") as dts_file:
                 dts_content = generate_dts(json.load(json_file), polling=False)
@@ -129,7 +129,7 @@ def SoCLinux(soc_cls, **kwargs):
 
         # DTS compilation --------------------------------------------------------------------------
         def compile_dts(self, board_name, symbols=False):
-            dts = os.path.join("build", board_name, "{}.dts".format(board_name))
+            dts = os.path.join("build", board_name, "{}.dtsi".format(board_name))
             dtb = os.path.join("build", board_name, "{}.dtb".format(board_name))
             subprocess.check_call(
                 "dtc {} -O dtb -o {} {}".format("-@" if symbols else "", dtb, dts), shell=True)

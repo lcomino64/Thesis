@@ -10,7 +10,7 @@ from litex.soc.cores.cpu.vexriscv_smp import VexRiscvSMP
 class Board:
     soc_kwargs = {
         "integrated_rom_size"  : 0x10000,
-        "integrated_sram_size" : 0x1800,
+        "integrated_sram_size" : 0x4000,
         "l2_size"              : 0
     }
     def __init__(self, soc_cls=None, soc_capabilities={}, soc_constants={}):
@@ -20,7 +20,6 @@ class Board:
 
 # Board Definition -------------------------------------
 class ArtyA7(Board):
-    soc_kwargs = {"variant": "a7-35", "sys_clk_freq": int(100e6)}
     soc_capabilities = {
         # Communication
         "serial",
@@ -38,6 +37,16 @@ class ArtyA7(Board):
         "xadc",
         # 7-Series specific  
         "mmcm",
+    }
+    soc_kwargs = {
+        "variant": "a7-35", 
+        "sys_clk_freq": int(100e6), 
+        "with_ethernet" : True,
+        "with_led_chaser" : False,
+        "with_spi_flash" : False,
+        "with_spi_sdcard" : False,
+        "with_sdcard" : False,
+        "timer_uptime" : True,
     }
 
     def __init__(self):
@@ -58,10 +67,10 @@ def main():
     board = ArtyA7()
     soc_kwargs = Board.soc_kwargs
     soc_kwargs.update(board.soc_kwargs)
-    soc_kwargs.update(l2_size=8192) 
+    soc_kwargs.update(l2_size=8192)
 
     # CPU parameters  
-    VexRiscvSMP.cpu_count     = CPU_COUNT
+    VexRiscvSMP.cpu_count = CPU_COUNT
     VexRiscvSMP.aes_instruction = AES_INSTRUCTION
 
     # SoC creation
@@ -70,11 +79,13 @@ def main():
 
     # SoC peripherals
     # soc.add_mmcm(2)
-    soc.add_rgb_led()
-    soc.add_switches()
+    # soc.add_rgb_led()
+    # soc.add_switches()
     soc.add_spi(SPI_DATA_WIDTH, SPI_CLK_FREQ)
     soc.add_i2c()
-    soc.add_xadc()
+    # soc.add_xadc()
+
+    soc.configure_ethernet(remote_ip="192.168.1.100")
 
     # Build
     builder = Builder(soc, 
@@ -91,7 +102,7 @@ def main():
     # soc.combine_dtb("arty_a7")
 
     # Generate SoC documentation
-    soc.generate_doc("arty_a7")
+    # soc.generate_doc("arty_a7")
 
 
 if __name__ == "__main__":

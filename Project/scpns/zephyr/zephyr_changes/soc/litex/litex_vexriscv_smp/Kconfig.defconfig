@@ -1,0 +1,17 @@
+if SOC_LITEX_VEXRISCV_SMP
+
+config SYS_CLOCK_HW_CYCLES_PER_SEC
+        default $(dt_node_int_prop_int,/cpus/cpu@0,clock-frequency)
+
+config RISCV_HAS_PLIC
+	bool
+
+config NUM_IRQS
+        default 12
+
+#config REBOOT
+#        depends on DT_HAS_LITEX_SOC_CONTROLLER_ENABLED
+#        default y
+
+endif # SOC_LITEX_VEXRISCV_SMP
+

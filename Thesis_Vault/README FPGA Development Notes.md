@@ -21,21 +21,19 @@ picocom -b 115200 /dev/ttyUSB1 --imap lfcrlf
 
 Build overlay config and dts for zephyr to use:
 ```shell
-python3 ~/repos/litex/litex/tools/litex_json2dts_zephyr.py --dts overlay.dts --config overlay.config csr.json
+python3 ~/repos/litex/litex/tools/litex_json2dts_zephyr.py --dts litex_vexriscv_smp.dts --config overlay.config csr.json
 ```
-
-TODO: figure out why the overlay.dts hallucinates undefined node labels.
 
 ## Booting a Zephyr Application
 
 First, build the zephyr application for litex_vexriscv: 
 ```shell
-west build -p always -b litex_vexriscv path/to/a/zephyr/project -DDTC_OVERLAY_FILE=path/to/overlay.dts
+west build -p always -b litex_vexriscv path/to/a/zephyr/project -DDTC_OVERLAY_FILE=~/Thesis/Project/scpns/litex/build/arty_a7/arty_a7.dts
 ```
 
 Then boot from serial port:
 ```shell
-litex_term /dev/ttyUSBX --speed 115200 --kernel path/to/zephyr.bin
+litex_term /dev/ttyUSB1 --speed 115200 --kernel path/to/zephyr.bin
 ```
 
 ## Latest FPGA build command

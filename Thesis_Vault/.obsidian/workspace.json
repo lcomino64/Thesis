@@ -18,8 +18,45 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "8dc908ae115d84b1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README Software.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "995ce7703407a8e1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README Board definition files.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "aa27d203193867cd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Report Planning.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -85,7 +122,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README FPGA Development Notes.md",
+                "file": "README Board definition files.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +139,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README FPGA Development Notes.md",
+                "file": "README Board definition files.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +162,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README FPGA Development Notes.md"
+                "file": "README Board definition files.md"
               }
             }
           }
@@ -146,17 +183,19 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "b4c78bd848b8e550",
+  "active": "995ce7703407a8e1",
   "lastOpenFiles": [
-    "README Kubernetes Cluster.md",
+    "README Software.md",
+    "README Board definition files.md",
+    "README Dependencies.md",
     "README FPGA Development Notes.md",
     "Report Planning.md",
+    "README Kubernetes Cluster.md",
     "README Microk8s kubectl Management Commands.md",
     "Figures/example network overview.png",
     "Seminar Feedback.md",
     "Draft Proposal Notes.md",
     "Proposal Feedback.md",
-    "README Dependencies.md",
     "Network_Overview Code.md",
     "Seminar Notes.md",
     "Figures/FPGA_Architecture_1.svg",
