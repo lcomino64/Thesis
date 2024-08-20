@@ -358,7 +358,7 @@ In ./dts/riscv/litex_vexriscv_smp.dtsi
                 status = "okay";
             };
 
-            litespi0: spi@f0004800 {
+            litespi0: spi@f0004 800 {
                 compatible = "litex,litespi";
                 reg = <0xf0004800 0x100>;
                 status = "okay";

@@ -12,9 +12,9 @@
 ##include <zephyr/arch/common/sys_io.h>
 
 
-##ifdef CONFIG_SMP
-##define RISCV_MSIP_BASE 0xf0010000
-##endif
+#ifdef CONFIG_SMP
+#define RISCV_MSIP_BASE 0xf0010000
+#endif
 
 #ifndef _ASMLANGUAGE
 /* CSR access helpers */

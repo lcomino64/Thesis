@@ -17,8 +17,8 @@
         };
 };
 &liteuart0 {
-	status = "okay";
 	current-speed = <115200>;
+	status = "okay";
 };
 &mac0 {
 	status = "okay";

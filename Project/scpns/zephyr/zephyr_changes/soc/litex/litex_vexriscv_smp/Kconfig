@@ -2,13 +2,16 @@
 # SPDX-License-Identifier: Apache-2.0
 
 config SOC_LITEX_VEXRISCV_SMP
-        select RISCV
-        select ATOMIC_OPERATIONS_C
-        select INCLUDE_RESET_VECTOR
-        select RISCV_ISA_RV32I
-        select RISCV_ISA_EXT_M
-        select RISCV_ISA_EXT_ZICSR
-        select RISCV_ISA_EXT_ZIFENCEI
+	bool "Digilent Arty A7-35T system implementation"
+	select RISCV
+	select INCLUDE_RESET_VECTOR
+	select RISCV_ISA_RV32I
+	select RISCV_ISA_EXT_M
+	select RISCV_ISA_EXT_A
+	select RISCV_ISA_EXT_ZICSR
+	select RISCV_ISA_EXT_ZIFENCEI
+	select SERIAL_SUPPORT_INTERRUPT
+	select SERIAL
 
 if SOC_LITEX_VEXRISCV_SMP
 
