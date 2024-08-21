@@ -12,17 +12,24 @@
 
 #### SCNP Jobs:
 - Still need to figure out how to "add" my board to zephyr
-	- include reboot.c in soc?
+	- include reboot.c in soc
+	- fix Kconfig warnings
 
 - Zephyr software:
     - Add multicore utilisation
     - Interface with AES instruction plugin
     - Interface with Ethernet
-    - Interface with xadc
     - Create Shell
 
-- Figure out how to load gateware+software into ROM so FPGA doesn't lose everything
+- Figure out how to load gateware+software permanently
 
 - Figure out how to get performance metrics
 
-- REMEMBER BSD-2-Clause license for using linux-on-litex-vexriscv
+- 4 core Vexriscv SMP
+
+- Rest of peripherals
+	- gpio
+	- leds
+	- rbg leds
+	- buttons
+	- switches

@@ -4,8 +4,8 @@
 #include <zephyr/dt-bindings/i2c/i2c.h>
 
 / {
-		compatible = "litex,digilent_arty", "litex,soc";
-		model = "digilent_arty";
+		// compatible = "litex,digilent_arty", "litex,soc";
+		// model = "digilent_arty";
 		#address-cells = <1>;
 		#size-cells    = <1>;
 
@@ -100,16 +100,16 @@
 			};
 
 			
-			cpu-map {
-				cluster0 {
-					core0 {
-						cpu = <&CPU0>;
-					};
-					core1 {
-						cpu = <&CPU1>;
-					};
-				};
-			};
+//			cpu-map {
+//				cluster0 {
+//					core0 {
+//						cpu = <&CPU0>;
+//					};
+//					core1 {
+//						cpu = <&CPU1>;
+//					};
+//				};
+//			};
 		};
 
 		memory: memory@40000000 {
@@ -142,7 +142,7 @@
 			};
 
 			intc0: interrupt-controller@f0c00000 {
-				compatible = "sifive,fu540-c000-plic", "sifive,plic-1.0.0";
+				compatible = "sifive,fu540-c000-plic","sifive,plic-1.0.0";
 				reg = <0xf0c00000 0x400000>;
 				#address-cells = <0>;
 				#interrupt-cells = <2>;
@@ -152,7 +152,7 @@
 					&L1 11 &L1 9>;
 				riscv,ndev = <32>;
 				riscv,max-priority = <7>;
-				status="okay"; 
+				status="okay";
 			};
 
 			liteuart0: serial@f0001000 {
@@ -217,14 +217,20 @@
 				};
 
 			litespi0: spi@f0004800 {
-				compatible = "litex,litespi";
-				reg = <0xf0004800 0x100>;
+				compatible = "litex,spi";
+				reg = <0xf0004800 0x4
+					0xf0004804 0x4
+                    0xf0004808 0x4
+                    0xf000480c 0x4
+                    0xf0004810 0x4
+                    0xf0004814 0x4>;
+				reg-names = "control",
+                  "status",
+                  "mosi",
+                  "miso",
+                  "cs",
+                  "loopback";
 				status = "okay";
-
-				litespi,max-bpw = <8>;
-				litespi,sck-frequency = <1000000>;
-				litespi,num-cs = <1>;
-
 				#address-cells = <1>;
 				#size-cells    = <0>;
 
@@ -238,8 +244,8 @@
 
 			i2c0: i2c@f0003000 {
 				compatible = "litex,i2c";
-				reg = <0xf0003000 0x5
-					0xf0003004 0x5>;
+				reg = <0xf0003000 0x4
+					0xf0003004 0x4>;
 				reg-names = "write", "read";
 				clock-frequency = <I2C_BITRATE_STANDARD>;
 				#address-cells = <1>;

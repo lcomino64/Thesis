@@ -4,6 +4,7 @@
 config SOC_LITEX_VEXRISCV_SMP
 	bool "Digilent Arty A7-35T system implementation"
 	select RISCV
+	select HAS_RISCV_PLIC
 	select INCLUDE_RESET_VECTOR
 	select RISCV_ISA_RV32I
 	select RISCV_ISA_EXT_M
@@ -12,6 +13,7 @@ config SOC_LITEX_VEXRISCV_SMP
 	select RISCV_ISA_EXT_ZIFENCEI
 	select SERIAL_SUPPORT_INTERRUPT
 	select SERIAL
+	select SMP	
 
 if SOC_LITEX_VEXRISCV_SMP
 

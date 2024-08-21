@@ -105,7 +105,6 @@ soc/litex/litex_vexriscv_smp/soc.h
 dts/riscv/riscv32-litex-vexriscv.dtsi
 	`Slightly different interrupt controller, intc0`
 
-If nothing prints or no shell, it's because device tree doesn't use liteuart. Similar thing for spi/litespi and other litex peripherals
 #### Mem_list
 First number is location, second is size
 ```shell

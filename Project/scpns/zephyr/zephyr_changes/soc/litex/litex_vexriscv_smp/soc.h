@@ -9,7 +9,7 @@
 
 #include <zephyr/devicetree.h>
 #include <zephyr/arch/riscv/sys_io.h>
-##include <zephyr/arch/common/sys_io.h>
+#include <zephyr/arch/common/sys_io.h>
 
 
 #ifdef CONFIG_SMP

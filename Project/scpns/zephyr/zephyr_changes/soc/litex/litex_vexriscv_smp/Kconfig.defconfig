@@ -4,13 +4,19 @@ config SYS_CLOCK_HW_CYCLES_PER_SEC
     default $(dt_node_int_prop_int,/cpus/cpu@0,clock-frequency)
 
 config SMP
-	default n 
+	default y 
 
 config RISCV_HAS_CPU_IDLE
 	bool
 
-config RISCV_HAS_PLIC
-	bool
+#config RISCV_HAS_PLIC
+#	bool	
+#
+config MULTI_LEVEL_INTERRUPTS
+	default y	
+
+config 2ND_LEVEL_INTERRUPTS
+	default y
 
 config NUM_IRQS
     default 12
@@ -18,6 +24,12 @@ config NUM_IRQS
 #config REBOOT
 #        depends on DT_HAS_LITEX_SOC_CONTROLLER_ENABLED
 #        default y
+
+config GEN_ISR_TABLES
+    default y
+
+config GEN_SW_ISR_TABLE
+    default y
 
 endif # SOC_LITEX_VEXRISCV_SMP
 
