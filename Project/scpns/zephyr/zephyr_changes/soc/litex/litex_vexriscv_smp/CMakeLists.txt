@@ -5,11 +5,10 @@
 #
 
 zephyr_sources(
-    ../../common/riscv-privileged/soc_irq.S
-    ../../common/riscv-privileged/vector.S
+    ${ZEPHYR_BASE}/soc/common/riscv-privileged/soc_irq.S
+    ${ZEPHYR_BASE}/soc/common/riscv-privileged/vector.S
+	${ZEPHYR_BASE}/soc/common/riscv-privileged/soc_common_irq.c
 )
-
-zephyr_sources_ifdef(CONFIG_BOARD_LITEX_VEXRISCV_SMP irq.c)
 
 zephyr_include_directories(.)
 

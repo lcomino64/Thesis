@@ -20,6 +20,9 @@
 	current-speed = <115200>;
 	status = "okay";
 };
+// &timer0 {
+// 	status = "okay";
+// };
 &mac0 {
 	status = "okay";
 };
