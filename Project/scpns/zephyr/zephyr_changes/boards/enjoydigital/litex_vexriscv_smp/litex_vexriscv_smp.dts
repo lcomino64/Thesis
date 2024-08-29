@@ -3,19 +3,15 @@
 #include <riscv32-litex-vexriscv-smp.dtsi>
 
 / {
-        model = "LiteX VexRiscV SMP";
-        compatible = "litex,vexriscv";
-        chosen {
-                zephyr,console = &liteuart0;
-                zephyr,shell-uart = &liteuart0;
-                zephyr,sram = &ram0;
-        };
-
-        ram0: memory@40000000 {
-                device_type = "memory";
-                reg = <0x40000000 0x10000000>;
-        };
+	model = "LiteX VexRiscV SMP";
+	compatible = "litex,vexriscv";
+	chosen {
+		zephyr,console = &liteuart0;
+		zephyr,shell-uart = &liteuart0;
+		zephyr,sram = &dram;
+    };
 };
+
 &liteuart0 {
 	current-speed = <115200>;
 	status = "okay";
@@ -25,17 +21,17 @@
 // 	status = "okay";
 // };
 
-&mdio0 {
-    status = "okay";
-};
-
-// &phy0 {
+// &mdio0 {
 //     status = "okay";
 // };
-
-&eth0 {
-    status = "okay";
-};
+// 
+// // &phy0 {
+// //     status = "okay";
+// // };
+// 
+// &eth0 {
+//     status = "okay";
+// };
 
 &litespi0 {
     status = "okay";

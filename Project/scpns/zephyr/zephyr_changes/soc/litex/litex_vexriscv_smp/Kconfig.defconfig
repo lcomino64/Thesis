@@ -9,27 +9,34 @@ config SMP
 config RISCV_HAS_CPU_IDLE
 	bool
 
-#config RISCV_HAS_PLIC
-#	bool	
-#
+config RISCV_HAS_PLIC
+	bool	
+
 config MULTI_LEVEL_INTERRUPTS
 	default y	
 
 config 2ND_LEVEL_INTERRUPTS
 	default y
 
+config RISCV_SOC_INTERRUPT_INIT
+	default y
+
+
+config 2ND_LVL_ISR_TBL_OFFSET
+	default 12
+
+config 2ND_LVL_INTR_00_OFFSET
+	default 11
+
+config MAX_IRQ_PER_AGGREGATOR
+	default 32 
+
 config NUM_IRQS
-    default 12
+    default 16 
 
 #config REBOOT
 #        depends on DT_HAS_LITEX_SOC_CONTROLLER_ENABLED
 #        default y
-
-config GEN_ISR_TABLES
-    default y
-
-config GEN_SW_ISR_TABLE
-    default y
 
 endif # SOC_LITEX_VEXRISCV_SMP
 

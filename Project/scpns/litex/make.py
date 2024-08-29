@@ -41,8 +41,8 @@ class ArtyA7(Board):
     soc_kwargs = {
         "variant": "a7-35", 
         "sys_clk_freq": int(100e6), 
-        "with_ethernet" : True,
-        "with_led_chaser" : False,
+        "with_ethernet" : False,
+        "with_led_chaser" : True,
         "with_spi_flash" : False,
         "with_spi_sdcard" : False,
         "with_sdcard" : False,
@@ -57,7 +57,7 @@ class ArtyA7(Board):
 UART_BAUDRATE  = 115200
 TOOLCHAIN      = "vivado"
 CPU_COUNT      = 2
-AES_INSTRUCTION = False
+AES_INSTRUCTION = True 
 
 # Peripheral configuration -----------------------------
 SPI_DATA_WIDTH = 8
@@ -85,7 +85,7 @@ def main():
     soc.add_i2c()
     # soc.add_xadc()
 
-    soc.configure_ethernet(remote_ip="192.168.1.100")
+    # soc.configure_ethernet(remote_ip="192.168.1.100")
 
     # Build
     builder = Builder(soc, 
@@ -102,7 +102,7 @@ def main():
     # soc.combine_dtb("arty_a7")
 
     # Generate SoC documentation
-    # soc.generate_doc("arty_a7")
+    soc.generate_doc("arty_a7")
 
 
 if __name__ == "__main__":
