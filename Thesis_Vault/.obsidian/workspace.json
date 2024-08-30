@@ -43,7 +43,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -109,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README FPGA Development Notes.md",
+                "file": "README Software.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -126,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README FPGA Development Notes.md",
+                "file": "README Software.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -149,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README FPGA Development Notes.md"
+                "file": "README Software.md"
               }
             }
           }
@@ -170,10 +171,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "b4c78bd848b8e550",
+  "active": "8dc908ae115d84b1",
   "lastOpenFiles": [
-    "README Software.md",
     "README FPGA Development Notes.md",
+    "README Software.md",
     "Report Planning.md",
     "Pasted image 20240824160042.png",
     "README Board definition files.md",

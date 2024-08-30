@@ -11,7 +11,7 @@ class Board:
     soc_kwargs = {
         "integrated_rom_size"  : 0x10000,
         "integrated_sram_size" : 0x4000,
-        "l2_size"              : 0
+        "l2_size"              : 8192
     }
     def __init__(self, soc_cls=None, soc_capabilities={}, soc_constants={}):
         self.soc_cls          = soc_cls
@@ -67,7 +67,6 @@ def main():
     board = ArtyA7()
     soc_kwargs = Board.soc_kwargs
     soc_kwargs.update(board.soc_kwargs)
-    soc_kwargs.update(l2_size=8192)
 
     # CPU parameters  
     VexRiscvSMP.cpu_count = CPU_COUNT

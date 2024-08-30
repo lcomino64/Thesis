@@ -114,16 +114,16 @@
 		reg = <0x40000000 0x10000000>;
 	};
 
-	reserved-memory {
-		#address-cells = <1>;
-		#size-cells    = <1>;
-		ranges;
-
-		opensbi@40f00000 {
-			reg = <0x40f00000 0x80000>;
-		};
-
-	};
+//	reserved-memory {
+//		#address-cells = <1>;
+//		#size-cells    = <1>;
+//		ranges;
+//
+//		opensbi@40f00000 {
+//			reg = <0x40f00000 0x80000>;
+//		};
+//
+//	};
 
 	soc {
 		#address-cells = <1>;
@@ -144,8 +144,8 @@
 			#address-cells = <0>;
 			#interrupt-cells = <2>;
 			interrupt-controller;
-			interrupts-extended = <&L0 11>;
-		//	interrupts-extended = <&L0 11 &L1 11 &L0 9 &L1 9>;
+		//	interrupts-extended = <&L0 11>;
+			interrupts-extended = <&L0 11 &L1 11 &L0 9 &L1 9>;
 			riscv,ndev = <32>;
 			riscv,max-priority = <7>;
 		};
@@ -157,18 +157,19 @@
 			interrupt-names = "soft0", "timer0", "soft1", "timer1";
         };
 
-		liteuart0: serial@f0001000 {
+		liteuart0: serial@f0004000 {
 			compatible = "litex,uart";
 			interrupt-parent = <&intc0>;
 			interrupts = <0 7>;
-			reg = <0xf0001000 0x4
-				0xf0001004 0x4
-				0xf0001008 0x4
-				0xf000100c 0x4
-				0xf0001010 0x4
-				0xf0001014 0x4
-				0xf0001018 0x4
-				0xf000101c 0x4>;
+			reg = <
+				0xf0004000 0x4
+				0xf0004004 0x4
+				0xf0004008 0x4
+				0xf000400c 0x4
+				0xf0004010 0x4
+				0xf0004014 0x4
+				0xf0004018 0x4
+				0xf000401c 0x4>;
 			reg-names =
 				"rxtx",
 				"txfull",
@@ -181,14 +182,15 @@
 			status = "disabled"; 
 		};
 
-		litespi0: spi@f0004800 {
+		litespi0: spi@f0003000 {
 			compatible = "litex,spi";
-			reg = <0xf0004800 0x4
-				0xf0004804 0x4
-    	        0xf0004808 0x4
-    	        0xf000480c 0x4
-    	        0xf0004810 0x4
-    	        0xf0004814 0x4>;
+			reg = <
+				0xf0003000 0x4
+				0xf0003004 0x4
+    	        0xf0003008 0x4
+    	        0xf000300c 0x4
+    	        0xf0003010 0x4
+    	        0xf0003014 0x4>;
 			reg-names = "control",
     	      	"status",
     	      	"mosi",
@@ -207,9 +209,9 @@
 			};
 		};
 
-		leds: gpio@f0003000 {
+		leds: gpio@f0002000 {
 		    #compatible = "litex,gpio";
-		    reg = <0xf0003000 0x4>;
+		    reg = <0xf0002000 0x4>;
 		    gpio-controller;
 		    #gpio-cells = <2>;
 		    // litex,direction = "out";
@@ -301,15 +303,15 @@
 //            status = "disabled";
 //      };
 
-		i2c0: i2c@f0003000 {
-				compatible = "litex,i2c";
-				reg = <0xf0003000 0x4
-					0xf0003004 0x4>;
-				reg-names = "write", "read";
-				clock-frequency = <I2C_BITRATE_STANDARD>;
-				#address-cells = <1>;
-				#size-cells = <0>;
-				status = "disabled";
+		i2c0: i2c@f0001000 {
+			compatible = "litex,i2c";
+			reg = <0xf0001000 0x4
+				0xf0001004 0x4>;
+			reg-names = "write", "read";
+			clock-frequency = <I2C_BITRATE_STANDARD>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "disabled";
 		};
 	};
 };
