@@ -11,15 +11,7 @@
     - Then hardware FPGA test
 
 #### SCNP Jobs:
-- Still need to figure out how to "add" my board to zephyr
-	- include reboot.c in soc
-	- fix Kconfig warnings
-
-- Zephyr software:
-    - Add multicore utilisation
-    - Interface with AES instruction plugin
-    - Interface with Ethernet
-    - Create Shell
+- Fix interrupts not working or remove them entirely (polling)
 
 - Figure out how to load gateware+software permanently
 
