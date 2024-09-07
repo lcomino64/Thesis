@@ -31,7 +31,7 @@
 			riscv,isa-extensions = "a", "i", "m";
 			mmu-type = "riscv,sv32";
 			reg = <0>;
-			clock-frequency = <100000000>;
+			clock-frequency = <0>;
 			status = "okay";
 			
 			d-cache-size = <4096>;
@@ -68,7 +68,7 @@
 			riscv,isa-extensions = "a", "i", "m";
 			mmu-type = "riscv,sv32";
 			reg = <1>;
-			clock-frequency = <100000000>;
+			clock-frequency = <0>;
 			status = "okay";
 			
 			d-cache-size = <4096>;
@@ -141,7 +141,7 @@
 		intc0: interrupt-controller@f0c00000 {
 			compatible = "sifive,plic-1.0.0";
 			reg = <0xf0c00000 0x400000>;
-			#address-cells = <0>;
+			#address-cells = <1>;
 			#interrupt-cells = <2>;
 			interrupt-controller;
 		//	interrupts-extended = <&L0 11>;

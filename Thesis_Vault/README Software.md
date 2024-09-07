@@ -121,4 +121,13 @@ ETHMAC_TX  0x80001000 0x1000
 CSR        0xf0000000 0x10000  
 ```
 
+### Current mem_list (no ethernet, opensbi)
+```
+PLIC      0xf0c00000 0x400000 
+CLINT     0xf0010000 0x10000 
+ROM       0x00000000 0x10000 
+SRAM      0x10000000 0x4000 
+MAIN_RAM  0x40000000 0x10000000 
+CSR       0xf0000000 0x10000
+```
 ## New Zephyr Board Creation Instructions

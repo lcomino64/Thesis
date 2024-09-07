@@ -44,3 +44,19 @@ litex_term /dev/ttyUSB1 --speed 115200 --kernel path/to/zephyr.bin
 ```shell
 cd /home/lachlancomino/repos/pythondata-cpu-vexriscv-smp/pythondata_cpu_vexriscv_smp/verilog/ext/VexRiscv && sbt "runMain vexriscv.demo.smp.VexRiscvLitexSmpClusterCmdGen --cpu-count=2 --reset-vector=0 --ibus-width=32 --dbus-width=32 --dcache-size=4096 --icache-size=4096 --dcache-ways=1 --icache-ways=1 --litedram-width=128 --aes-instruction=True --expose-time=False --out-of-order-decoder=True --privileged-debug=False --hardware-breakpoints=0 --wishbone-memory=False --fpu=False --cpu-per-fpu=4 --rvc=False --netlist-name=VexRiscvLitexSmpCluster_Cc2_Iw32Is4096Iy1_Dw32Ds4096Dy1_ITs4DTs4_Ldw128_Aes_Ood --netlist-directory=/home/lachlancomino/repos/pythondata-cpu-vexriscv-smp/pythondata_cpu_vexriscv_smp/verilog --dtlb-size=4 --itlb-size=4 --jtag-tap=False"
 ```
+
+## Debug
+```shell
+litex_sim --cpu-type=vexriscv_smp --cpu-count=2 --with-sdram --sdram-init ~/zephyrproject/zephyr/build/zephyr/zephyr.bin --with-rvc --with-privileged-debug --hardware-breakpoints 4 --jtag-tap --with-jtagremote
+```
+
+```shell
+litex_sim --cpu-type=vexriscv_smp --cpu-count=2 --with-sdram --sdram-init ~/zephyrproject/zephyr/build/zephyr/zephyr.bin --with-rvc --with-privileged-debug --hardware-breakpoints 4 --jtag-tap --with-jtagremote
+```
+
+Thread analyser stuff (add to end of west build):
+```shell
+-DCONFIG_THREAD_ANALYZER=y \
+-DCONFIG_THREAD_ANALYZER_USE_PRINTK=y -DCONFIG_THREAD_ANALYZER_AUTO=y \
+-DCONFIG_THREAD_ANALYZER_AUTO_INTERVAL=5
+```

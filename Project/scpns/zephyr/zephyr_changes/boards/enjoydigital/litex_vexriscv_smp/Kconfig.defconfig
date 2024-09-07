@@ -9,11 +9,4 @@ config NET_L2_ETHERNET
         default y
 
 endif # NETWORKING
-
-config SPI
-	default y
-
-config RISCV_HAS_PLIC
-	default y
-
 endif # BOARD_LITEX_VEXRISCV_SMP

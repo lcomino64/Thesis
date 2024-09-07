@@ -13,7 +13,7 @@
 
 
 #ifdef CONFIG_SMP
-#define RISCV_MSIP_BASE 0xf0010000
+#define MSIP_BASE 0xf0010000
 #endif
 
 #ifndef _ASMLANGUAGE
