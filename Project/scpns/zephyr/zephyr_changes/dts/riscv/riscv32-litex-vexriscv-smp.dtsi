@@ -7,18 +7,6 @@
 	#address-cells = <1>;
 	#size-cells    = <1>;
 
-//	chosen {
-//		bootargs = "console=liteuart earlycon=liteuart,0xf0001000 rootwait root=/dev/ram0 ip=192.168.1.50:192.168.1.100:192.168.1.100:255.255.255.0::eth0:off:::";
-//		linux,initrd-start = <0x41000000>;
-//		linux,initrd-end   = <0x41800000>;
-//	};
-
-//	sys_clk: clock-100000000 {
-//		compatible = "fixed-clock";
-//		#clock-cells = <0>;
-//		clock-frequency  = <100000000>;
-//	};
-
 	cpus {
 		#address-cells = <1>;
 		#size-cells    = <0>;
@@ -26,6 +14,7 @@
 		CPU0: cpu@0 {
 			device_type = "cpu";
 			compatible = "riscv";
+			// riscv,isa = "rv32imas";
 			riscv,isa = "rv32i2p0_ma";
 			riscv,isa-base = "rv32i";
 			riscv,isa-extensions = "a", "i", "m";
@@ -62,7 +51,7 @@
 		CPU1: cpu@1 {
 			device_type = "cpu";
 			compatible = "riscv";
-			riscv,isa = "rv32imas";
+			// riscv,isa = "rv32imas";
 			riscv,isa = "rv32i2p0_ma";
 			riscv,isa-base = "rv32i";
 			riscv,isa-extensions = "a", "i", "m";
@@ -108,9 +97,8 @@
 //		};
 	};
 
-	dram: memory@40000000 {
+	memory: memory@40000000 {
 		device_type = "memory";
-		compatible = "mmio-sram";
 		reg = <0x40000000 0x10000000>;
 	};
 

@@ -8,7 +8,7 @@
 	chosen {
 		zephyr,console = &liteuart0;
 		zephyr,shell-uart = &liteuart0;
-		zephyr,sram = &dram;
+		zephyr,sram = &memory;
     };
 };
 
