@@ -1,0 +1,18 @@
+/dts-v1/;
+
+#include <riscv32-litex-vexriscv-smp.dtsi>
+
+/ {
+	model = "LiteX VexRiscV SMP";
+	compatible = "litex,vexriscv";
+	chosen {
+		zephyr,console = &liteuart0;
+		zephyr,shell-uart = &liteuart0;
+		zephyr,sram = &memory;
+    };
+};
+
+&liteuart0 {
+	current-speed = <115200>;
+	status = "okay";
+};

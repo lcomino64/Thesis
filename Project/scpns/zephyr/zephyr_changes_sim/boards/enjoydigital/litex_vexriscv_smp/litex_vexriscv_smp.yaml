@@ -1,0 +1,16 @@
+identifier: litex_vexriscv_smp
+name: LiteX SoC with VexRiscV SMP dual-core softcore CPU
+type: mcu
+arch: riscv
+toolchain:
+  - zephyr
+ram: 256000000 
+supported:
+  - spi
+  - i2s
+testing:
+  ignore_tags:
+    - bluetooth
+    - xip
+vendor: litex
+
