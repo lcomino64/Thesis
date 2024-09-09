@@ -5,18 +5,18 @@ config SOC_LITEX_VEXRISCV_SMP
 	bool "Digilent Arty A7-35T system implementation"
 	select RISCV
 	select HAS_RISCV_PLIC
-	select RISCV_PRIVILEGED
+	# select RISCV_PRIVILEGED
 	select INCLUDE_RESET_VECTOR
-	select SCHED_IPI_SUPPORTED
+	# select SCHED_IPI_SUPPORTED
 	select ATOMIC_OPERATIONS_BUILTIN
-	select RISCV_GP
+	# select RISCV_GP
 	select RISCV_ISA_RV32I
 	select RISCV_ISA_EXT_M
 	select RISCV_ISA_EXT_A
 	select RISCV_ISA_EXT_ZICSR
 	select RISCV_ISA_EXT_ZIFENCEI
 	select SMP
-	imply XIP
+	# imply XIP
 
 if SOC_LITEX_VEXRISCV_SMP
 

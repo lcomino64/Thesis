@@ -6,19 +6,6 @@
 / {
 	#address-cells = <1>;
 	#size-cells    = <1>;
-
-//	chosen {
-//		bootargs = "console=liteuart earlycon=liteuart,0xf0001000 rootwait root=/dev/ram0 ip=192.168.1.50:192.168.1.100:192.168.1.100:255.255.255.0::eth0:off:::";
-//		linux,initrd-start = <0x41000000>;
-//		linux,initrd-end   = <0x41800000>;
-//	};
-
-//	sys_clk: clock-100000000 {
-//		compatible = "fixed-clock";
-//		#clock-cells = <0>;
-//		clock-frequency  = <100000000>;
-//	};
-
 	cpus {
 		#address-cells = <1>;
 		#size-cells    = <0>;
@@ -62,7 +49,6 @@
 		CPU1: cpu@1 {
 			device_type = "cpu";
 			compatible = "riscv";
-			riscv,isa = "rv32imas";
 			riscv,isa = "rv32i2p0_ma";
 			riscv,isa-base = "rv32i";
 			riscv,isa-extensions = "a", "i", "m";
@@ -108,22 +94,10 @@
 //		};
 	};
 
-	dram: memory@40000000 {
+	ram0: memory@40000000 {
 		device_type = "memory";
-		compatible = "mmio-sram";
 		reg = <0x40000000 0x10000000>;
 	};
-
-//	reserved-memory {
-//		#address-cells = <1>;
-//		#size-cells    = <1>;
-//		ranges;
-//
-//		opensbi@40f00000 {
-//			reg = <0x40f00000 0x80000>;
-//		};
-//
-//	};
 
 	soc {
 		#address-cells = <1>;
@@ -140,14 +114,15 @@
 
 		intc0: interrupt-controller@f0c00000 {
 			compatible = "sifive,plic-1.0.0";
-			reg = <0xf0c00000 0x400000>;
-			#address-cells = <1>;
+			reg = <0xf0c00000 0x00400000>;
+			#address-cells = <0>;
 			#interrupt-cells = <2>;
 			interrupt-controller;
-		//	interrupts-extended = <&L0 11>;
-			interrupts-extended = <&L0 11 &L1 11 &L0 9 &L1 9>;
+			interrupts-extended = <&L0 0>;
+			// interrupts-extended = <&L0 11 &L1 11 &L0 9 &L1 9>;
 			riscv,ndev = <32>;
 			riscv,max-priority = <7>;
+			status = "okay";
 		};
 		
 		clint0: clint@f0010000 {
@@ -155,12 +130,13 @@
             reg = <0xf0010000 0x10000>;
             interrupts-extended = <&L0 3 &L0 7 &L1 3 &L1 7>;
 			interrupt-names = "soft0", "timer0", "soft1", "timer1";
+			status = "okay";
         };
 
 		liteuart0: serial@f0004000 {
-			compatible = "litex,uart";
+			compatible = "litex,uart0";
 			interrupt-parent = <&intc0>;
-			interrupts = <0 7>;
+			interrupts = <2 7>;
 			reg = <
 				0xf0004000 0x4
 				0xf0004004 0x4

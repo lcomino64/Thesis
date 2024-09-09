@@ -7,25 +7,10 @@ config RISCV_HAS_CPU_IDLE
 	bool
 
 config RISCV_HAS_PLIC
-	bool	
-
-config MULTI_LEVEL_INTERRUPTS
-	default y	
-
-config 2ND_LEVEL_INTERRUPTS
-	default y
-
-config RISCV_SOC_INTERRUPT_INIT
-	default y
-
-config 2ND_LVL_ISR_TBL_OFFSET
-	default 12
-
-config 2ND_LVL_INTR_00_OFFSET
-	default 11
+	bool
 
 config NUM_IRQS
-    default 16 
+    default 16
 
 #config REBOOT
 #        depends on DT_HAS_LITEX_SOC_CONTROLLER_ENABLED
