@@ -57,7 +57,17 @@ class ArtyA7(Board):
 UART_BAUDRATE  = 115200
 TOOLCHAIN      = "vivado"
 CPU_COUNT      = 2
-AES_INSTRUCTION = True 
+AES_INSTRUCTION = False 
+EXPOSE_CLINT_TIME = True
+WISH_BONE_MEMORY = True
+RVC = True
+DCACHE_SIZE = 8192
+ICACHE_SIZE = 8192
+DCACHE_WAYS = 2
+ICACHE_WAYS = 2
+DCACHE_WIDTH = 32
+ICACHE_WIDTH = 32
+
 
 # Peripheral configuration -----------------------------
 SPI_DATA_WIDTH = 8
@@ -71,6 +81,13 @@ def main():
     # CPU parameters  
     VexRiscvSMP.cpu_count = CPU_COUNT
     VexRiscvSMP.aes_instruction = AES_INSTRUCTION
+    VexRiscvSMP.expose_time = EXPOSE_CLINT_TIME
+    VexRiscvSMP.wishbone_memory = WISH_BONE_MEMORY
+    VexRiscvSMP.with_rvc = RVC
+    VexRiscvSMP.dcache_size = DCACHE_SIZE
+    VexRiscvSMP.icache_size = ICACHE_SIZE
+    VexRiscvSMP.dcache_ways = DCACHE_WAYS
+    VexRiscvSMP.icache_ways = ICACHE_WAYS
 
     # SoC creation
     soc = SoCLinux(board.soc_cls, **soc_kwargs)

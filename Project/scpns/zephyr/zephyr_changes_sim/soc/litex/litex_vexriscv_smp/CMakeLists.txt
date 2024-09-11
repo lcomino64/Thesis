@@ -10,6 +10,7 @@
 # 	${ZEPHYR_BASE}/soc/common/riscv-privileged/soc_common_irq.c
 # )
 
+zephyr_sources_ifdef(CONFIG_REBOOT reboot.c)
 zephyr_include_directories(.)
 #zephyr_sources_ifdef(CONFIG_BOARD_LITEX_VEXRISCV_SMP irq.c)
 

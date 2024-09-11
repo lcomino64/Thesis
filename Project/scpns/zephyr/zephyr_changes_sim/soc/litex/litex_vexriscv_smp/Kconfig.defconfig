@@ -3,12 +3,6 @@ if SOC_LITEX_VEXRISCV_SMP
 config SMP
 	default y 
 
-config RISCV_HAS_CPU_IDLE
-	bool
-
-config RISCV_HAS_PLIC
-	bool	
-
 config MULTI_LEVEL_INTERRUPTS
 	default y	
 
@@ -27,9 +21,9 @@ config 2ND_LVL_INTR_00_OFFSET
 config NUM_IRQS
     default 16 
 
-#config REBOOT
-#        depends on DT_HAS_LITEX_SOC_CONTROLLER_ENABLED
-#        default y
+config REBOOT
+       depends on DT_HAS_LITEX_SOC_CONTROLLER_ENABLED
+       default y
 
 endif # SOC_LITEX_VEXRISCV_SMP
 

@@ -14,7 +14,7 @@
 			compatible = "riscv";
 			riscv,isa = "rv32i2p0_mac";
 			riscv,isa-base = "rv32i";
-			riscv,isa-extensions = "a", "i", "m";
+			riscv,isa-extensions = "a", "i", "m", "c";
 			mmu-type = "riscv,sv32";
 			reg = <0>;
 			clock-frequency = <0>;
@@ -48,10 +48,9 @@
 		CPU1: cpu@1 {
 			device_type = "cpu";
 			compatible = "riscv";
-			riscv,isa = "rv32imas";
-			riscv,isa = "rv32i2p0_ma";
+			riscv,isa = "rv32i2p0_mac";
 			riscv,isa-base = "rv32i";
-			riscv,isa-extensions = "a", "i", "m";
+			riscv,isa-extensions = "a", "i", "m", "c";
 			mmu-type = "riscv,sv32";
 			reg = <1>;
 			clock-frequency = <0>;
@@ -95,11 +94,15 @@
 	//	interrupt-parent = <&intc0>;
 		ranges;
 
-	//	soc_ctrl0: soc_controller@f0000000 {
-	//		compatible = "litex,soc-controller";
-	//		reg = <0xf0000000 0xc>;
-	//		status = "okay";
-	//	};
+		soc_ctrl0: soc_controller@f0000000 {
+			compatible = "litex,soc-controller";
+			reg = <0xf0000000 0x4
+				0xf0000004 0x4
+				0xf0000008 0x4>;
+			reg-names = "reset",
+				"scratch",
+				"bus_errors";
+		};
 
 		intc0: interrupt-controller@f0c00000 {
 			compatible = "sifive,plic-1.0.0";
