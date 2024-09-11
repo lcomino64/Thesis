@@ -10,25 +10,25 @@
 	cpus {
 		#address-cells = <1>;
 		#size-cells    = <0>;
+		// timebase-frequency = <100000000>;
 
 		CPU0: cpu@0 {
 			device_type = "cpu";
 			compatible = "riscv";
-			// riscv,isa = "rv32imas";
-			riscv,isa = "rv32i2p0_ma";
+			riscv,isa = "rv32i2p0_mac";
 			riscv,isa-base = "rv32i";
-			riscv,isa-extensions = "a", "i", "m";
+			riscv,isa-extensions = "a", "i", "m", "c";
 			mmu-type = "riscv,sv32";
 			reg = <0>;
 			clock-frequency = <0>;
 			status = "okay";
 			
-			d-cache-size = <4096>;
-			d-cache-sets = <1>;
+			d-cache-size = <8192>;
+			d-cache-sets = <2>;
 			d-cache-block-size = <64>;
 
-			i-cache-size = <4096>;
-			i-cache-sets = <1>;
+			i-cache-size = <8192>;
+			i-cache-sets = <2>;
 			i-cache-block-size = <64>;
 
 			
@@ -41,31 +41,30 @@
 
 			
 			L0: interrupt-controller {
+				compatible = "riscv,cpu-intc";
 				#address-cells = <0>;
 				#interrupt-cells = <1>;
 				interrupt-controller;
-				compatible = "riscv,cpu-intc";
 			};
 		};
 
 		CPU1: cpu@1 {
 			device_type = "cpu";
 			compatible = "riscv";
-			// riscv,isa = "rv32imas";
-			riscv,isa = "rv32i2p0_ma";
+			riscv,isa = "rv32i2p0_mac";
 			riscv,isa-base = "rv32i";
-			riscv,isa-extensions = "a", "i", "m";
+			riscv,isa-extensions = "a", "i", "m", "c";
 			mmu-type = "riscv,sv32";
 			reg = <1>;
 			clock-frequency = <0>;
 			status = "okay";
 			
-			d-cache-size = <4096>;
-			d-cache-sets = <1>;
+			d-cache-size = <8192>;
+			d-cache-sets = <2>;
 			d-cache-block-size = <64>;
 
-			i-cache-size = <4096>;
-			i-cache-sets = <1>;
+			i-cache-size = <8192>;
+			i-cache-sets = <2>;
 			i-cache-block-size = <64>;
 
 			
@@ -78,23 +77,12 @@
 
 			
 			L1: interrupt-controller {
+				compatible = "riscv,cpu-intc";
 				#address-cells = <0>;
 				#interrupt-cells = <1>;
 				interrupt-controller;
-				compatible = "riscv,cpu-intc";
 			};
 		};
-		
-//		cpu-map {
-//			cluster0 {
-//				core0 {
-//					cpu = <&CPU0>;
-//				};
-//				core1 {
-//					cpu = <&CPU1>;
-//				};
-//			};
-//		};
 	};
 
 	memory: memory@40000000 {
@@ -102,29 +90,22 @@
 		reg = <0x40000000 0x10000000>;
 	};
 
-//	reserved-memory {
-//		#address-cells = <1>;
-//		#size-cells    = <1>;
-//		ranges;
-//
-//		opensbi@40f00000 {
-//			reg = <0x40f00000 0x80000>;
-//		};
-//
-//	};
-
 	soc {
 		#address-cells = <1>;
 		#size-cells    = <1>;
 		compatible = "simple-bus";
-	//	interrupt-parent = <&intc0>;
+		interrupt-parent = <&clint0>;
 		ranges;
 
-	//	soc_ctrl0: soc_controller@f0000000 {
-	//		compatible = "litex,soc-controller";
-	//		reg = <0xf0000000 0xc>;
-	//		status = "okay";
-	//	};
+		soc_ctrl0: soc_controller@f0000000 {
+			compatible = "litex,soc-controller";
+			reg = <0xf0000000 0x4
+				0xf0000004 0x4
+				0xf0000008 0x4>;
+			reg-names = "reset",
+				"scratch",
+				"bus_errors";
+		};
 
 		intc0: interrupt-controller@f0c00000 {
 			compatible = "sifive,plic-1.0.0";
@@ -132,7 +113,6 @@
 			#address-cells = <1>;
 			#interrupt-cells = <2>;
 			interrupt-controller;
-		//	interrupts-extended = <&L0 11>;
 			interrupts-extended = <&L0 11 &L1 11 &L0 9 &L1 9>;
 			riscv,ndev = <32>;
 			riscv,max-priority = <7>;
@@ -149,8 +129,7 @@
 			compatible = "litex,uart";
 			interrupt-parent = <&intc0>;
 			interrupts = <0 7>;
-			reg = <
-				0xf0004000 0x4
+			reg = <0xf0004000 0x4
 				0xf0004004 0x4
 				0xf0004008 0x4
 				0xf000400c 0x4
@@ -172,8 +151,7 @@
 
 		litespi0: spi@f0003000 {
 			compatible = "litex,spi";
-			reg = <
-				0xf0003000 0x4
+			reg = <0xf0003000 0x4
 				0xf0003004 0x4
     	        0xf0003008 0x4
     	        0xf000300c 0x4
@@ -188,13 +166,6 @@
 			status = "disabled";
 			#address-cells = <1>;
 			#size-cells    = <0>;
-
-			spidev0: spidev@0 {
-				compatible = "linux,spidev";
-				reg = <0>;
-				spi-max-frequency = <1000000>;
-				status = "disabled";
-			};
 		};
 
 		leds: gpio@f0002000 {

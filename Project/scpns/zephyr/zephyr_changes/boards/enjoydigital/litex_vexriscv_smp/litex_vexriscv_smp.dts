@@ -12,6 +12,10 @@
     };
 };
 
+&soc_ctrl0 {
+	status = "okay";
+};
+
 &liteuart0 {
 	current-speed = <115200>;
 	status = "okay";
