@@ -41,7 +41,7 @@ class ArtyA7(Board):
     soc_kwargs = {
         "variant": "a7-35", 
         "sys_clk_freq": int(100e6), 
-        "with_ethernet" : False,
+        "with_ethernet" : True,
         "with_led_chaser" : True,
         "with_spi_flash" : False,
         "with_spi_sdcard" : False,
@@ -56,8 +56,8 @@ class ArtyA7(Board):
 # Build configuration constants ------------------------
 UART_BAUDRATE  = 115200
 TOOLCHAIN      = "vivado"
-CPU_COUNT      = 2
-AES_INSTRUCTION = False 
+CPU_COUNT      = 1
+AES_INSTRUCTION = True
 EXPOSE_CLINT_TIME = True
 WISH_BONE_MEMORY = True
 RVC = True
@@ -67,6 +67,10 @@ DCACHE_WAYS = 2
 ICACHE_WAYS = 2
 DCACHE_WIDTH = 32
 ICACHE_WIDTH = 32
+
+# USB JTAG Debugging constants ----------------------------------
+HARDWARE_BREAKPOINTS = 0
+PRIVILEDGED_DEBUG = False
 
 
 # Peripheral configuration -----------------------------
@@ -88,20 +92,22 @@ def main():
     VexRiscvSMP.icache_size = ICACHE_SIZE
     VexRiscvSMP.dcache_ways = DCACHE_WAYS
     VexRiscvSMP.icache_ways = ICACHE_WAYS
+    VexRiscvSMP.hardware_breakpoints = HARDWARE_BREAKPOINTS
+    VexRiscvSMP.privileged_debug = PRIVILEDGED_DEBUG
 
     # SoC creation
     soc = SoCLinux(board.soc_cls, **soc_kwargs)
     board.platform = soc.platform
 
     # SoC peripherals
-    # soc.add_mmcm(2)
-    # soc.add_rgb_led()
-    # soc.add_switches()
+    soc.add_mmcm(2)
+    soc.add_rgb_led()
+    soc.add_switches()
     soc.add_spi(SPI_DATA_WIDTH, SPI_CLK_FREQ)
     soc.add_i2c()
-    # soc.add_xadc()
+    soc.add_xadc()
 
-    # soc.configure_ethernet(remote_ip="192.168.1.100")
+    soc.configure_ethernet(remote_ip="192.168.1.100")
 
     # Build
     builder = Builder(soc, 

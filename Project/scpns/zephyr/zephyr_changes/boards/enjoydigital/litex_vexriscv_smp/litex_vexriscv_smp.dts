@@ -25,17 +25,17 @@
 // 	status = "okay";
 // };
 
-// &mdio0 {
-//     status = "okay";
-// };
-// 
-// // &phy0 {
-// //     status = "okay";
-// // };
-// 
-// &eth0 {
-//     status = "okay";
-// };
+&mdio0 {
+    status = "okay";
+};
+
+&phy0 {
+    status = "okay";
+};
+
+&eth0 {
+    status = "okay";
+};
 
 &litespi0 {
     status = "okay";

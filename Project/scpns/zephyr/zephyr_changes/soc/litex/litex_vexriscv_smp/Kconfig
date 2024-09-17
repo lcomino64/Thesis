@@ -11,7 +11,7 @@ config SOC_LITEX_VEXRISCV_SMP
 	select RISCV_ISA_RV32I
 	select RISCV_ISA_EXT_M
 	select RISCV_ISA_EXT_A
-	# select RISCV_ISA_EXT_C
+	select RISCV_ISA_EXT_C
 	select RISCV_ISA_EXT_ZICSR
 	select RISCV_ISA_EXT_ZIFENCEI
 	select SMP

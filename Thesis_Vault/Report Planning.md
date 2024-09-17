@@ -8,7 +8,7 @@ More about CPU Architecture and what is unique about Vexriscv.
 
 More can be said about the complete developer environment, since most of it is with open-source tools in a CLI (just a quick section).
 
-Any optimisation methods can be described here
+Add a section on ISAs, more specifically, RISCV and RISCV ISA extensions
 
 ### Additional Literature Review
 Get better suite of pre-existing solutions for comparison
@@ -19,7 +19,7 @@ This is a much nicer-looking diagram, copy this style. From Matt Giplin's report
 Make sure to list raspberrypi specs and describe the OS (debian-slim) & client script that will be executed.
 Describe Kubernetes & microk8s
 ##### Pure Software Approach
-Same set up but with the Debian server image performing AES calcs instead of the SCPNS. Include this alongside the pre-existing solutions from literature review.
+Same set up but with the Debian server image performing AES calcs instead of the SCPNS. 
 ### Initial Hardware Model
 #### Specifications
 dual-core
@@ -27,9 +27,6 @@ dual-core
 Utilisation of FPGA resources will go here
 #### Results
 
-
-### Optimisations on Initial Model (If any are possible)
-I will only attempt this if there's any point. Most likely optimisation will only entail more cores.
 #### New Specifications
 
 #### Results

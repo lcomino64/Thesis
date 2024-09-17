@@ -33,7 +33,7 @@ west build -p always -b litex_vexriscv path/to/a/zephyr/project -DDTC_OVERLAY_FI
 
 Then boot from serial port:
 ```shell
-litex_term /dev/ttyUSB1 --speed 115200 --kernel path/to/zephyr.bin
+litex_term /dev/ttyUSB1 --speed 115200 --kernel ~/zephyrproject/zephyr/build/zephyr/zephyr.bin
 ```
 
 ## Latest FPGA build command
@@ -44,7 +44,7 @@ litex_term /dev/ttyUSB1 --speed 115200 --kernel path/to/zephyr.bin
 ```shell
 cd /home/lachlancomino/repos/pythondata-cpu-vexriscv-smp/pythondata_cpu_vexriscv_smp/verilog/ext/VexRiscv && sbt "runMain vexriscv.demo.smp.VexRiscvLitexSmpClusterCmdGen --cpu-count=2 --reset-vector=0 --ibus-width=32 --dbus-width=32 --dcache-size=4096 --icache-size=4096 --dcache-ways=1 --icache-ways=1 --litedram-width=128 --aes-instruction=True --expose-time=True --out-of-order-decoder=True --privileged-debug=False --hardware-breakpoints=0 --wishbone-memory=True --fpu=False --cpu-per-fpu=4 --rvc=True --netlist-name=VexRiscvLitexSmpCluster_Cc2_Iw32Is4096Iy1_Dw32Ds4096Dy1_ITs4DTs4_Ldw128_Aes_Ood --netlist-directory=/home/lachlancomino/repos/pythondata-cpu-vexriscv-smp/pythondata_cpu_vexriscv_smp/verilog --dtlb-size=4 --itlb-size=4 --jtag-tap=False"
 ```
-## Debugging
+## Debugging in Litex Sim
 Run litex_sim (Terminal 1)
 ```shell
 litex_sim --cpu-type=vexriscv_smp --cpu-count=2 --with-sdram --sdram-init ~/zephyrproject/zephyr/build/zephyr/zephyr.bin --trace --trace-fst --with-rvc --with-privileged-debug --hardware-breakpoints 4 --jtag-tap --with-jtagremote
@@ -61,16 +61,17 @@ Now open gdb port on openocd with gdb-multiarch (in gdb)
 ```shell
 target extended-remote localhost:3333
 ```
-## Seeing ports and killing them
-See ports being used
+## Debugging onboard with JTAG USB
+Make sure LiteX SoC is built with hardware-breakpoints=4 and with-privileged-debug=True
 ```shell
-sudo lsof -i -P -n | grep LISTEN
+openocd -f ~/Thesis/Project/scpns/litex/debug/digilent_arty.cfg -c "set TAP_NAME xc7.tap" -f ~/Thesis/Project/scpns/litex/debug/riscv_jtag_tunneled.tcl
 ```
-Kill process using port
+Connecting GDB
 ```shell
-kill -9 $(lsof -ti tcp:port)
+gdb-multiarch -q ~/zephyrproject/zephyr/build/zephyr/zephyr.elf -ex "target extended-remote localhost:3333"
 ```
 
+## General Debugging
 Thread analyser stuff (add to end of west build):
 ```shell
 -DCONFIG_THREAD_ANALYZER=y \
@@ -80,4 +81,21 @@ Thread analyser stuff (add to end of west build):
 Logging
 ```shell
 -DCONFIG_LOG=y -DCONFIG_LOG_PRINTK=y 
+```
+Led
+```c
+void led_ping(unsigned int conf) {
+	volatile unsigned int *led = (unsigned int *)0xf0002000;
+	*led += conf;
+}
+led_ping(0b0001);
+```
+## Seeing ports and killing them
+See ports being used
+```shell
+sudo lsof -i -P -n | grep LISTEN
+```
+Kill process using port
+```shell
+kill -9 $(lsof -ti tcp:port)
 ```
