@@ -10,6 +10,7 @@ SECTIONS
 	.text :
 	{
 		_ftext = .;
+		KEEP(*(.isr_vector))
 		/* Make sure crt0 files come first, and they, and the isr */
 		/* don't get disposed of by greedy optimisation */
 		*crt0*(.text)
@@ -18,7 +19,7 @@ SECTIONS
 
 		*(.text .stub .text.* .gnu.linkonce.t.*)
 		_etext = .;
-	} > main_ram 
+	} > main_ram
 
 	.rodata :
 	{
@@ -38,7 +39,6 @@ SECTIONS
 		_fdata = .;
 		*(.data .data.* .gnu.linkonce.d.*)
 		*(.data1)
-		_gp = ALIGN(16);
 		*(.sdata .sdata.* .gnu.linkonce.s.*)
 		. = ALIGN(8);
 		_edata = .;

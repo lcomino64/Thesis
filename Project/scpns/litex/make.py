@@ -85,13 +85,13 @@ def main():
     # CPU parameters  
     VexRiscvSMP.cpu_count = CPU_COUNT
     VexRiscvSMP.aes_instruction = AES_INSTRUCTION
-    VexRiscvSMP.expose_time = EXPOSE_CLINT_TIME
-    VexRiscvSMP.wishbone_memory = WISH_BONE_MEMORY
-    VexRiscvSMP.with_rvc = RVC
-    VexRiscvSMP.dcache_size = DCACHE_SIZE
-    VexRiscvSMP.icache_size = ICACHE_SIZE
-    VexRiscvSMP.dcache_ways = DCACHE_WAYS
-    VexRiscvSMP.icache_ways = ICACHE_WAYS
+    # VexRiscvSMP.expose_time = EXPOSE_CLINT_TIME
+    # VexRiscvSMP.wishbone_memory = WISH_BONE_MEMORY
+    # VexRiscvSMP.with_rvc = RVC
+    # VexRiscvSMP.dcache_size = DCACHE_SIZE
+    # VexRiscvSMP.icache_size = ICACHE_SIZE
+    # VexRiscvSMP.dcache_ways = DCACHE_WAYS
+    # VexRiscvSMP.icache_ways = ICACHE_WAYS
     VexRiscvSMP.hardware_breakpoints = HARDWARE_BREAKPOINTS
     VexRiscvSMP.privileged_debug = PRIVILEDGED_DEBUG
 

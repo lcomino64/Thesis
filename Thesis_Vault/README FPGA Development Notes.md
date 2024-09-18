@@ -47,7 +47,7 @@ cd /home/lachlancomino/repos/pythondata-cpu-vexriscv-smp/pythondata_cpu_vexriscv
 ## Debugging in Litex Sim
 Run litex_sim (Terminal 1)
 ```shell
-litex_sim --cpu-type=vexriscv_smp --cpu-count=2 --with-sdram --sdram-init ~/zephyrproject/zephyr/build/zephyr/zephyr.bin --trace --trace-fst --with-rvc --with-privileged-debug --hardware-breakpoints 4 --jtag-tap --with-jtagremote
+litex_sim --cpu-type=vexriscv_smp --cpu-count=1 --with-sdram --sdram-init ~/zephyrproject/zephyr/build/zephyr/zephyr.bin --trace --trace-fst --with-rvc --with-privileged-debug --hardware-breakpoints 4 --jtag-tap --with-jtagremote
 ```
 Run OpenOCD (Terminal 2)
 ```shell

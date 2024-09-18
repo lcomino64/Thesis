@@ -9,7 +9,9 @@
 #include <libbase/uart.h>
 #include <libliteeth/udp.h>
 
-#define ETHERNET_BUFFER_SIZE 1536
+
+static unsigned char macadr[6] = {0x10, 0xe2, 0xd5, 0x00, 0x00, 0x00};
+static unsigned int local_ip[4] = {192, 168, 1, 50};
 
 // Callback function to handle incoming UDP packets
 static void print_packet(unsigned int src_ip, unsigned short src_port, unsigned short dst_port,
@@ -34,19 +36,15 @@ static void print_packet(unsigned int src_ip, unsigned short src_port, unsigned 
 
 int main(void)
 {
+    uart_init();
 #ifdef CONFIG_CPU_HAS_INTERRUPT
     irq_setmask(0);
-    irq_setie(1);
+    irq_setie(0);
 #endif
-    uart_init();
 
 	eth_init();
+    udp_start(macadr, IPTOINT(local_ip[0], local_ip[1], local_ip[2], local_ip[3]));
 
-    // Set up MAC and IP address (you may need to adjust these)
-    unsigned char mac_addr[6] = {0x10, 0xe2, 0xd5, 0x00, 0x00, 0x00};
-    unsigned int ip_addr = IPTOINT(192, 168, 1, 50);  // Adjust as needed
-
-    udp_start(mac_addr, ip_addr);
     udp_set_callback(print_packet);
 
     while (1) {
