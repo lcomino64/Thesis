@@ -5,7 +5,6 @@ include $(SOC_DIRECTORY)/software/common.mak
 
 OBJECTS   = crt0.o main.o
 
-
 all: scpns.bin
 
 %.bin: %.elf

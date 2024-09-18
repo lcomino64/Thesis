@@ -43,7 +43,8 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -109,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README FPGA Development Notes.md",
+                "file": "Bare_metal README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -126,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README FPGA Development Notes.md",
+                "file": "Bare_metal README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -149,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README FPGA Development Notes.md"
+                "file": "Bare_metal README.md"
               }
             }
           }
@@ -170,11 +171,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "aa27d203193867cd",
+  "active": "c26bf4a7095e8fa4",
   "lastOpenFiles": [
+    "README FPGA Development Notes.md",
     "Bare_metal README.md",
     "Report Planning.md",
-    "README FPGA Development Notes.md",
     "README Software.md",
     "README Kubernetes Cluster.md",
     "Figures/example network overview.png",

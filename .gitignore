@@ -18,3 +18,9 @@
 
 build/
 __pycache__/
+
+*.o
+*.d
+*.bin
+*.elf
+*.map

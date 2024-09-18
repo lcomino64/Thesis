@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "csr.h": "c"
+        "csr.h": "c",
+        "console.h": "c",
+        "udp.h": "c",
+        "inet.h": "c"
     }
 }
