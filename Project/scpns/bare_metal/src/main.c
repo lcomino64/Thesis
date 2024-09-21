@@ -45,10 +45,10 @@ int main(void)
 	eth_init();
     udp_start(macadr, IPTOINT(local_ip[0], local_ip[1], local_ip[2], local_ip[3]));
 
-    udp_set_callback(print_packet);
+    // udp_set_callback(print_packet);
 
     while (1) {
-        udp_service();
+        // udp_service();
     }
 
     return 0;

@@ -3,6 +3,8 @@
         "csr.h": "c",
         "console.h": "c",
         "udp.h": "c",
-        "inet.h": "c"
+        "inet.h": "c",
+        "sdram.h": "c",
+        "tftp.h": "c"
     }
 }

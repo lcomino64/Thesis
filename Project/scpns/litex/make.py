@@ -54,9 +54,7 @@ class ArtyA7(Board):
         Board.__init__(self, digilent_arty.BaseSoC)
 
 # Build configuration constants ------------------------
-UART_BAUDRATE  = 115200
-TOOLCHAIN      = "vivado"
-CPU_COUNT      = 1
+CPU_COUNT      = 2
 AES_INSTRUCTION = True
 EXPOSE_CLINT_TIME = True
 WISH_BONE_MEMORY = True
@@ -121,7 +119,7 @@ def main():
     soc.compile_dts("arty_a7")
 
     # DTB --------------------------------------------------------------------------------------
-    # soc.combine_dtb("arty_a7")
+    soc.combine_dtb("arty_a7")
 
     # Generate SoC documentation
     soc.generate_doc("arty_a7")

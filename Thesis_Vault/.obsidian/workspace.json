@@ -4,11 +4,23 @@
     "type": "split",
     "children": [
       {
-        "id": "4474bb7bfab9ddb1",
+        "id": "6ae3e7e1ef02b292",
         "type": "tabs",
         "children": [
           {
-            "id": "aa27d203193867cd",
+            "id": "6a738a9927f82e21",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README FPGA Linux.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "39876696d81dcafa",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -20,7 +32,7 @@
             }
           },
           {
-            "id": "c26bf4a7095e8fa4",
+            "id": "b5640eeb8fafbfd6",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -30,20 +42,9 @@
                 "source": false
               }
             }
-          },
-          {
-            "id": "8dc908ae115d84b1",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Report Planning.md",
-                "mode": "source",
-                "source": false
-              }
-            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -93,7 +94,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 229.5
+    "width": 450.5
   },
   "right": {
     "id": "3871146c797d8bbd",
@@ -170,13 +171,18 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "aa27d203193867cd",
+  "active": "39876696d81dcafa",
   "lastOpenFiles": [
-    "Bare_metal README.md",
+    "README FPGA Linux.md",
     "README FPGA Development Notes.md",
-    "Report Planning.md",
-    "README Software.md",
+    "Bare_metal README.md",
+    "Seminar Notes.md",
     "README Kubernetes Cluster.md",
+    "README Microk8s kubectl Management Commands.md",
+    "README Software.md",
+    "README Dependencies.md",
+    "README Board definition files.md",
+    "Report Planning.md",
     "Figures/example network overview.png",
     "Figures/FPGA_Architecture_1.svg",
     "Figures/Network_Overview.svg",
@@ -185,12 +191,8 @@
     "Proposal Feedback.md",
     "Seminar Feedback.md",
     "Pasted image 20240824160042.png",
-    "README Board definition files.md",
-    "README Dependencies.md",
-    "README Microk8s kubectl Management Commands.md",
     "Draft Proposal Notes.md",
     "Network_Overview Code.md",
-    "Seminar Notes.md",
     "FPGA_Architecture_1 Code.md",
     "Proposal Sources List.md",
     "Pasted image 20240401142642.png",

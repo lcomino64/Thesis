@@ -33,7 +33,7 @@ def SoCLinux(soc_cls, **kwargs):
             # SoC ----------------------------------------------------------------------------------
             soc_cls.__init__(self,
                 cpu_type       = "vexriscv_smp",
-                cpu_variant    = "standard",
+                cpu_variant    = "linux",
                 **kwargs)
 
         # RGB Led ----------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ def SoCLinux(soc_cls, **kwargs):
         # DTB combination --------------------------------------------------------------------------
         def combine_dtb(self, board_name, overlays=""):
             dtb_in = os.path.join("build", board_name, "{}.dtb".format(board_name))
-            dtb_out = os.path.join("images", "rv32.dtb")
+            dtb_out = os.path.join("/home/lachlancomino/repos/linux-on-litex-vexriscv","images", "rv32.dtb")
             if overlays == "":
                 shutil.copyfile(dtb_in, dtb_out)
             else:
