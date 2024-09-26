@@ -54,7 +54,7 @@ class ArtyA7(Board):
         Board.__init__(self, digilent_arty.BaseSoC)
 
 # Build configuration constants ------------------------
-CPU_COUNT      = 2
+CPU_COUNT      = 4
 AES_INSTRUCTION = True
 EXPOSE_CLINT_TIME = True
 WISH_BONE_MEMORY = True
@@ -105,23 +105,18 @@ def main():
     soc.add_i2c()
     soc.add_xadc()
     soc.configure_ethernet(remote_ip="192.168.1.100")
-
-    from litex_boards.platforms.digilent_arty import _sdcard_pmod_io
-    board.platform.add_extension(_sdcard_pmod_io)
-    soc.add_sdcard()
-
-    # For booting from external SD card
+    
     soc.add_icap_bitstream()
 
     # Build
-#    builder = Builder(soc, 
-#        output_dir = os.path.join("build", "arty_a7"),
-#        csr_json   = os.path.join("build", "arty_a7", "csr.json"),
-#        csr_csv    = os.path.join("build", "arty_a7", "csr.csv")
-#    )  
-#    builder.build(build_name="arty_a7")
-#
-#    soc.generate_dts("arty_a7")
+    builder = Builder(soc, 
+        output_dir = os.path.join("build", "arty_a7"),
+        csr_json   = os.path.join("build", "arty_a7", "csr.json"),
+        csr_csv    = os.path.join("build", "arty_a7", "csr.csv")
+    )  
+    builder.build(build_name="arty_a7")
+
+    soc.generate_dts("arty_a7")
     soc.compile_dts("arty_a7")
     soc.combine_dtb("arty_a7")
 

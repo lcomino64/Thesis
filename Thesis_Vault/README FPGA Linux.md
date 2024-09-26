@@ -67,3 +67,12 @@ aes-128-cbc        751.23k     1569.70k     3435.13k     4146.81k     4246.01k
 ## iPerf3 results
 
 ## Build statistics
+
+## Boot Times
+Image size: 8.5mb
+FS size: 32.8mb
+openSBI: 263.7kB
+
+SD card: 
+Ethernet: 16.06s
+Serial @ 115200: 43:38s
