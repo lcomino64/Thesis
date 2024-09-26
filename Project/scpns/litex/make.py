@@ -26,6 +26,7 @@ class ArtyA7(Board):
         "ethernet",
         # Storage
         "spiflash",
+        "sdcard",
         # GPIOs
         "leds",
         "rgb_led",
@@ -43,9 +44,8 @@ class ArtyA7(Board):
         "sys_clk_freq": int(100e6), 
         "with_ethernet" : True,
         "with_led_chaser" : True,
-        "with_spi_flash" : False,
-        "with_spi_sdcard" : False,
-        "with_sdcard" : False,
+        "with_spi_flash" : True,
+        "with_sdcard" : True,
         "timer_uptime" : True,
     }
 
@@ -104,21 +104,25 @@ def main():
     soc.add_spi(SPI_DATA_WIDTH, SPI_CLK_FREQ)
     soc.add_i2c()
     soc.add_xadc()
-
     soc.configure_ethernet(remote_ip="192.168.1.100")
 
+    from litex_boards.platforms.digilent_arty import _sdcard_pmod_io
+    board.platform.add_extension(_sdcard_pmod_io)
+    soc.add_sdcard()
+
+    # For booting from external SD card
+    soc.add_icap_bitstream()
+
     # Build
-    builder = Builder(soc, 
-        output_dir = os.path.join("build", "arty_a7"),
-        csr_json   = os.path.join("build", "arty_a7", "csr.json"),
-        csr_csv    = os.path.join("build", "arty_a7", "csr.csv")
-    )  
-    builder.build(build_name="arty_a7")
-
-    soc.generate_dts("arty_a7")
+#    builder = Builder(soc, 
+#        output_dir = os.path.join("build", "arty_a7"),
+#        csr_json   = os.path.join("build", "arty_a7", "csr.json"),
+#        csr_csv    = os.path.join("build", "arty_a7", "csr.csv")
+#    )  
+#    builder.build(build_name="arty_a7")
+#
+#    soc.generate_dts("arty_a7")
     soc.compile_dts("arty_a7")
-
-    # DTB --------------------------------------------------------------------------------------
     soc.combine_dtb("arty_a7")
 
     # Generate SoC documentation

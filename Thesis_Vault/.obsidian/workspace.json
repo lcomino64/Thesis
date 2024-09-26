@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README FPGA Linux.md",
+                "file": "Report Planning.md",
                 "mode": "source",
                 "source": false
               }
@@ -32,12 +32,12 @@
             }
           },
           {
-            "id": "b5640eeb8fafbfd6",
+            "id": "5f9ef1447c93cfb7",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Bare_metal README.md",
+                "file": "README FPGA Linux.md",
                 "mode": "source",
                 "source": false
               }
@@ -175,21 +175,22 @@
   "lastOpenFiles": [
     "README FPGA Linux.md",
     "README FPGA Development Notes.md",
+    "Report Planning 2.md",
+    "Report Planning.md",
     "Bare_metal README.md",
-    "Seminar Notes.md",
-    "README Kubernetes Cluster.md",
-    "README Microk8s kubectl Management Commands.md",
     "README Software.md",
+    "README Microk8s kubectl Management Commands.md",
+    "README Kubernetes Cluster.md",
     "README Dependencies.md",
     "README Board definition files.md",
-    "Report Planning.md",
+    "Seminar Feedback.md",
+    "Seminar Notes.md",
     "Figures/example network overview.png",
     "Figures/FPGA_Architecture_1.svg",
     "Figures/Network_Overview.svg",
     "Figures/Network_Overview 1.svg",
     "Figures/tcp-ip-end-to-end.png",
     "Proposal Feedback.md",
-    "Seminar Feedback.md",
     "Pasted image 20240824160042.png",
     "Draft Proposal Notes.md",
     "Network_Overview Code.md",

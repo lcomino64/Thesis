@@ -99,3 +99,17 @@ Kill process using port
 ```shell
 kill -9 $(lsof -ti tcp:port)
 ```
+
+## Booting ethernet
+Start TFTP Server
+```shell
+sudo systemctl restart tftpd-hpa
+```
+Check status
+```shell
+sudo systemctl status tftpd-hpa
+```
+Get file from tftp server
+```
+tftp -g -r server.py 192.168.1.100
+```

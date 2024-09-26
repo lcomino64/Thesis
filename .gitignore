@@ -24,3 +24,5 @@ __pycache__/
 *.bin
 *.elf
 *.map
+
+test_files/
