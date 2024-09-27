@@ -8,10 +8,18 @@ RUN apt-get update && \
     openssl \
     python3 \
     python3-pip \
+    && pip3 install tqdm --break-system-packages \
     && rm -rf /var/lib/apt/lists/*
 
 COPY client.py /app/client.py
+COPY generate_testfiles.sh /app/generate_testfiles.sh
+RUN chmod +x /app/generate_testfiles.sh
 RUN chmod +x /app/client.py
 
-# Set the command to run your Python script
-CMD ["python3", "/app/client.py"]
+# Create a startup script
+COPY startup.sh /app/startup.sh
+RUN chmod +x /app/startup.sh
+
+WORKDIR /app
+
+ENTRYPOINT ["/app/startup.sh"]

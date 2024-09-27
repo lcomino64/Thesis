@@ -26,3 +26,6 @@ __pycache__/
 *.map
 
 test_files/
+Project/cluster_network/docker-images/client-image.tar
+Project/cluster_network/docker-images/server-image.tar
+Project/cluster_network/docker-images/tester-image.tar

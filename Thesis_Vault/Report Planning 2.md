@@ -48,3 +48,17 @@ Different Boot methods time taken chart
 ## Sustainability
 
 ## Future Improvements
+
+
+# Tests to Run
+### Pi Cluster Full Kubernetes & SCPNS: 1 core, 2 core, 4 core
+For each of these do:
+
+Basic tests - 1 client, 10 clients, 50 clients - This one can all be made into single table.
+
+1000 clients - how fast can each handle 100 clients with different file sizes?
+File sizes vary from 1 to 100mb. 
+
+Clients spawn at a fixed rate for 60mins - how many clients can be handled in 60min?
+
+#### In Appendix, MacOS virtual stats will be added (Virtual doesn't have to contend with network latency)
