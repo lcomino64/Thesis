@@ -1,8 +1,17 @@
 FROM debian:stable-slim
 
-RUN apt-get update && apt-get install -y nmap && apt-get install -y ncat openssl
+# Install required packages including Python
+RUN apt-get update && \
+    apt-get install -y \
+    nmap \
+    ncat \
+    openssl \
+    python3 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY server.sh /app/server.sh
-RUN chmod +x /app/server.sh
+COPY server.py /app/server.py
+RUN chmod +x /app/server.py
 
-CMD ["/app/server.sh"]
+# Set the command to run your Python script
+CMD ["python3", "/app/server.py"]

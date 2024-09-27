@@ -88,7 +88,7 @@ def handle_client(conn, addr):
         print(f"[{addr}] Total chunks processed: {chunks_received}")
 
 def main():
-    host = '192.168.1.50'
+    host = 'localhost'
     port = 8080
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
