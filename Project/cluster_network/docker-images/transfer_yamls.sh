@@ -1,4 +1,5 @@
 #!/bin/bash
+# Bash script to transfer images to raspberry Pis. Usually this is solved by using a private repo, but I couldn't get it working.
 
 # Function to build and save images
 build_images() {

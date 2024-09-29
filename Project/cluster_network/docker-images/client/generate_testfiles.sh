@@ -12,3 +12,4 @@ generate_file_with_sha() {
 generate_file_with_sha "100mb.txt" 100
 generate_file_with_sha "50mb.txt" 50
 generate_file_with_sha "10mb.txt" 10
+generate_file_with_sha "1gb.txt" 1000

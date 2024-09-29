@@ -8,6 +8,7 @@ RUN apt-get update && \
     openssl \
     python3 \
     python3-pip \
+    && pip3 install psutil requests --break-system-packages \
     && rm -rf /var/lib/apt/lists/*
 
 COPY server.py /app/server.py

@@ -3,7 +3,9 @@ import os
 from tqdm import tqdm
 import argparse
 import time
-import hashlib
+import requests
+import json
+import threading
 
 
 CHUNK_SIZE = 1048576  # 64 KB, must match server's CHUNK_SIZE
@@ -27,8 +29,8 @@ def verify_operation(filename, output_filename, operation):
         return original_start == decrypted_start
 
 
-def send_file(filename, operation):
-    host = "localhost"
+def send_file(filename, operation, metrics_url):
+    host = "server-service"
     port = 8080
 
     operation_completed = False
@@ -60,7 +62,10 @@ def send_file(filename, operation):
         s.sendall(b"\x00" if operation == "encrypt" else b"\x01")
 
         print("Waiting for acknowledgement")
+        queue_start = time.time()
         ack = s.recv(2)
+        queue_end = time.time()
+        queue_time = queue_end - queue_start
         print(f"Received acknowledgement: {ack}")
         if ack != b"OK":
             print("Did not receive correct acknowledgement from server")
@@ -143,16 +148,53 @@ def send_file(filename, operation):
 
     operation_completed = verify_operation(filename, output_filename, operation)
 
-    print(
-        f"CLIENT_METRICS: file_size={file_size}, operation={operation}, "
-        f"start_time={start_time}, end_time={end_time}, total_time={total_time:.2f}, "
-        f"network_time={network_time:.2f}, processing_time={processing_time:.2f}, "
-        f"total_sent={total_sent}, total_received={total_received}, "
-        f"operation_completed={operation_completed}"
-    )
+    client_metrics = {
+        "client_metrics": {
+            "file_size": file_size,
+            "operation": operation,
+            "start_time": start_time,
+            "end_time": end_time,
+            "total_time": total_time,
+            "queue_time": queue_time,
+            "network_time": network_time,
+            "processing_time": processing_time,
+            "total_sent": total_sent,
+            "total_received": total_received,
+            "operation_completed": operation_completed,
+        }
+    }
+
+    print(f"CLIENT_METRICS: {json.dumps(client_metrics)}")
+
+    # Send metrics to the HTTP server
+    try:
+        response = requests.post(metrics_url, json=client_metrics)
+        if response.status_code == 200:
+            print("Metrics successfully sent to the server")
+        else:
+            print(f"Failed to send metrics. Status code: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending metrics to server: {e}")
 
     print(f"\nProcessed file saved as {output_filename}")
     print(f"Total sent: {total_sent} bytes, Total received: {total_received} bytes")
+
+
+def client_thread(file_path, operation, metrics_url):
+    send_file(file_path, operation, metrics_url)
+
+
+def run_clients(num_clients, file_path, operation, metrics_url):
+    threads = []
+    for _ in range(num_clients):
+        thread = threading.Thread(
+            target=client_thread, args=(file_path, operation, metrics_url)
+        )
+        thread.start()
+        threads.append(thread)
+
+    for thread in threads:
+        thread.join()
 
 
 def main():
@@ -163,10 +205,18 @@ def main():
     parser.add_argument(
         "operation", choices=["encrypt", "decrypt"], help="Operation to perform"
     )
+    parser.add_argument(
+        "--metrics-url",
+        default=os.environ.get("METRICS_URL", "http://localhost:8000/metrics"),
+        help="URL to send metrics to",
+    )
+    parser.add_argument(
+        "--num-clients", type=int, default=1, help="Number of client threads to run"
+    )
 
     args = parser.parse_args()
 
-    send_file(args.filename, args.operation)
+    run_clients(args.num_clients, args.filename, args.operation, args.metrics_url)
 
 
 if __name__ == "__main__":

@@ -4,5 +4,5 @@ set -e
 # Generate test files
 /app/generate_testfiles.sh
 
-# Run the client script
-# python3 /app/client.py
+# Start the wait-for-command script
+python3 /app/wait-for-command.py

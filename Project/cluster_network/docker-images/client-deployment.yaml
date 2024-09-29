@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: client
 spec:
-  replicas: 5 
+  replicas: 3
   selector:
     matchLabels:
       app: client
@@ -16,4 +16,8 @@ spec:
       - name: client
         image: client-image:local
         imagePullPolicy: Never
-
+        ports:
+        - containerPort: 8080
+        env:
+        - name: METRICS_URL
+          value: "http://192.168.64.1:8000/metrics"

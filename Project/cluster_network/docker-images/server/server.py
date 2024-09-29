@@ -3,6 +3,9 @@ import subprocess
 import threading
 import time
 import psutil
+import json
+import requests
+import os
 
 CHUNK_SIZE = 1048576  # 1 MB, adjust if needed
 
@@ -12,7 +15,7 @@ active_clients = 0
 bytes_processed_last_second = 0
 
 
-def log_metrics():
+def send_metrics_to_server(metrics_url):
     global total_bytes_processed, active_clients, bytes_processed_last_second
     last_total_bytes = 0
     while True:
@@ -24,12 +27,27 @@ def log_metrics():
         bytes_processed_last_second = total_bytes_processed - last_total_bytes
         last_total_bytes = total_bytes_processed
 
-        print(
-            f"SERVER_METRICS: timestamp={current_time}, cpu_usage={cpu_usage}, "
-            f"memory_usage={memory_usage}, active_clients={active_clients}, "
-            f"total_bytes_processed={total_bytes_processed}, "
-            f"bytes_processed_per_second={bytes_processed_last_second}"
-        )
+        server_metrics = {
+            "server_metrics": {
+                "timestamp": current_time,
+                "cpu_usage": cpu_usage,
+                "memory_usage": memory_usage,
+                "active_clients": active_clients,
+                "total_bytes_processed": total_bytes_processed,
+                "bytes_processed_per_second": bytes_processed_last_second,
+            }
+        }
+
+        print(f"SERVER_METRICS: {json.dumps(server_metrics)}")
+
+        try:
+            response = requests.post(metrics_url, json=server_metrics)
+            if response.status_code != 200:
+                print(f"Failed to send metrics. Status code: {response.status_code}")
+                pass
+        except requests.exceptions.RequestException as e:
+            print(f"Error sending metrics to server: {e}")
+            pass
 
         time.sleep(1)  # Log every second
 
@@ -132,8 +150,12 @@ def handle_client(conn, addr):
 def main():
     host = "0.0.0.0"
     port = 8080
+    metrics_url = os.environ.get("METRICS_URL", "http://localhost:8000/metrics")
 
-    metrics_thread = threading.Thread(target=log_metrics, daemon=True)
+    # Start the metrics sending thread
+    metrics_thread = threading.Thread(
+        target=send_metrics_to_server, args=(metrics_url,), daemon=True
+    )
     metrics_thread.start()
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -145,6 +167,10 @@ def main():
             conn, addr = s.accept()
             client_thread = threading.Thread(target=handle_client, args=(conn, addr))
             client_thread.start()
+
+
+if __name__ == "__main__":
+    main()
 
 
 if __name__ == "__main__":

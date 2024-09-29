@@ -41,8 +41,3 @@ microk8s kubectl delete pod <pod-name>
 microk8s kubectl logs -f <pod-name>
 ```
 
-# Private Repo
-Build and upload to repo:
-```
-
-```

@@ -29,3 +29,6 @@ test_files/
 Project/cluster_network/docker-images/client-image.tar
 Project/cluster_network/docker-images/server-image.tar
 Project/cluster_network/docker-images/tester-image.tar
+
+workspace.json
+*.db # ignore collected metrics
