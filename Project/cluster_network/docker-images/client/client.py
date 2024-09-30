@@ -30,7 +30,7 @@ def verify_operation(filename, output_filename, operation):
 
 
 def send_file(filename, operation, metrics_url):
-    host = "server-service"
+    host = "192.168.1.50"
     port = 8080
 
     operation_completed = False
@@ -207,7 +207,7 @@ def main():
     )
     parser.add_argument(
         "--metrics-url",
-        default=os.environ.get("METRICS_URL", "http://localhost:8000/metrics"),
+        default=os.environ.get("METRICS_URL", "http://192.168.1.100:8000/metrics"),
         help="URL to send metrics to",
     )
     parser.add_argument(

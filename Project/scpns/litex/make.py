@@ -54,7 +54,7 @@ class ArtyA7(Board):
         Board.__init__(self, digilent_arty.BaseSoC)
 
 # Build configuration constants ------------------------
-CPU_COUNT      = 4
+CPU_COUNT      = 1
 AES_INSTRUCTION = True
 EXPOSE_CLINT_TIME = True
 WISH_BONE_MEMORY = True

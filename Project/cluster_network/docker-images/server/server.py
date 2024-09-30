@@ -7,6 +7,26 @@ import json
 import requests
 import os
 
+import mmap
+import struct
+
+def get_temperature():
+    CSR_BASE = 0xf0000000
+    XADC_BASE = CSR_BASE + 0x9000
+
+    XADC_TEMP_OFFSET = 0x00  
+
+    with open("/dev/mem", "r+b") as f:
+        mem = mmap.mmap(f.fileno(), 4096, offset=XADC_BASE)
+
+        mem.seek(XADC_TEMP_OFFSET)
+        temp_raw = struct.unpack("<I", mem.read(4))[0]
+
+        mem.close()
+
+    return (temp_raw / 4095) * 165 - 40
+
+
 CHUNK_SIZE = 1048576  # 1 MB, adjust if needed
 
 # Global variables for tracking metrics
@@ -22,6 +42,7 @@ def send_metrics_to_server(metrics_url):
         current_time = time.time()
         cpu_usage = psutil.cpu_percent()
         memory_usage = psutil.virtual_memory().percent
+        temperature = get_temperature()
 
         # Calculate bytes processed in the last second
         bytes_processed_last_second = total_bytes_processed - last_total_bytes
@@ -35,6 +56,7 @@ def send_metrics_to_server(metrics_url):
                 "active_clients": active_clients,
                 "total_bytes_processed": total_bytes_processed,
                 "bytes_processed_per_second": bytes_processed_last_second,
+                "temperature": temperature,
             }
         }
 
@@ -150,7 +172,8 @@ def handle_client(conn, addr):
 def main():
     host = "0.0.0.0"
     port = 8080
-    metrics_url = os.environ.get("METRICS_URL", "http://localhost:8000/metrics")
+    metrics_url = "http://192.168.1.100:8000/metrics"
+
 
     # Start the metrics sending thread
     metrics_thread = threading.Thread(
@@ -167,10 +190,6 @@ def main():
             conn, addr = s.accept()
             client_thread = threading.Thread(target=handle_client, args=(conn, addr))
             client_thread.start()
-
-
-if __name__ == "__main__":
-    main()
 
 
 if __name__ == "__main__":

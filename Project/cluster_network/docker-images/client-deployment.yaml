@@ -20,4 +20,4 @@ spec:
         - containerPort: 8080
         env:
         - name: METRICS_URL
-          value: "http://192.168.64.1:8000/metrics"
+          value: "http://192.168.1.100:8000/metrics"

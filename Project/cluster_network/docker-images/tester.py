@@ -139,8 +139,6 @@ def run_test(
 
     node_ip = "192.168.64.8"  # Hardcoded IP address
 
-    node_ip = "192.168.64.8"  # Hardcoded IP address
-
     # Calculate clients per pod
     client_pods = v1.list_namespaced_pod(
         namespace="default", label_selector="app=client"

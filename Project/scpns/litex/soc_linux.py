@@ -24,6 +24,8 @@ from litex.soc.cores.clock import S7MMCM
 
 from litex.tools.litex_json2dts_linux import generate_dts
 
+from litex.gen.common import KILOBYTE, MEGABYTE
+
 # SoCLinux -----------------------------------------------------------------------------------------
 
 def SoCLinux(soc_cls, **kwargs):
@@ -62,7 +64,7 @@ def SoCLinux(soc_cls, **kwargs):
 
         # ICAP Bitstream (Xilinx only) -------------------------------------------------------------
         def add_icap_bitstream(self):
-            self.submodules.icap_bit = ICAPBitstream();
+            self.submodules.icap_bit = ICAPBitstream()
 
         # MMCM (Xilinx only) -----------------------------------------------------------------------
         def add_mmcm(self, nclkout):
@@ -124,7 +126,7 @@ def SoCLinux(soc_cls, **kwargs):
             dts = os.path.join("build", board_name, "{}.dtsi".format(board_name))
 
             with open(json_src) as json_file, open(dts, "w") as dts_file:
-                dts_content = generate_dts(json.load(json_file), polling=False)
+                dts_content = generate_dts(json.load(json_file), initrd_size=60*MEGABYTE, polling=False)
                 dts_file.write(dts_content)
 
         # DTS compilation --------------------------------------------------------------------------
