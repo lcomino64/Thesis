@@ -7,33 +7,14 @@ from contextlib import closing
 import threading
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import requests
+from datetime import datetime
+import random
 
 # Load the Kubernetes configuration
-kubeconfig = os.environ.get("KUBECONFIG", "~/.kube/config")
-config.load_kube_config(config_file=kubeconfig)
-
+config.load_kube_config()
 v1 = client.CoreV1Api()
-apps_v1 = client.AppsV1Api()
 
 
-def get_service_url(service_name, namespace="default"):
-    try:
-        service = v1.read_namespaced_service(service_name, namespace)
-        if service.spec.type == "NodePort":
-            nodes = v1.list_node()
-            node_ip = nodes.items[0].status.addresses[0].address
-            node_port = next(
-                port.node_port for port in service.spec.ports if port.port == 8080
-            )
-            return f"http://{node_ip}:{node_port}"
-        else:
-            return f"http://{service.spec.cluster_ip}:{service.spec.ports[0].port}"
-    except client.exceptions.ApiException:
-        print(f"Service {service_name} not found in namespace {namespace}")
-        return None
-
-
-# Metrics server
 class MetricsHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers["Content-Length"])
@@ -57,7 +38,14 @@ class MetricsHandler(BaseHTTPRequestHandler):
 class MetricsServer(HTTPServer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.db_conn = sqlite3.connect("metrics.db", check_same_thread=False)
+        self.db_conn = None
+        self.db_path = None
+
+    def set_database(self, db_path):
+        if self.db_conn:
+            self.db_conn.close()
+        self.db_path = db_path
+        self.db_conn = sqlite3.connect(self.db_path, check_same_thread=False)
         self.setup_database()
 
     def setup_database(self):
@@ -116,21 +104,42 @@ class MetricsServer(HTTPServer):
         self.db_conn.commit()
 
 
-def run_metrics_server(port):
-    server = MetricsServer(("0.0.0.0", port), MetricsHandler)
-    print(f"Metrics server running on all interfaces, port {port}")
-    server.serve_forever()
+def start_metrics_server():
+    metrics_port = 8000
+    server = MetricsServer(("", metrics_port), MetricsHandler)
+    metrics_thread = threading.Thread(target=server.serve_forever)
+    metrics_thread.daemon = True
+    metrics_thread.start()
+    return server
 
 
-def run_test(num_clients, file_path, operation, duration=5):
+def create_new_database(configuration, test_name):
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    db_name = f"{configuration}_{test_name}_{timestamp}.db"
+    os.makedirs("data", exist_ok=True)
+    return os.path.join("data", db_name)
+
+
+def run_test(
+    server,
+    configuration,
+    test_name,
+    num_clients,
+    file_path,
+    operation,
+    max_duration=300,
+):
     print(
-        f"Starting test: {num_clients} clients, file: {file_path}, operation: {operation}"
+        f"Starting test: {test_name} - {num_clients} clients, file: {file_path}, operation: {operation} for configuration: {configuration}"
     )
 
-    client_service_url = get_service_url("client-service")
-    if not client_service_url:
-        print("Failed to get client service URL")
-        return
+    # Create a new database for this test
+    db_path = create_new_database(configuration, test_name)
+    server.set_database(db_path)
+
+    node_ip = "192.168.64.8"  # Hardcoded IP address
+
+    node_ip = "192.168.64.8"  # Hardcoded IP address
 
     # Calculate clients per pod
     client_pods = v1.list_namespaced_pod(
@@ -139,56 +148,378 @@ def run_test(num_clients, file_path, operation, duration=5):
     clients_per_pod = num_clients // len(client_pods.items)
     remainder = num_clients % len(client_pods.items)
 
+    completion_urls = []
     # Send commands to client pods
     for i in range(len(client_pods.items)):
         clients = clients_per_pod + (1 if i < remainder else 0)
         if clients > 0:
             command = {
+                "test_name": test_name,
                 "filename": file_path,
                 "operation": operation,
                 "num_clients": clients,
             }
             try:
                 response = requests.post(
-                    f"{client_service_url}", json=command, timeout=10
+                    f"http://{node_ip}:30080", json=command, timeout=10
                 )
                 response.raise_for_status()
-                print(f"Command sent to client {i+1}: {clients} clients")
+                start_status = response.json()
+                print(
+                    f"Command sent to client {i+1}: {clients} clients. Status: {start_status['status']}"
+                )
+
+                # Get completion URL from header
+                completion_url = response.headers.get("X-Completion-URL")
+                if completion_url:
+                    # Replace localhost with node_ip
+                    completion_url = completion_url.replace("localhost", node_ip)
+                    # Replace the port with the NodePort (assuming 30081 for completion server)
+                    completion_url = completion_url.replace("8081", "30081")
+                    print(f"Completion URL for client {i+1}: {completion_url}")
+                    completion_urls.append(completion_url)
+                else:
+                    print(f"No completion URL provided for client {i+1}")
             except requests.RequestException as e:
-                print(f"Error sending command to client {i+1}: {str(e)}")
+                print(f"Error communicating with client {i+1}: {str(e)}")
 
-    # Wait for the test duration
-    time.sleep(duration)
+    # Poll completion URLs until all are complete or max duration is reached
+    start_time = time.time()
+    completed_clients = set()
+    while (
+        len(completed_clients) < len(completion_urls)
+        and time.time() - start_time < max_duration
+    ):
+        for i, url in enumerate(completion_urls):
+            if i not in completed_clients:
+                try:
+                    completion_response = requests.get(url, timeout=10)
+                    if completion_response.status_code == 200:
+                        completion_status = completion_response.json()
+                        print(
+                            f"Client {i+1} completed. Status: {completion_status['status']}"
+                        )
+                        if completion_status["status"] == "failed":
+                            print(f"Error message: {completion_status['message']}")
+                        completed_clients.add(i)
+                    elif (
+                        completion_response.status_code != 404
+                    ):  # 404 means not completed yet
+                        print(
+                            f"Unexpected status code {completion_response.status_code} from client {i+1}"
+                        )
+                except requests.RequestException as e:
+                    print(
+                        f"Error checking completion status for client {i+1}: {str(e)}"
+                    )
+        if len(completed_clients) < len(completion_urls):
+            time.sleep(1)  # Wait 1 seconds before polling again
 
-    print("Test completed.")
+    if len(completed_clients) < len(completion_urls):
+        print(
+            f"Warning: Not all clients completed within the maximum duration of {max_duration} seconds"
+        )
+
+    print(f"Test {test_name} completed.")
+    return db_path
 
 
-def run_basic_tests():
-    file_sizes = [10, 50, 100]  # mb
-    client_counts = [10, 50, 100]
-    operation = "encrypt"
+def run_large_scale_test(
+    server,
+    configuration,
+    total_clients,
+    file_sizes,
+    operation,
+    max_duration=3600,
+    chunk_size=50,
+):
+    test_name = f"large_scale_{total_clients}_clients"
+    print(
+        f"Starting large scale test: {test_name} - {total_clients} clients, file sizes: {file_sizes}, operation: {operation}"
+    )
 
-    print(f"\n{'='*50}")
-    print(f"Running test with 1 client, 1gb file")
-    print(f"{'='*50}\n")
+    db_path = create_new_database(configuration, test_name)
+    server.set_database(db_path)
 
-    file_path = f"/app/test_files/1gb.txt"
-    run_test(1, file_path, operation)
-    time.sleep(5)  # Add a small delay between tests
+    node_ip = "192.168.64.8"  # Hardcoded IP address
 
-    for num_clients in client_counts:
-        size = file_sizes[1]
-        file_path = f"/app/test_files/{size}mb.txt"
+    client_pods = v1.list_namespaced_pod(
+        namespace="default", label_selector="app=client"
+    )
 
-        print(f"\n{'='*50}")
-        print(f"Running test with {num_clients} clients, {size}mb file")
-        print(f"{'='*50}\n")
-        run_test(num_clients, file_path, operation)
-        time.sleep(5)  # Add a small delay between tests
+    start_time = time.time()
+    total_completed = 0
+    chunk_number = 0
+
+    while total_completed < total_clients and time.time() - start_time < max_duration:
+        chunk_number += 1
+        chunk_clients = min(chunk_size, total_clients - total_completed)
+        print(f"Starting chunk {chunk_number} with {chunk_clients} clients")
+
+        clients_per_pod = chunk_clients // len(client_pods.items)
+        remainder = chunk_clients % len(client_pods.items)
+
+        completion_urls = []
+        for i in range(len(client_pods.items)):
+            clients = clients_per_pod + (1 if i < remainder else 0)
+            if clients > 0:
+                command = {
+                    "test_name": f"{test_name}_chunk_{chunk_number}",
+                    "filename": random.choice(file_sizes),
+                    "operation": operation,
+                    "num_clients": clients,
+                }
+                try:
+                    response = requests.post(
+                        f"http://{node_ip}:30080", json=command, timeout=10
+                    )
+                    response.raise_for_status()
+                    start_status = response.json()
+                    print(
+                        f"Command sent to client {i+1}: {clients} clients. Status: {start_status['status']}"
+                    )
+
+                    completion_url = response.headers.get("X-Completion-URL")
+                    if completion_url:
+                        completion_url = completion_url.replace(
+                            "localhost", node_ip
+                        ).replace("8081", "30081")
+                        print(f"Completion URL for client {i+1}: {completion_url}")
+                        completion_urls.append(completion_url)
+                    else:
+                        print(f"No completion URL provided for client {i+1}")
+                except requests.RequestException as e:
+                    print(f"Error communicating with client {i+1}: {str(e)}")
+
+        # Wait for chunk completion
+        chunk_completed = 0
+        chunk_start_time = time.time()
+        while (
+            chunk_completed < len(completion_urls)
+            and time.time() - chunk_start_time < 600
+        ):  # 10 minutes timeout per chunk
+            for url in completion_urls:
+                try:
+                    completion_response = requests.get(url, timeout=10)
+                    if completion_response.status_code == 200:
+                        chunk_completed += 1
+                        completion_urls.remove(url)
+                except requests.RequestException:
+                    pass
+            time.sleep(5)
+
+        total_completed += chunk_clients
+        print(
+            f"Chunk {chunk_number} completed. Total clients completed: {total_completed}/{total_clients}"
+        )
+
+        # Add a delay between chunks to allow system to stabilize
+        time.sleep(1)
+
+    total_time = time.time() - start_time
+    print(
+        f"Large scale test completed in {total_time:.2f} seconds. Total clients completed: {total_completed}/{total_clients}"
+    )
+    return db_path
 
 
-def view_database_contents():
-    conn = sqlite3.connect("metrics.db")
+def run_1000_client_tests(server, configuration):
+    file_sizes = [
+        "/app/test_files/10mb.txt",
+        "/app/test_files/50mb.txt",
+        "/app/test_files/100mb.txt",
+    ]
+    db_paths = []
+    for file_size in file_sizes:
+        db_path = run_large_scale_test(
+            server,
+            configuration,
+            1000,
+            [file_size],
+            "encrypt",
+            max_duration=7200,
+            chunk_size=50,
+        )
+        db_paths.append(db_path)
+        time.sleep(1)  # Add a longer delay between tests
+    return db_paths
+
+
+def run_drowning_rate_test(
+    server,
+    configuration,
+    duration=3600,
+    initial_rate=50,
+    rate_increase=0,
+    chunk_size=50,
+):
+    test_name = f"drowning_rate_{duration}s"
+    print(f"Starting drowning rate test: {test_name} - Duration: {duration} seconds")
+
+    db_path = create_new_database(configuration, test_name)
+    server.set_database(db_path)
+
+    node_ip = "192.168.64.8"  # Hardcoded IP address
+
+    file_sizes = [
+        "/app/test_files/10mb.txt",
+        "/app/test_files/50mb.txt",
+        "/app/test_files/100mb.txt",
+    ]
+    client_pods = v1.list_namespaced_pod(
+        namespace="default", label_selector="app=client"
+    )
+
+    start_time = time.time()
+    current_rate = initial_rate
+    total_clients = 0
+    chunk_number = 0
+
+    while time.time() - start_time < duration:
+        chunk_number += 1
+        chunk_clients = min(int(current_rate), chunk_size)
+        print(
+            f"Starting chunk {chunk_number} with {chunk_clients} clients (current rate: {current_rate:.2f} clients/s)"
+        )
+
+        clients_per_pod = chunk_clients // len(client_pods.items)
+        remainder = chunk_clients % len(client_pods.items)
+
+        completion_urls = []
+        for i in range(len(client_pods.items)):
+            clients = clients_per_pod + (1 if i < remainder else 0)
+            if clients > 0:
+                command = {
+                    "test_name": f"{test_name}_chunk_{chunk_number}",
+                    "filename": random.choice(file_sizes),
+                    "operation": "encrypt",
+                    "num_clients": clients,
+                }
+                try:
+                    response = requests.post(
+                        f"http://{node_ip}:30080", json=command, timeout=10
+                    )
+                    response.raise_for_status()
+                    start_status = response.json()
+                    print(
+                        f"Command sent to client {i+1}: {clients} clients. Status: {start_status['status']}"
+                    )
+
+                    completion_url = response.headers.get("X-Completion-URL")
+                    if completion_url:
+                        completion_url = completion_url.replace(
+                            "localhost", node_ip
+                        ).replace("8081", "30081")
+                        completion_urls.append(completion_url)
+                    else:
+                        print(f"No completion URL provided for client {i+1}")
+                except requests.RequestException as e:
+                    print(f"Error communicating with client {i+1}: {str(e)}")
+
+        total_clients += chunk_clients
+
+        # Wait for chunk completion or timeout
+        chunk_completed = 0
+        chunk_start_time = time.time()
+        while (
+            chunk_completed < len(completion_urls)
+            and time.time() - chunk_start_time < 300
+        ):  # 5 minutes timeout per chunk
+            for url in completion_urls[:]:
+                try:
+                    completion_response = requests.get(url, timeout=10)
+                    if completion_response.status_code == 200:
+                        chunk_completed += 1
+                        completion_urls.remove(url)
+                except requests.RequestException:
+                    pass
+            time.sleep(1)
+
+        print(f"Chunk {chunk_number} completed. Total clients so far: {total_clients}")
+
+        # Increase the rate
+        current_rate += rate_increase
+
+        # Add a small delay between chunks to allow system to stabilize
+        time.sleep(1)
+
+    total_time = time.time() - start_time
+    print(
+        f"Drowning rate test completed in {total_time:.2f} seconds. Total clients: {total_clients}"
+    )
+    return db_path
+
+
+def run_basic_test_1(server, configuration):
+    return run_test(
+        server,
+        configuration,
+        "basic_1",
+        1,
+        "/app/test_files/100mb.txt",
+        "encrypt",
+        max_duration=600,
+    )
+
+
+def run_basic_test_2(server, configuration):
+    return run_test(
+        server,
+        configuration,
+        "basic_2",
+        10,
+        "/app/test_files/50mb.txt",
+        "encrypt",
+        max_duration=300,
+    )
+
+
+def run_basic_test_3(server, configuration):
+    return run_test(
+        server,
+        configuration,
+        "basic_3",
+        50,
+        "/app/test_files/50mb.txt",
+        "encrypt",
+        max_duration=600,
+    )
+
+
+def run_all_basic_tests(server, configuration):
+    db_paths = []
+    db_paths.append(run_basic_test_1(server, configuration))
+    time.sleep(1)  # Add a small delay between tests
+    db_paths.append(run_basic_test_2(server, configuration))
+    time.sleep(1)  # Add a small delay between tests
+    db_paths.append(run_basic_test_3(server, configuration))
+    return db_paths
+
+
+def run_1000_client_tests(server, configuration):
+    file_sizes = [
+        "/app/test_files/10mb.txt",
+        "/app/test_files/50mb.txt",
+        "/app/test_files/100mb.txt",
+    ]
+    db_paths = []
+    for file_size in file_sizes:
+        db_path = run_large_scale_test(
+            server,
+            configuration,
+            1000,
+            [file_size],
+            "encrypt",
+            max_duration=7200,
+            chunk_size=50,
+        )
+        db_paths.append(db_path)
+        time.sleep(1)  # Add a longer delay between tests
+    return db_paths
+
+
+def view_database_contents(db_path):
+    conn = sqlite3.connect(db_path)
     with closing(conn.cursor()) as cursor:
         print("\nServer Metrics:")
         cursor.execute("SELECT * FROM server_metrics LIMIT 5")
@@ -210,17 +541,30 @@ def view_database_contents():
 
 
 def main():
-    # Start metrics server in a separate thread
-    metrics_port = 8000
-    metrics_thread = threading.Thread(target=run_metrics_server, args=(metrics_port,))
-    metrics_thread.daemon = True
-    metrics_thread.start()
+    server = start_metrics_server()
 
-    # Run tests
-    run_basic_tests()
+    print("Running basic tests...")
+    basic_db_paths = run_all_basic_tests(server, "all-virtual")
 
-    # View database contents
-    view_database_contents()
+    # print("\nRunning 1000 client tests...")
+    # large_scale_db_paths = run_1000_client_tests(server, "all-virtual")
+
+    # print("\nRunning drowning rate test...")
+    # drowning_rate_db_path = run_drowning_rate_test(
+    #     server,
+    #     "all-virtual",
+    #     duration=3600,
+    #     initial_rate=1,
+    #     rate_increase=0.1,
+    #     chunk_size=50,
+    # )
+
+    all_db_paths = basic_db_paths  # + large_scale_db_paths + [drowning_rate_db_path]
+
+    print("\n=== Viewing results of all tests ===")
+    for db_path in all_db_paths:
+        print(f"\nViewing contents of {db_path}:")
+        view_database_contents(db_path)
 
 
 if __name__ == "__main__":
