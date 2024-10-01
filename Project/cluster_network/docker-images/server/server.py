@@ -155,6 +155,10 @@ def process_client(conn, addr):
     operation = "encrypt" if op_byte == b"\x00" else "decrypt"
     print(f"[{addr}] Operation: {operation}")
 
+    # with client_lock:
+    #     active_clients += 1
+    #     print(f"Active clients: {active_clients}")
+
     try:
         print(f"[{addr}] Sending acknowledgement")
         conn.sendall(b"OK")
@@ -220,9 +224,13 @@ def handle_client(conn, addr):
     with client_lock:
         if active_clients < MAX_CLIENTS:
             active_clients += 1
-            Thread(target=process_client, args=(conn, addr)).start()
+            print(f"New connection accepted. Active clients: {active_clients}")
+            threading.Thread(target=process_client, args=(conn, addr)).start()
+            time.sleep(0.1)  # wait
         else:
+            print(f"Max clients reached. Queueing connection from {addr}")
             client_queue.put((conn, addr))
+            conn.sendall(b"QUEUED")
 
 
 def main():

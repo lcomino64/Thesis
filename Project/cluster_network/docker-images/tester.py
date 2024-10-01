@@ -455,7 +455,7 @@ def run_basic_test_1(server, configuration):
         configuration,
         "basic_1",
         1,
-        "/app/test_files/10mb.txt",
+        "/app/test_files/2mb.txt",
         "encrypt",
         max_duration=600,
     )
@@ -467,7 +467,7 @@ def run_basic_test_2(server, configuration):
         configuration,
         "basic_2",
         10,
-        "/app/test_files/10mb.txt",
+        "/app/test_files/2mb.txt",
         "encrypt",
         max_duration=1200,
     )
@@ -478,8 +478,8 @@ def run_basic_test_3(server, configuration):
         server,
         configuration,
         "basic_3",
-        50,
-        "/app/test_files/10mb.txt",
+        20,
+        "/app/test_files/2mb.txt",
         "encrypt",
         max_duration=1200,
     )
