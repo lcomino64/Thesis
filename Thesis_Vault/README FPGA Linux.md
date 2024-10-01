@@ -64,6 +64,12 @@ aes-256 cbc       1065.34k     2242.60k     3100.24k     3165.50k     3391.24k
 aes-128-cbc        751.23k     1569.70k     3435.13k     4146.81k     4246.01k
 ```
 
+But the enc speed test only tests the algorithm. It does not include general I/O or filesaving. Here are more realistic results using `time openssl enc -aes-128-cbc -in $filename -out ${filename}.enc -k password; } 2>&1`
+```shell
+type        1 MB     2 MB     4 MB     8 MB     16 MB 
+aes-128-cbc 4194.30k 3815.09k 4812.80k 5458.92k 5185.64k
+```
+
 ## iPerf3 results
 
 

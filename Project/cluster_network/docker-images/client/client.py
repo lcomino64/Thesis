@@ -63,11 +63,27 @@ def send_file(filename, operation, metrics_url):
 
         print("Waiting for acknowledgement")
         queue_start = time.time()
-        ack = s.recv(2)
-        queue_end = time.time()
-        queue_time = queue_end - queue_start
-        print(f"Received acknowledgement: {ack}")
-        if ack != b"OK":
+        ack = s.recv(20)
+        if ack == b"OK":
+            print("Received acknowledgement: {ack}")
+
+            queue_end = time.time()
+            queue_time = queue_end - queue_start
+        elif ack == b"QUEUED":
+            print("Server busy, request queued")
+            while True:
+                ack = s.recv(2)
+                if ack == b"OK":
+                    print("Received acknowledgement: OK")
+                    queue_end = time.time()
+                    queue_time = queue_end - queue_start
+                    break
+                time.sleep(1)
+
+        elif ack == b"MAX_CLIENTS_REACHED":
+            print("Server has reached maximum client capacity. Try again later.")
+            return  # or implement a retry mechanism
+        else:
             print("Did not receive correct acknowledgement from server")
             return
 
@@ -207,7 +223,7 @@ def main():
     )
     parser.add_argument(
         "--metrics-url",
-        default=os.environ.get("METRICS_URL", "http://192.168.1.100:8000/metrics"),
+        default=os.environ.get("METRICS_URL", "http://localhost:8000/metrics"),
         help="URL to send metrics to",
     )
     parser.add_argument(

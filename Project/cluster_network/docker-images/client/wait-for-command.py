@@ -32,7 +32,9 @@ class CommandHandler(http.server.SimpleHTTPRequestHandler):
             # Send immediate confirmation with completion URL
             self.send_response(202)  # 202 Accepted
             self.send_header("Content-type", "application/json")
-            self.send_header('X-Completion-URL', f'http://192.168.1.100:{COMPLETION_PORT}/{command_id}')
+            self.send_header(
+                "X-Completion-URL", f"http://localhost:{COMPLETION_PORT}/{command_id}"
+            )
             self.end_headers()
             self.wfile.write(
                 json.dumps({"status": "started", "id": command_id}).encode()

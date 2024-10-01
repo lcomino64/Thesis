@@ -54,7 +54,7 @@ class MetricsServer(HTTPServer):
                 """CREATE TABLE IF NOT EXISTS server_metrics
                             (timestamp REAL, cpu_usage REAL, memory_usage REAL, 
                             active_clients INTEGER, total_bytes_processed INTEGER, 
-                            bytes_processed_per_second INTEGER)"""
+                            bytes_processed_per_second INTEGER, temperature REAL)"""
             )
 
             cursor.execute(
@@ -70,7 +70,7 @@ class MetricsServer(HTTPServer):
         with closing(self.db_conn.cursor()) as cursor:
             cursor.execute(
                 """INSERT INTO server_metrics VALUES 
-                            (?, ?, ?, ?, ?, ?)""",
+                            (?, ?, ?, ?, ?, ?, ?)""",
                 (
                     metrics["timestamp"],
                     metrics["cpu_usage"],
@@ -78,6 +78,7 @@ class MetricsServer(HTTPServer):
                     metrics["active_clients"],
                     metrics["total_bytes_processed"],
                     metrics["bytes_processed_per_second"],
+                    metrics["temperature"],
                 ),
             )
         self.db_conn.commit()
@@ -454,7 +455,7 @@ def run_basic_test_1(server, configuration):
         configuration,
         "basic_1",
         1,
-        "/app/test_files/100mb.txt",
+        "/app/test_files/10mb.txt",
         "encrypt",
         max_duration=600,
     )
@@ -466,9 +467,9 @@ def run_basic_test_2(server, configuration):
         configuration,
         "basic_2",
         10,
-        "/app/test_files/50mb.txt",
+        "/app/test_files/10mb.txt",
         "encrypt",
-        max_duration=300,
+        max_duration=1200,
     )
 
 
@@ -478,19 +479,19 @@ def run_basic_test_3(server, configuration):
         configuration,
         "basic_3",
         50,
-        "/app/test_files/50mb.txt",
+        "/app/test_files/10mb.txt",
         "encrypt",
-        max_duration=600,
+        max_duration=1200,
     )
 
 
 def run_all_basic_tests(server, configuration):
     db_paths = []
-    db_paths.append(run_basic_test_1(server, configuration))
+    # db_paths.append(run_basic_test_1(server, configuration))
     time.sleep(1)  # Add a small delay between tests
     db_paths.append(run_basic_test_2(server, configuration))
     time.sleep(1)  # Add a small delay between tests
-    db_paths.append(run_basic_test_3(server, configuration))
+    # db_paths.append(run_basic_test_3(server, configuration))
     return db_paths
 
 

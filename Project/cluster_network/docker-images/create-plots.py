@@ -70,7 +70,7 @@ def plot_server_metrics(db_path):
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT timestamp, cpu_usage, memory_usage, bytes_processed_per_second FROM server_metrics"
+            "SELECT timestamp, cpu_usage, memory_usage, bytes_processed_per_second, temperature FROM server_metrics"
         )
         data = cursor.fetchall()
 
@@ -80,7 +80,9 @@ def plot_server_metrics(db_path):
     cpu_usage = [row[1] for row in data]
     memory_usage = [row[2] for row in data]
     bytes_per_second = [row[3] for row in data]
+    temperature = [row[4] for row in data]
 
+    # Create the existing plot for CPU, memory, and bytes/second
     fig, ax1 = plt.subplots(figsize=(12, 6))
 
     ax1.set_xlabel("Duration (seconds)")
@@ -102,6 +104,17 @@ def plot_server_metrics(db_path):
     plt.title("Server Metrics Over Time")
     plt.tight_layout()
     plt.savefig(f"{os.path.basename(db_path)}_server_metrics.png")
+    plt.close()
+
+    # Create a new plot for temperature
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.plot(durations, temperature, label="Temperature", color="orange")
+    ax.set_xlabel("Duration (seconds)")
+    ax.set_ylabel("Temperature")
+    ax.set_title("Server Temperature Over Time")
+    ax.legend(loc="upper left")
+    plt.tight_layout()
+    plt.savefig(f"{os.path.basename(db_path)}_server_temperature.png")
     plt.close()
 
 

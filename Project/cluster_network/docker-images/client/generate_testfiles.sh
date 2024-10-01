@@ -9,6 +9,7 @@ generate_file_with_sha() {
     dd if=/dev/urandom of="$TEST_DIR/$file" bs=1M count=$size
 }
 
+generate_file_with_sha "2mb.txt" 2
 generate_file_with_sha "100mb.txt" 100
 generate_file_with_sha "50mb.txt" 50
 generate_file_with_sha "10mb.txt" 10

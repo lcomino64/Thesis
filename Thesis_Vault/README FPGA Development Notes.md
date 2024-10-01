@@ -113,3 +113,7 @@ Get file from tftp server
 ```
 tftp -g -r server.py 192.168.1.100
 ```
+Remember to configure ethernet on the board's startup:
+```shell
+ifconfig eth0 192.168.1.50
+```
