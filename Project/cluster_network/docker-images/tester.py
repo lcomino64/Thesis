@@ -8,12 +8,15 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import requests
 from datetime import datetime
 import random
+import numpy as np
 
 
 # Raspberry Pi IPs
 PI_IPS = ["192.168.1.11", "192.168.1.12", "192.168.1.13", "192.168.1.14"]
 BOARD_IP = "192.168.1.50"
 TESTER_IP = "192.168.1.100"
+
+CONFIGURATION = "arty-a7-4c"
 
 
 class MetricsHandler(BaseHTTPRequestHandler):
@@ -122,358 +125,10 @@ def create_new_database(configuration, test_name):
     return os.path.join("data", db_name)
 
 
-def run_test(
-    server,
-    configuration,
-    test_name,
-    num_clients,
-    file_path,
-    operation,
-    max_duration=300,
-):
-    print(
-        f"Starting test: {test_name} - {num_clients} clients, file: {file_path}, operation: {operation} for configuration: {configuration}"
-    )
-
-    # Create a new database for this test
-    db_path = create_new_database(configuration, test_name)
-    server.set_database(db_path)
-
-    # Calculate clients per Pi
-    clients_per_pi = num_clients // len(PI_IPS)
-    remainder = num_clients % len(PI_IPS)
-
-    completion_urls = []
-    # Send commands to Raspberry Pis
-    for i, pi_ip in enumerate(PI_IPS):
-        clients = clients_per_pi + (1 if i < remainder else 0)
-        if clients > 0:
-            command = {
-                "test_name": test_name,
-                "filename": file_path,
-                "operation": operation,
-                "num_clients": clients,
-            }
-            try:
-                response = requests.post(
-                    f"http://{pi_ip}:8080", json=command, timeout=10
-                )
-                response.raise_for_status()
-                start_status = response.json()
-                print(
-                    f"Command sent to Pi {pi_ip}: {clients} clients. Status: {start_status['status']}"
-                )
-
-                # Get completion URL from header
-                completion_url = response.headers.get("X-Completion-URL")
-                if completion_url:
-                    print(f"Completion URL for Pi {pi_ip}: {completion_url}")
-                    completion_urls.append(completion_url)
-                else:
-                    print(f"No completion URL provided for Pi {pi_ip}")
-            except requests.RequestException as e:
-                print(f"Error communicating with Pi {pi_ip}: {str(e)}")
-
-    # Poll completion URLs until all are complete or max duration is reached
-    start_time = time.time()
-    completed_clients = set()
-    while (
-        len(completed_clients) < len(completion_urls)
-        and time.time() - start_time < max_duration
-    ):
-        for i, url in enumerate(completion_urls):
-            if i not in completed_clients:
-                try:
-                    completion_response = requests.get(url, timeout=10)
-                    if completion_response.status_code == 200:
-                        completion_status = completion_response.json()
-                        print(
-                            f"Pi {i+1} completed. Status: {completion_status['status']}"
-                        )
-                        if completion_status["status"] == "failed":
-                            print(f"Error message: {completion_status['message']}")
-                        completed_clients.add(i)
-                    elif (
-                        completion_response.status_code != 404
-                    ):  # 404 means not completed yet
-                        print(
-                            f"Unexpected status code {completion_response.status_code} from Pi {i+1}"
-                        )
-                except requests.RequestException as e:
-                    print(f"Error checking completion status for Pi {i+1}: {str(e)}")
-        if len(completed_clients) < len(completion_urls):
-            time.sleep(1)  # Wait 1 second before polling again
-
-    if len(completed_clients) < len(completion_urls):
-        print(
-            f"Warning: Not all clients completed within the maximum duration of {max_duration} seconds"
-        )
-
-    print(f"Test {test_name} completed.")
-    return db_path
-
-
-def run_large_scale_test(
-    server,
-    configuration,
-    total_clients,
-    file_sizes,
-    operation,
-    max_duration=3600,
-    chunk_size=50,
-):
-    test_name = f"large_scale_{total_clients}_clients"
-    print(
-        f"Starting large scale test: {test_name} - {total_clients} clients, file sizes: {file_sizes}, operation: {operation}"
-    )
-
-    db_path = create_new_database(configuration, test_name)
-    server.set_database(db_path)
-
-    start_time = time.time()
-    total_completed = 0
-    chunk_number = 0
-
-    while total_completed < total_clients and time.time() - start_time < max_duration:
-        chunk_number += 1
-        chunk_clients = min(chunk_size, total_clients - total_completed)
-        print(f"Starting chunk {chunk_number} with {chunk_clients} clients")
-
-        clients_per_pi = chunk_clients // len(PI_IPS)
-        remainder = chunk_clients % len(PI_IPS)
-
-        completion_urls = []
-        for i, pi_ip in enumerate(PI_IPS):
-            clients = clients_per_pi + (1 if i < remainder else 0)
-            if clients > 0:
-                command = {
-                    "test_name": f"{test_name}_chunk_{chunk_number}",
-                    "filename": random.choice(file_sizes),
-                    "operation": operation,
-                    "num_clients": clients,
-                }
-                try:
-                    response = requests.post(
-                        f"http://{pi_ip}:8080", json=command, timeout=10
-                    )
-                    response.raise_for_status()
-                    start_status = response.json()
-                    print(
-                        f"Command sent to Pi {pi_ip}: {clients} clients. Status: {start_status['status']}"
-                    )
-
-                    completion_url = response.headers.get("X-Completion-URL")
-                    if completion_url:
-                        print(f"Completion URL for Pi {pi_ip}: {completion_url}")
-                        completion_urls.append(completion_url)
-                    else:
-                        print(f"No completion URL provided for Pi {pi_ip}")
-                except requests.RequestException as e:
-                    print(f"Error communicating with Pi {pi_ip}: {str(e)}")
-
-        # Wait for chunk completion
-        chunk_completed = 0
-        chunk_start_time = time.time()
-        while (
-            chunk_completed < len(completion_urls)
-            and time.time() - chunk_start_time < 600
-        ):  # 10 minutes timeout per chunk
-            for url in completion_urls:
-                try:
-                    completion_response = requests.get(url, timeout=10)
-                    if completion_response.status_code == 200:
-                        chunk_completed += 1
-                        completion_urls.remove(url)
-                except requests.RequestException:
-                    pass
-            time.sleep(5)
-
-        total_completed += chunk_clients
-        print(
-            f"Chunk {chunk_number} completed. Total clients completed: {total_completed}/{total_clients}"
-        )
-
-        # Add a delay between chunks to allow system to stabilize
-        time.sleep(1)
-
-    total_time = time.time() - start_time
-    print(
-        f"Large scale test completed in {total_time:.2f} seconds. Total clients completed: {total_completed}/{total_clients}"
-    )
-    return db_path
-
-
-# def run_drowning_rate_test(
-#     server,
-#     configuration,
-#     duration=3600,
-#     initial_rate=50,
-#     rate_increase=0,
-#     chunk_size=50,
-# ):
-#     test_name = f"drowning_rate_{duration}s"
-#     print(f"Starting drowning rate test: {test_name} - Duration: {duration} seconds")
-
-#     db_path = create_new_database(configuration, test_name)
-#     server.set_database(db_path)
-
-#     node_ip = "192.168.64.8"  # Hardcoded IP address
-
-#     file_sizes = [
-#         "client/test_files/10mb.txt",
-#         "client/test_files/50mb.txt",
-#         "client/test_files/100mb.txt",
-#     ]
-#     client_pods = v1.list_namespaced_pod(
-#         namespace="default", label_selector="app=client"
-#     )
-
-#     start_time = time.time()
-#     current_rate = initial_rate
-#     total_clients = 0
-#     chunk_number = 0
-
-#     while time.time() - start_time < duration:
-#         chunk_number += 1
-#         chunk_clients = min(int(current_rate), chunk_size)
-#         print(
-#             f"Starting chunk {chunk_number} with {chunk_clients} clients (current rate: {current_rate:.2f} clients/s)"
-#         )
-
-#         clients_per_pod = chunk_clients // len(client_pods.items)
-#         remainder = chunk_clients % len(client_pods.items)
-
-#         completion_urls = []
-#         for i in range(len(client_pods.items)):
-#             clients = clients_per_pod + (1 if i < remainder else 0)
-#             if clients > 0:
-#                 command = {
-#                     "test_name": f"{test_name}_chunk_{chunk_number}",
-#                     "filename": random.choice(file_sizes),
-#                     "operation": "encrypt",
-#                     "num_clients": clients,
-#                 }
-#                 try:
-#                     response = requests.post(
-#                         f"http://{node_ip}:30080", json=command, timeout=10
-#                     )
-#                     response.raise_for_status()
-#                     start_status = response.json()
-#                     print(
-#                         f"Command sent to client {i+1}: {clients} clients. Status: {start_status['status']}"
-#                     )
-
-#                     completion_url = response.headers.get("X-Completion-URL")
-#                     if completion_url:
-#                         completion_url = completion_url.replace(
-#                             "localhost", node_ip
-#                         ).replace("8081", "30081")
-#                         completion_urls.append(completion_url)
-#                     else:
-#                         print(f"No completion URL provided for client {i+1}")
-#                 except requests.RequestException as e:
-#                     print(f"Error communicating with client {i+1}: {str(e)}")
-
-#         total_clients += chunk_clients
-
-#         # Wait for chunk completion or timeout
-#         chunk_completed = 0
-#         chunk_start_time = time.time()
-#         while (
-#             chunk_completed < len(completion_urls)
-#             and time.time() - chunk_start_time < 300
-#         ):  # 5 minutes timeout per chunk
-#             for url in completion_urls[:]:
-#                 try:
-#                     completion_response = requests.get(url, timeout=10)
-#                     if completion_response.status_code == 200:
-#                         chunk_completed += 1
-#                         completion_urls.remove(url)
-#                 except requests.RequestException:
-#                     pass
-#             time.sleep(1)
-
-#         print(f"Chunk {chunk_number} completed. Total clients so far: {total_clients}")
-
-#         # Increase the rate
-#         current_rate += rate_increase
-
-#         # Add a small delay between chunks to allow system to stabilize
-#         time.sleep(1)
-
-#     total_time = time.time() - start_time
-#     print(
-#         f"Drowning rate test completed in {total_time:.2f} seconds. Total clients: {total_clients}"
-#     )
-#     return db_path
-
-
-def run_basic_test_1(server, configuration):
-    return run_test(
-        server,
-        configuration,
-        "basic_1",
-        1,
-        "client/test_files/2mb.txt",
-        "encrypt",
-        max_duration=600,
-    )
-
-
-def run_basic_test_2(server, configuration):
-    return run_test(
-        server,
-        configuration,
-        "basic_2",
-        10,
-        "client/test_files/2mb.txt",
-        "encrypt",
-        max_duration=1200,
-    )
-
-
-def run_basic_test_3(server, configuration):
-    return run_test(
-        server,
-        configuration,
-        "basic_3",
-        20,
-        "client/test_files/2mb.txt",
-        "encrypt",
-        max_duration=1200,
-    )
-
-
-def run_all_basic_tests(server, configuration):
-    db_paths = []
-    # db_paths.append(run_basic_test_1(server, configuration))
-    time.sleep(1)  # Add a small delay between tests
-    db_paths.append(run_basic_test_2(server, configuration))
-    time.sleep(1)  # Add a small delay between tests
-    # db_paths.append(run_basic_test_3(server, configuration))
-    return db_paths
-
-
-def run_1000_client_tests(server, configuration):
-    file_sizes = [
-        "client/test_files/10mb.txt",
-        "client/test_files/50mb.txt",
-        "client/test_files/100mb.txt",
-    ]
-    db_paths = []
-    for file_size in file_sizes:
-        db_path = run_large_scale_test(
-            server,
-            configuration,
-            1000,
-            [file_size],
-            "encrypt",
-            max_duration=7200,
-            chunk_size=50,
-        )
-        db_paths.append(db_path)
-        time.sleep(1)  # Add a longer delay between tests
-    return db_paths
+def weighted_random_file_size():
+    file_sizes = [2, 5, 10, 20]
+    weights = [0.4, 0.3, 0.2, 0.1]  # Skewed towards lower file sizes
+    return np.random.choice(file_sizes, p=weights)
 
 
 def view_database_contents(db_path):
@@ -498,14 +153,178 @@ def view_database_contents(db_path):
     print(f"Total client metrics collected: {client_count}")
 
 
+def run_test(
+    server,
+    configuration,
+    test_name,
+    num_clients,
+    file_path,
+    operation,
+    max_duration=300,
+    chunk_size=10,
+):
+    print(
+        f"Starting test: {test_name} - {num_clients} clients, file: {file_path}, operation: {operation} for configuration: {configuration}"
+    )
+
+    # Create a new database for this test
+    db_path = create_new_database(configuration, test_name)
+    server.set_database(db_path)
+
+    # Calculate clients per Pi
+    clients_per_pi = num_clients // len(PI_IPS)
+    remainder = num_clients % len(PI_IPS)
+
+    start_time = time.time()
+    completed_clients = 0
+
+    while completed_clients < num_clients and time.time() - start_time < max_duration:
+        chunk_clients = min(chunk_size, num_clients - completed_clients)
+        completion_urls = []
+
+        # Send commands to Raspberry Pis for this chunk
+        for i, pi_ip in enumerate(PI_IPS):
+            pi_chunk_clients = chunk_clients // len(PI_IPS)
+            if i < chunk_clients % len(PI_IPS):
+                pi_chunk_clients += 1
+
+            if pi_chunk_clients > 0:
+                if file_path == "random":
+                    test_file = f"client/test_files/{weighted_random_file_size()}mb.txt"
+                else:
+                    test_file = file_path
+
+                command = {
+                    "test_name": f"{test_name}_chunk_{completed_clients // chunk_size + 1}",
+                    "filename": test_file,
+                    "operation": operation,
+                    "num_clients": pi_chunk_clients,
+                }
+                try:
+                    response = requests.post(
+                        f"http://{pi_ip}:8080", json=command, timeout=10
+                    )
+                    response.raise_for_status()
+                    start_status = response.json()
+                    print(
+                        f"Command sent to Pi {pi_ip}: {pi_chunk_clients} clients. Status: {start_status['status']}"
+                    )
+
+                    completion_url = response.headers.get("X-Completion-URL")
+                    if completion_url:
+                        print(f"Completion URL for Pi {pi_ip}: {completion_url}")
+                        completion_urls.append(completion_url)
+                    else:
+                        print(f"No completion URL provided for Pi {pi_ip}")
+                except requests.RequestException as e:
+                    print(f"Error communicating with Pi {pi_ip}: {str(e)}")
+
+        # Poll completion URLs for this chunk
+        chunk_completed = set()
+        chunk_start_time = time.time()
+        while (
+            len(chunk_completed) < len(completion_urls)
+            and time.time() - chunk_start_time < max_duration
+        ):
+            for i, url in enumerate(completion_urls):
+                if i not in chunk_completed:
+                    try:
+                        completion_response = requests.get(url, timeout=10)
+                        if completion_response.status_code == 200:
+                            completion_status = completion_response.json()
+                            print(
+                                f"Pi {i+1} completed chunk. Status: {completion_status['status']}"
+                            )
+                            if completion_status["status"] == "failed":
+                                print(f"Error message: {completion_status['message']}")
+                            chunk_completed.add(i)
+                        elif (
+                            completion_response.status_code != 404
+                        ):  # 404 means not completed yet
+                            print(
+                                f"Unexpected status code {completion_response.status_code} from Pi {i+1}"
+                            )
+                    except requests.RequestException as e:
+                        print(
+                            f"Error checking completion status for Pi {i+1}: {str(e)}"
+                        )
+            if len(chunk_completed) < len(completion_urls):
+                time.sleep(1)  # Wait 1 second before polling again
+
+        completed_clients += chunk_clients
+        print(f"Completed {completed_clients}/{num_clients} clients")
+
+        if len(chunk_completed) < len(completion_urls):
+            print(
+                f"Warning: Not all clients in chunk completed within the maximum duration of {max_duration} seconds"
+            )
+
+    if completed_clients < num_clients:
+        print(
+            f"Warning: Not all clients completed within the maximum duration of {max_duration} seconds"
+        )
+
+    print(f"Test {test_name} completed.")
+    return db_path
+
+
+def run_basic_test_1(server, configuration):
+    return run_test(
+        server,
+        configuration,
+        "basic_1",
+        1,
+        "client/test_files/100mb.txt",
+        "encrypt",
+        max_duration=600,
+    )
+
+
+def run_basic_test_2(server, configuration):
+    return run_test(
+        server, configuration, "basic_2", 10, "random", "encrypt", max_duration=1200
+    )
+
+
+def run_basic_test_3(server, configuration):
+    return run_test(
+        server, configuration, "basic_3", 20, "random", "encrypt", max_duration=12000
+    )
+
+
+def run_all_basic_tests(server, configuration):
+    db_paths = []
+    # db_paths.append(run_basic_test_1(server, configuration))
+    # time.sleep(5)  # Add a small delay between tests
+    # db_paths.append(run_basic_test_2(server, configuration))
+    # time.sleep(5)  # Add a small delay between tests
+    db_paths.append(run_basic_test_3(server, configuration))
+    return db_paths
+
+
+def run_100_client_tests(server, configuration):
+
+    db_path = run_test(
+        server,
+        configuration,
+        f"large_scale_1000",
+        1000,
+        "random",
+        "encrypt",
+        max_duration=72000,
+        chunk_size=10,
+    )
+    return [db_path]
+
+
 def main():
     server = start_metrics_server()
 
-    print("Running basic tests...")
-    basic_db_paths = run_all_basic_tests(server, "raspberry-pi")
+    # print("Running basic tests...")
+    # basic_db_paths = run_all_basic_tests(server, CONFIGURATION)
 
-    # print("\nRunning 1000 client tests...")
-    # large_scale_db_paths = run_1000_client_tests(server, "raspberry-pi")
+    print("\nRunning 1000 client tests...")
+    large_scale_db_paths = run_100_client_tests(server, CONFIGURATION)
 
     # print("\nRunning drowning rate test...")
     # drowning_rate_db_path = run_drowning_rate_test(
@@ -517,7 +336,7 @@ def main():
     #     chunk_size=50,
     # )
 
-    all_db_paths = basic_db_paths  # + large_scale_db_paths + [drowning_rate_db_path]
+    all_db_paths = large_scale_db_paths
 
     print("\n=== Viewing results of all tests ===")
     for db_path in all_db_paths:

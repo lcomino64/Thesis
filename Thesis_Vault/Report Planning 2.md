@@ -14,11 +14,11 @@ Same as before, except:
 - Introduce what RISC-V is used for, in industry and research
 - When mentioning IoT security, mention the 2024 story about the Dyn attack
 ## Project Goal
-Same as before
+Same as before but more defined
 
 # Part 2 -Research------------------------------------
 # Background
-
+## 
 # Literature Review
 
 ## Related Works

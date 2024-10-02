@@ -158,7 +158,7 @@ def send_file(filename, operation, metrics_url):
 
     end_time = time.time()
     total_time = end_time - start_time
-    processing_time = total_time - network_time
+    processing_time = total_time - network_time - queue_time
 
     output_filename = f"{filename}.enc" if operation == "encrypt" else filename[:-4]
 

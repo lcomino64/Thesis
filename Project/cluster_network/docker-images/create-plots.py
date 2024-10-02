@@ -22,12 +22,20 @@ def calculate_server_stats(cursor):
     cursor.execute("SELECT AVG(bytes_processed_per_second) FROM server_metrics")
     avg_bytes_per_second = cursor.fetchone()[0]
 
+    cursor.execute(("SELECT timestamp FROM server_metrics"))
+    timestamp_col = cursor.fetchall()
+    timestamps = [row[0] for row in timestamp_col]
+
+    start_time = timestamps[0]
+    durations = [(t - start_time) for t in timestamps]
+
     return {
         "max_clients": max_clients,
         "max_cpu_usage": max_cpu_usage,
         "max_memory_usage": max_memory_usage,
         "total_bytes_processed": total_bytes_processed,
         "avg_bytes_per_second": avg_bytes_per_second,
+        "test_duration": max(durations),
     }
 
 
@@ -122,7 +130,7 @@ def plot_client_tasks(db_path):
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT start_time, end_time, queue_time, network_time, processing_time, operation_completed FROM client_metrics ORDER BY start_time"
+            "SELECT start_time, end_time, queue_time, network_time, processing_time, operation_completed, file_size FROM client_metrics ORDER BY start_time"
         )
         data = cursor.fetchall()
 
@@ -132,17 +140,36 @@ def plot_client_tasks(db_path):
     network_times = [row[3] for row in data]
     processing_times = [row[4] for row in data]
     completed = [row[5] for row in data]
+    file_sizes = [row[6] for row in data]
 
-    fig, ax = plt.subplots(figsize=(15, 10))
+    # Adjust figure size based on number of clients
+    fig_height = max(8, len(data) * 0.25)  # Minimum height of 8 inches
+    fig, ax = plt.subplots(figsize=(15, fig_height))
 
-    for i, (start, queue, network, processing, complete) in enumerate(
-        zip(start_times, queue_times, network_times, processing_times, completed)
+    bar_height = 0.8  # Increase bar height to reduce padding
+
+    for i, (start, queue, network, processing, complete, file_size) in enumerate(
+        zip(
+            start_times,
+            queue_times,
+            network_times,
+            processing_times,
+            completed,
+            file_sizes,
+        )
     ):
         left = start - overall_start
+        total_time = queue + network + processing
 
         # Queue time
         ax.barh(
-            i, queue, left=left, height=0.5, align="center", color="yellow", alpha=0.7
+            i,
+            queue,
+            left=left,
+            height=bar_height,
+            align="center",
+            color="yellow",
+            alpha=0.7,
         )
 
         # Network time
@@ -150,7 +177,7 @@ def plot_client_tasks(db_path):
             i,
             network,
             left=left + queue,
-            height=0.5,
+            height=bar_height,
             align="center",
             color="green",
             alpha=0.7,
@@ -161,7 +188,7 @@ def plot_client_tasks(db_path):
             i,
             processing,
             left=left + queue + network,
-            height=0.5,
+            height=bar_height,
             align="center",
             color="blue",
             alpha=0.7,
@@ -171,19 +198,32 @@ def plot_client_tasks(db_path):
         if not complete:
             ax.barh(
                 i,
-                queue + network + processing,
+                total_time,
                 left=left,
-                height=0.5,
+                height=bar_height,
                 align="center",
                 fill=False,
                 edgecolor="red",
                 linewidth=2,
             )
 
+        # Add file size label
+        ax.text(
+            left + total_time + 0.5,
+            i,
+            f"{file_size/1024/1024:.1f} MB",
+            va="center",
+            fontsize=8,
+        )
+
     ax.set_xlabel("Seconds")
     ax.set_ylabel("Tasks")
     ax.set_title("Client Task Timeline")
     ax.set_ylim(-1, len(data))
+
+    # Adjust y-axis tick labels
+    ax.set_yticks(range(len(data)))
+    ax.set_yticklabels(range(1, len(data) + 1))
 
     # Add a legend
     ax.barh(0, 0, color="yellow", alpha=0.7, label="Queue Time")
@@ -193,7 +233,7 @@ def plot_client_tasks(db_path):
     ax.legend(loc="lower right")
 
     plt.tight_layout()
-    plt.savefig(f"{os.path.basename(db_path)}_client_tasks.png")
+    plt.savefig(f"{os.path.basename(db_path)}_client_tasks.png", dpi=300)
     plt.close()
 
 

@@ -40,6 +40,7 @@ bytes_processed_last_second = 0
 
 client_queue = Queue()
 active_threads = []
+client_event = threading.Event()
 
 
 def parse_url(url):
@@ -131,13 +132,21 @@ def process_data(data, operation, is_last_chunk):
     return stdout
 
 
-# def client_worker():
-#     while True:
-#         conn, addr = client_queue.get()
-#         if conn is None:
-#             break
-#         process_client(conn, addr)
-#         client_queue.task_done()
+def process_queued_clients():
+    global active_clients
+
+    while True:
+        client_event.wait()  # Wait for a client to be added or processed
+        client_event.clear()
+
+        with client_lock:
+            while client_queue.qsize() > 0 and active_clients < MAX_CLIENTS:
+                conn, addr = client_queue.get()
+                active_clients += 1
+                print(
+                    f"Processing queued client from {addr}. Active clients: {active_clients}"
+                )
+                threading.Thread(target=process_client, args=(conn, addr)).start()
 
 
 def process_client(conn, addr):
@@ -154,10 +163,6 @@ def process_client(conn, addr):
     op_byte = conn.recv(1)
     operation = "encrypt" if op_byte == b"\x00" else "decrypt"
     print(f"[{addr}] Operation: {operation}")
-
-    # with client_lock:
-    #     active_clients += 1
-    #     print(f"Active clients: {active_clients}")
 
     try:
         print(f"[{addr}] Sending acknowledgement")
@@ -209,12 +214,7 @@ def process_client(conn, addr):
         with client_lock:
             active_clients -= 1
             print(f"Connection closed. Active clients: {active_clients}")
-            if not client_queue.empty() and active_clients < MAX_CLIENTS:
-                queued_conn, queued_addr = client_queue.get()
-                threading.Thread(
-                    target=process_client, args=(queued_conn, queued_addr)
-                ).start()
-                active_clients += 1
+        client_event.set()  # Notify that a client has finished processing
 
         end_time = time.time()
         duration = end_time - start_time
@@ -237,6 +237,8 @@ def handle_client(conn, addr):
             client_queue.put((conn, addr))
             conn.sendall(b"QUEUED")
 
+    client_event.set()
+
 
 def main():
     host = "0.0.0.0"
@@ -248,6 +250,9 @@ def main():
         target=send_metrics_to_server, args=(metrics_url,), daemon=True
     )
     metrics_thread.start()
+
+    queue_thread = threading.Thread(target=process_queued_clients, daemon=True)
+    queue_thread.start()
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
