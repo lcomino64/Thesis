@@ -223,7 +223,7 @@ def main():
     )
     parser.add_argument(
         "--metrics-url",
-        default=os.environ.get("METRICS_URL", "http://localhost:8000/metrics"),
+        default=os.environ.get("METRICS_URL", "http://192.168.1.100:8000/metrics"),
         help="URL to send metrics to",
     )
     parser.add_argument(

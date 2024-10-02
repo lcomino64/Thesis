@@ -30,7 +30,7 @@ def get_temperature():
 
 
 CHUNK_SIZE = 1048576  # 1 MB, adjust if needed
-MAX_CLIENTS = 3
+MAX_CLIENTS = 5
 
 # Global variables for tracking metrics
 total_bytes_processed = 0
@@ -131,13 +131,13 @@ def process_data(data, operation, is_last_chunk):
     return stdout
 
 
-def client_worker():
-    while True:
-        conn, addr = client_queue.get()
-        if conn is None:
-            break
-        process_client(conn, addr)
-        client_queue.task_done()
+# def client_worker():
+#     while True:
+#         conn, addr = client_queue.get()
+#         if conn is None:
+#             break
+#         process_client(conn, addr)
+#         client_queue.task_done()
 
 
 def process_client(conn, addr):
@@ -209,6 +209,12 @@ def process_client(conn, addr):
         with client_lock:
             active_clients -= 1
             print(f"Connection closed. Active clients: {active_clients}")
+            if not client_queue.empty() and active_clients < MAX_CLIENTS:
+                queued_conn, queued_addr = client_queue.get()
+                threading.Thread(
+                    target=process_client, args=(queued_conn, queued_addr)
+                ).start()
+                active_clients += 1
 
         end_time = time.time()
         duration = end_time - start_time
@@ -226,7 +232,6 @@ def handle_client(conn, addr):
             active_clients += 1
             print(f"New connection accepted. Active clients: {active_clients}")
             threading.Thread(target=process_client, args=(conn, addr)).start()
-            time.sleep(0.1)  # wait
         else:
             print(f"Max clients reached. Queueing connection from {addr}")
             client_queue.put((conn, addr))
@@ -244,11 +249,6 @@ def main():
     )
     metrics_thread.start()
 
-    for _ in range(MAX_CLIENTS):
-        t = Thread(target=client_worker, daemon=True)
-        t.start()
-        active_threads.append(t)
-
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.bind((host, port))
@@ -257,11 +257,6 @@ def main():
         while True:
             conn, addr = s.accept()
             handle_client(conn, addr)
-
-    for _ in range(MAX_CLIENTS):
-        client_queue.put((None, None))
-    for t in active_threads:
-        t.join()
 
 
 if __name__ == "__main__":

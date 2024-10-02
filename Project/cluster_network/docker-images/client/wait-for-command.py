@@ -11,6 +11,7 @@ COMPLETION_PORT = 8081
 
 # Dictionary to store completion statuses
 completion_statuses = {}
+PI_IPS = ["192.168.1.11", "192.168.1.12", "192.168.1.13", "192.168.1.14"]
 
 
 class CommandHandler(http.server.SimpleHTTPRequestHandler):
@@ -33,7 +34,7 @@ class CommandHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(202)  # 202 Accepted
             self.send_header("Content-type", "application/json")
             self.send_header(
-                "X-Completion-URL", f"http://localhost:{COMPLETION_PORT}/{command_id}"
+                "X-Completion-URL", f"http://{PI_IPS[0]}:{COMPLETION_PORT}/{command_id}"
             )
             self.end_headers()
             self.wfile.write(
@@ -79,7 +80,7 @@ class CommandHandler(http.server.SimpleHTTPRequestHandler):
             result = subprocess.run(
                 [
                     "python3",
-                    "/app/client.py",
+                    "client/client.py",
                     command["filename"],
                     command["operation"],
                     "--num-clients",
