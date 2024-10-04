@@ -30,7 +30,7 @@ def verify_operation(filename, output_filename, operation):
 
 
 def send_file(filename, operation, metrics_url):
-    host = "192.168.1.50"
+    host = "192.168.1.11"
     port = 8080
 
     operation_completed = False
