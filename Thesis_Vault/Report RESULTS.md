@@ -26,16 +26,34 @@ These include:
 # Entire native setup on MacOS
 
 # Raspberry Pi Server
-
+### Benchmarks:
+Iperf3:
+```shell
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-30.00  sec  1.13 GBytes   323 Mbits/sec    0             sender
+[  5]   0.00-30.00  sec  1.13 GBytes   323 Mbits/sec                  receiver
+```
+Stress-ng:
+```shell
+stress-ng --cpu 4 --io 2 --vm 1 --vm-bytes 128M --timeout 60s --metrics-brief
+stress-ng: info:  [4516] setting to a 1 min, 0 secs run per stressor
+stress-ng: info:  [4516] dispatching hogs: 4 cpu, 2 io, 1 vm
+stress-ng: info:  [4521] io: this is a legacy I/O sync stressor, consider using iomix instead
+stress-ng: metrc: [4516] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s
+stress-ng: metrc: [4516]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: metrc: [4516] cpu               12483     60.03    146.85      0.03       207.94          84.99
+stress-ng: metrc: [4516] io               440066     60.00     10.34     48.56      7334.31        7472.11
+stress-ng: metrc: [4516] vm               617668     60.16     27.27      6.78     10266.29       18143.58
+```
 # Single Core
 ### Benchmarks:
-Stress-ng:
+Iperf3 :
 ```shell
 [ ID] Interval           Transfer     Bitrate         Retr
 [  5]   0.00-30.11  sec  31.5 MBytes  8.78 Mbits/sec    0   sender
 [  5]   0.00-30.00  sec  31.4 MBytes  8.77 Mbits/sec        receiver
 ```
-Iperf3:
+Stress-ng:
 ```shell
 stress-ng --cpu 1 --io 2 --vm 1 --vm-bytes 128M --timeout 60s --metrics-brief
 stress-ng: info:  [78] setting to a 60 second run per stressor
@@ -55,7 +73,7 @@ Iperf3:
 [  5]   0.00-30.09  sec  35.5 MBytes  9.90 Mbits/sec    0   sender
 [  5]   0.00-30.00  sec  35.4 MBytes  9.89 Mbits/sec        receiver
 ```
-stress-ng:
+Stress-ng:
 ```shell
 stress-ng --cpu 2 --io 2 --vm 1 --vm-bytes 128M --timeout 60s --metrics-brief
 stress-ng: info:  [112] setting to a 60 second run per stressor
@@ -75,7 +93,7 @@ Iperf3:
 [  5]   0.00-30.03  sec  42.0 MBytes  11.7 Mbits/sec    1   sender
 [  5]   0.00-30.00  sec  41.9 MBytes  11.7 Mbits/sec        receiver
 ```
-stress-ng:
+Stress-ng:
 ```shell
 stress-ng --cpu 4 --io 2 --vm 1 --vm-bytes 128M --timeout 60s --metrics-brief
 stress-ng: info:  [115] setting to a 60 second run per stressor
