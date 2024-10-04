@@ -33,4 +33,6 @@ Project/cluster_network/docker-images/tester-image.tar
 workspace.json
 *.db # ignore collected metrics
 data/
+*results/
 Project/cluster_network/docker-images/test_results.json
+*workspace.json

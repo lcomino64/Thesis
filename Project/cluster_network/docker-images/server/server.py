@@ -30,7 +30,7 @@ def get_temperature():
 
 
 CHUNK_SIZE = 1048576  # 1 MB, adjust if needed
-MAX_CLIENTS = 5
+MAX_CLIENTS = 10
 
 # Global variables for tracking metrics
 total_bytes_processed = 0

@@ -112,6 +112,7 @@ sudo systemctl status tftpd-hpa
 Get file from tftp server
 ```
 tftp -g -r server.py 192.168.1.100
+tftp -g -r run_benchmarks.sh 192.168.1.100
 ```
 Remember to configure ethernet on the board's startup:
 ```shell

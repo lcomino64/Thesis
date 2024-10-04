@@ -16,7 +16,7 @@ PI_IPS = ["192.168.1.11", "192.168.1.12", "192.168.1.13", "192.168.1.14"]
 BOARD_IP = "192.168.1.50"
 TESTER_IP = "192.168.1.100"
 
-CONFIGURATION = "arty-a7-4c"
+CONFIGURATION = "raspberry-pi"
 
 
 class MetricsHandler(BaseHTTPRequestHandler):
@@ -125,10 +125,13 @@ def create_new_database(configuration, test_name):
     return os.path.join("data", db_name)
 
 
-def weighted_random_file_size():
-    file_sizes = [2, 5, 10, 20]
-    weights = [0.4, 0.3, 0.2, 0.1]  # Skewed towards lower file sizes
-    return np.random.choice(file_sizes, p=weights)
+def get_next_file_size():
+    FILE_SIZES = [2, 5, 10, 20]
+
+    get_next_file_size.index = getattr(get_next_file_size, "index", 0) % len(FILE_SIZES)
+    size = FILE_SIZES[get_next_file_size.index]
+    get_next_file_size.index += 1
+    return size
 
 
 def view_database_contents(db_path):
@@ -190,7 +193,7 @@ def run_test(
 
             if pi_chunk_clients > 0:
                 if file_path == "random":
-                    test_file = f"client/test_files/{weighted_random_file_size()}mb.txt"
+                    test_file = f"client/test_files/{get_next_file_size()}mb.txt"
                 else:
                     test_file = file_path
 
@@ -294,9 +297,9 @@ def run_basic_test_3(server, configuration):
 
 def run_all_basic_tests(server, configuration):
     db_paths = []
-    # db_paths.append(run_basic_test_1(server, configuration))
+    db_paths.append(run_basic_test_1(server, configuration))
     # time.sleep(5)  # Add a small delay between tests
-    # db_paths.append(run_basic_test_2(server, configuration))
+    db_paths.append(run_basic_test_2(server, configuration))
     # time.sleep(5)  # Add a small delay between tests
     db_paths.append(run_basic_test_3(server, configuration))
     return db_paths
@@ -308,7 +311,7 @@ def run_100_client_tests(server, configuration):
         server,
         configuration,
         f"large_scale_1000",
-        1000,
+        100,
         "random",
         "encrypt",
         max_duration=72000,
@@ -320,10 +323,10 @@ def run_100_client_tests(server, configuration):
 def main():
     server = start_metrics_server()
 
-    # print("Running basic tests...")
-    # basic_db_paths = run_all_basic_tests(server, CONFIGURATION)
+    print("Running basic tests...")
+    basic_db_paths = run_all_basic_tests(server, CONFIGURATION)
 
-    print("\nRunning 1000 client tests...")
+    print("\nRunning 100 client tests...")
     large_scale_db_paths = run_100_client_tests(server, CONFIGURATION)
 
     # print("\nRunning drowning rate test...")
@@ -336,7 +339,7 @@ def main():
     #     chunk_size=50,
     # )
 
-    all_db_paths = large_scale_db_paths
+    all_db_paths = basic_db_paths + large_scale_db_paths
 
     print("\n=== Viewing results of all tests ===")
     for db_path in all_db_paths:

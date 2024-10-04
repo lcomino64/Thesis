@@ -16,8 +16,15 @@ def calculate_server_stats(cursor):
     cursor.execute("SELECT MAX(memory_usage) FROM server_metrics")
     max_memory_usage = cursor.fetchone()[0]
 
-    cursor.execute("SELECT MAX(total_bytes_processed) FROM server_metrics")
-    total_bytes_processed = cursor.fetchone()[0]
+    cursor.execute(
+        "SELECT MIN(total_bytes_processed), MAX(total_bytes_processed) FROM server_metrics"
+    )
+    result = cursor.fetchone()
+    if result:
+        min_bytes, max_bytes = result
+        total_bytes_processed = max_bytes - min_bytes
+    else:
+        total_bytes_processed = 0
 
     cursor.execute("SELECT AVG(bytes_processed_per_second) FROM server_metrics")
     avg_bytes_per_second = cursor.fetchone()[0]
@@ -78,7 +85,7 @@ def plot_server_metrics(db_path):
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT timestamp, cpu_usage, memory_usage, bytes_processed_per_second, temperature FROM server_metrics"
+            "SELECT timestamp, cpu_usage, memory_usage, total_bytes_processed, temperature FROM server_metrics"
         )
         data = cursor.fetchall()
 
@@ -87,10 +94,14 @@ def plot_server_metrics(db_path):
     durations = [(t - start_time) for t in timestamps]
     cpu_usage = [row[1] for row in data]
     memory_usage = [row[2] for row in data]
-    bytes_per_second = [row[3] for row in data]
+
+    # Calculate bytes_processed by taking the difference
+    total_bytes = [row[3] for row in data]
+    bytes_processed = [b - total_bytes[0] for b in total_bytes]
+
     temperature = [row[4] for row in data]
 
-    # Create the existing plot for CPU, memory, and bytes/second
+    # Create the plot for CPU, memory, and bytes processed
     fig, ax1 = plt.subplots(figsize=(12, 6))
 
     ax1.set_xlabel("Duration (seconds)")
@@ -101,8 +112,8 @@ def plot_server_metrics(db_path):
     ax1.set_ylim(0, 100)
 
     ax2 = ax1.twinx()
-    ax2.set_ylabel("Bytes Processed per Second")
-    ax2.plot(durations, bytes_per_second, label="Bytes/Second", color="green")
+    ax2.set_ylabel("Bytes Processed")
+    ax2.plot(durations, bytes_processed, label="Bytes Processed", color="green")
     ax2.tick_params(axis="y")
 
     lines1, labels1 = ax1.get_legend_handles_labels()
@@ -114,7 +125,7 @@ def plot_server_metrics(db_path):
     plt.savefig(f"{os.path.basename(db_path)}_server_metrics.png")
     plt.close()
 
-    # Create a new plot for temperature
+    # Create a new plot for temperature (unchanged)
     fig, ax = plt.subplots(figsize=(12, 6))
     ax.plot(durations, temperature, label="Temperature", color="orange")
     ax.set_xlabel("Duration (seconds)")
