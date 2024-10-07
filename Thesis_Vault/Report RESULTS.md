@@ -202,27 +202,12 @@ aes-128-cbc       1361.11k     3354.34k     6875.47k     8386.73k     8660.50k
 ```
 iperf3:
 ```shell
-<<<<<<< Updated upstream
 [ ID] Interval           Transfer     Bitrate         Retr
 [  5]   0.00-30.03  sec  77.4 MBytes  21.6 Mbits/sec    0             sender
 [  5]   0.00-30.00  sec  77.2 MBytes  21.6 Mbits/sec                  receiver
-=======
-
->>>>>>> Stashed changes
 ```
 stress-ng:
 ```shell
-stress-ng --cpu 2 --io 2 --vm 1 --vm-bytes 128M --timeout 60s --metrics-brief
-<<<<<<< Updated upstream
-stress-ng: info:  [2675] setting to a 60 second run per stressor
-stress-ng: info:  [2675] dispatching hogs: 2 cpu, 2 io, 1 vm
-stress-ng: info:  [2675] successful run completed in 96.61s (1 min, 36.61 secs)
-stress-ng: info:  [2675] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s
-stress-ng: info:  [2675]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
-stress-ng: info:  [2675] cpu                  12     95.85    117.88      0.07         0.13           0.10
-stress-ng: info:  [2675] io                38762     60.01      2.72     45.59       645.89         802.36
-stress-ng: info:  [2675] vm                 5269     62.54     11.42     13.77        84.25         209.17
-=======
 stress-ng: info:  [94] setting to a 60 second run per stressor
 stress-ng: info:  [94] dispatching hogs: 2 cpu, 2 io, 1 vm
 stress-ng: info:  [94] successful run completed in 80.73s (1 min, 20.73 secs)
@@ -231,5 +216,4 @@ stress-ng: info:  [94]                           (secs)    (secs)    (secs)   (r
 stress-ng: info:  [94] cpu                  12     80.60     87.37      0.01         0.15           0.14
 stress-ng: info:  [94] io                60868     59.99      3.65     44.52      1014.65        1263.61
 stress-ng: info:  [94] vm                 9552     62.53     13.79     11.66       152.75         375.32
->>>>>>> Stashed changes
 ```
