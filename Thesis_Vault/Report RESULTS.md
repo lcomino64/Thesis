@@ -22,6 +22,73 @@ These include:
 `iperf3 -c 192.168.1.50 -t 30 -i 1 -w 8K -P 1 -R`
 - Coremark, for processing power
 `stress-ng --cpu 4 --io 2 --vm 1 --vm-bytes 128M --timeout 60s --metrics-brief`
+# OpenSSL Benchmarks
+Via:
+```shell
+openssl speed -elapsed -evp aes-128-cbc aes-256-cbc
+```
+100MHz w/out AES Instructions:
+```
+root@buildroot:~# openssl speed -elapsed -evp aes-128-cbc
+You have chosen to measure elapsed time instead of user CPU time.
+Doing aes-256 cbc for 3s on 16 size blocks: 163425 aes-256 cbc's in 3.00s
+Doing aes-256 cbc for 3s on 64 size blocks: 95105 aes-256 cbc's in 3.01s
+Doing aes-256 cbc for 3s on 256 size blocks: 35125 aes-256 cbc's in 3.01s
+Doing aes-256 cbc for 3s on 1024 size blocks: 9271 aes-256 cbc's in 3.01s
+Doing aes-256 cbc for 3s on 8192 size blocks: 1244 aes-256 cbc's in 3.01s
+Doing aes-128-cbc for 3s on 16 size blocks: 115261 aes-128-cbc's in 3.01s
+Doing aes-128-cbc for 3s on 64 size blocks: 70326 aes-128-cbc's in 3.01s
+Doing aes-128-cbc for 3s on 256 size blocks: 37964 aes-128-cbc's in 3.01s
+Doing aes-128-cbc for 3s on 1024 size blocks: 11975 aes-128-cbc's in 3.01s
+Doing aes-128-cbc for 3s on 8192 size blocks: 1545 aes-128-cbc's in 3.01s
+
+The 'numbers' are in 1000s of bytes per second processed.
+type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes
+aes-256-cbc        492.58k      700.22k      796.41k      831.49k      830.09k
+aes-128-cbc        569.82k      879.49k     1035.23k     1096.36k     1091.36k
+```
+100MHz w/ AES Instructions:
+```
+root@buildroot:~# openssl speed -elapsed -evp aes-128-cbc aes-256-cbc
+You have chosen to measure elapsed time instead of user CPU time.
+Doing aes-256 cbc for 3s on 16 size blocks: 200027 aes-256 cbc's in 3.00s
+Doing aes-256 cbc for 3s on 64 size blocks: 105349 aes-256 cbc's in 3.01s
+Doing aes-256 cbc for 3s on 256 size blocks: 36417 aes-256 cbc's in 3.01s
+Doing aes-256 cbc for 3s on 1024 size blocks: 9297 aes-256 cbc's in 3.01s
+Doing aes-256 cbc for 3s on 8192 size blocks: 1245 aes-256 cbc's in 3.01s
+Doing aes-128-cbc for 3s on 16 size blocks: 141145 aes-128-cbc's in 3.01s
+Doing aes-128-cbc for 3s on 64 size blocks: 73749 aes-128-cbc's in 3.01s
+Doing aes-128-cbc for 3s on 256 size blocks: 40348 aes-128-cbc's in 3.01s
+Doing aes-128-cbc for 3s on 1024 size blocks: 12176 aes-128-cbc's in 3.01s
+Doing aes-128-cbc for 3s on 8192 size blocks: 1559 aes-128-cbc's in 3.01s
+
+The 'numbers' are in 1000s of bytes per second processed.
+type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes
+aes-256 cbc       1065.34k     2242.60k     3100.24k     3165.50k     3391.24k
+aes-128-cbc        751.23k     1569.70k     3435.13k     4146.81k     4246.01k
+```
+1.8GHz Raspberry Pi:
+```
+user@raspberrypi1:~$ openssl speed -elapsed -evp aes-128-cbc aes-256-cbc
+You have chosen to measure elapsed time instead of user CPU time.
+Doing aes-256-cbc for 3s on 16 size blocks: 5117073 aes-256-cbc's in 3.00s
+Doing aes-256-cbc for 3s on 64 size blocks: 1362362 aes-256-cbc's in 3.00s
+Doing aes-256-cbc for 3s on 256 size blocks: 347621 aes-256-cbc's in 3.00s
+Doing aes-256-cbc for 3s on 1024 size blocks: 87586 aes-256-cbc's in 3.00s
+Doing aes-256-cbc for 3s on 8192 size blocks: 10974 aes-256-cbc's in 3.00s
+Doing aes-256-cbc for 3s on 16384 size blocks: 5486 aes-256-cbc's in 3.00s
+Doing AES-128-CBC for 3s on 16 size blocks: 6916540 AES-128-CBC's in 3.00s
+Doing AES-128-CBC for 3s on 64 size blocks: 1888832 AES-128-CBC's in 3.00s
+Doing AES-128-CBC for 3s on 256 size blocks: 485954 AES-128-CBC's in 3.00s
+Doing AES-128-CBC for 3s on 1024 size blocks: 122371 AES-128-CBC's in 3.00s
+Doing AES-128-CBC for 3s on 8192 size blocks: 15328 AES-128-CBC's in 3.00s
+Doing AES-128-CBC for 3s on 16384 size blocks: 7667 AES-128-CBC's in 3.00s
+
+The 'numbers' are in 1000s of bytes per second processed.
+type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  16384 bytes
+aes-256-cbc      27291.06k    29063.72k    29663.66k    29896.02k    29966.34k    29960.87k
+AES-128-CBC      36888.21k    40295.08k    41468.07k    41769.30k    41855.66k    41872.04k
+```
 
 # Entire native setup on MacOS
 
@@ -106,3 +173,9 @@ stress-ng: info:  [115] io                27819     60.00      3.42     66.44   
 stress-ng: info:  [115] vm                 2464     61.54     18.10     18.32        40.04          67.66
 ```
 ### Tests:
+# Dual Core Improved:
+```shell
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-30.03  sec  77.4 MBytes  21.6 Mbits/sec    0             sender
+[  5]   0.00-30.00  sec  77.2 MBytes  21.6 Mbits/sec                  receiver
+```

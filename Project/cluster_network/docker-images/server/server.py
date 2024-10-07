@@ -6,15 +6,25 @@ import time
 import psutil
 import json
 from queue import Queue
+import mmap
+import struct
 
 
 def get_temperature():
-    try:
-        output = subprocess.check_output(["vcgencmd", "measure_temp"]).decode()
-        temp = float(output.split("=")[1].split("'")[0])
-        return temp
-    except (subprocess.CalledProcessError, ValueError, IndexError):
-        return float("nan")  # Return NaN if temperature can't be read
+    CSR_BASE = 0xF0000000
+    XADC_BASE = CSR_BASE + 0x9000
+
+    XADC_TEMP_OFFSET = 0x00
+
+    with open("/dev/mem", "r+b") as f:
+        mem = mmap.mmap(f.fileno(), 4096, offset=XADC_BASE)
+
+        mem.seek(XADC_TEMP_OFFSET)
+        temp_raw = struct.unpack("<I", mem.read(4))[0]
+
+        mem.close()
+
+    return (temp_raw / 4095) * 165 - 40
 
 
 CHUNK_SIZE = 1048576  # 1 MB, adjust if needed

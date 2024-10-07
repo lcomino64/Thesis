@@ -35,17 +35,17 @@ Same as before but more defined
 Different Boot methods time taken chart
 ## Network Cluster Testbed
 
-## Debugging Configuration
+## Debugging Configuration*
 
 
 # Part 4-Evaluation-----------------------------------
-## Raw Performance
+## Raw Performance Benchmarks & Theoretical Results
 
 ## Results & Analysis
 
 ## Utilisation, Resources and Timing
 
-## Power Analysis
+## Power Analysis*
 
 
 # Part 5-Conclusion----------------------------------

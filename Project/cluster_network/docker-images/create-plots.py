@@ -26,15 +26,15 @@ def calculate_server_stats(cursor):
     else:
         total_bytes_processed = 0
 
-    cursor.execute("SELECT AVG(bytes_processed_per_second) FROM server_metrics")
-    avg_bytes_per_second = cursor.fetchone()[0]
-
     cursor.execute(("SELECT timestamp FROM server_metrics"))
     timestamp_col = cursor.fetchall()
     timestamps = [row[0] for row in timestamp_col]
 
     start_time = timestamps[0]
     durations = [(t - start_time) for t in timestamps]
+    test_duration = max(durations)
+
+    avg_bytes_per_second = total_bytes_processed / test_duration
 
     return {
         "max_clients": max_clients,
@@ -42,7 +42,7 @@ def calculate_server_stats(cursor):
         "max_memory_usage": max_memory_usage,
         "total_bytes_processed": total_bytes_processed,
         "avg_bytes_per_second": avg_bytes_per_second,
-        "test_duration": max(durations),
+        "test_duration": test_duration,
     }
 
 
@@ -106,14 +106,20 @@ def plot_server_metrics(db_path):
 
     ax1.set_xlabel("Duration (seconds)")
     ax1.set_ylabel("Usage (%)")
-    ax1.plot(durations, cpu_usage, label="CPU Usage", color="red")
-    ax1.plot(durations, memory_usage, label="Memory Usage", color="blue")
+    ax1.plot(durations, cpu_usage, label="CPU Usage", color="red", linewidth=0.7)
+    ax1.plot(durations, memory_usage, label="Memory Usage", color="blue", linewidth=0.7)
     ax1.tick_params(axis="y")
     ax1.set_ylim(0, 100)
 
     ax2 = ax1.twinx()
     ax2.set_ylabel("Bytes Processed")
-    ax2.plot(durations, bytes_processed, label="Bytes Processed", color="green")
+    ax2.plot(
+        durations,
+        bytes_processed,
+        label="Bytes Processed",
+        color="green",
+        linewidth=0.7,
+    )
     ax2.tick_params(axis="y")
 
     lines1, labels1 = ax1.get_legend_handles_labels()
@@ -121,17 +127,23 @@ def plot_server_metrics(db_path):
     ax1.legend(lines1 + lines2, labels1 + labels2, loc="upper left")
 
     plt.title("Server Metrics Over Time")
+    # Add major and minor grid lines
+    ax1.grid(True, which="major", linestyle="-", linewidth=0.5, color="#CCCCCC")
+    ax1.grid(True, which="minor", linestyle=":", linewidth=0.3, color="#CCCCCC")
+    ax1.minorticks_on()
+
     plt.tight_layout()
     plt.savefig(f"{os.path.basename(db_path)}_server_metrics.png")
     plt.close()
 
     # Create a new plot for temperature (unchanged)
     fig, ax = plt.subplots(figsize=(12, 6))
-    ax.plot(durations, temperature, label="Temperature", color="orange")
+    ax.plot(durations, temperature, label="Temperature", color="orange", linewidth=0.7)
     ax.set_xlabel("Duration (seconds)")
     ax.set_ylabel("Temperature")
     ax.set_title("Server Temperature Over Time")
     ax.legend(loc="upper left")
+
     plt.tight_layout()
     plt.savefig(f"{os.path.basename(db_path)}_server_temperature.png")
     plt.close()
@@ -154,7 +166,9 @@ def plot_client_tasks(db_path):
     file_sizes = [row[6] for row in data]
 
     # Adjust figure size based on number of clients
-    fig_height = max(8, len(data) * 0.25)  # Minimum height of 8 inches
+    clients_per_row = 30
+    num_rows = min(clients_per_row, len(data))
+    fig_height = max(5, num_rows * 0.25)  # Minimum height of 8 inches
     fig, ax = plt.subplots(figsize=(15, fig_height))
 
     bar_height = 0.8  # Increase bar height to reduce padding
@@ -169,12 +183,13 @@ def plot_client_tasks(db_path):
             file_sizes,
         )
     ):
+        row = i % num_rows
         left = start - overall_start
         total_time = queue + network + processing
 
         # Queue time
         ax.barh(
-            i,
+            row,
             queue,
             left=left,
             height=bar_height,
@@ -185,7 +200,7 @@ def plot_client_tasks(db_path):
 
         # Network time
         ax.barh(
-            i,
+            row,
             network,
             left=left + queue,
             height=bar_height,
@@ -196,7 +211,7 @@ def plot_client_tasks(db_path):
 
         # Processing time
         ax.barh(
-            i,
+            row,
             processing,
             left=left + queue + network,
             height=bar_height,
@@ -208,7 +223,7 @@ def plot_client_tasks(db_path):
         # Add a red border if the operation failed
         if not complete:
             ax.barh(
-                i,
+                row,
                 total_time,
                 left=left,
                 height=bar_height,
@@ -220,31 +235,33 @@ def plot_client_tasks(db_path):
 
         # Add file size label
         ax.text(
-            left + total_time + 0.5,
-            i,
-            f"{file_size/1024/1024:.1f} MB",
+            left + total_time,
+            row,
+            f"{file_size/1024/1024:.1f}MB",
             va="center",
             fontsize=8,
         )
 
     ax.set_xlabel("Seconds")
-    ax.set_ylabel("Tasks")
+    ax.set_ylabel(f"Tasks (modulo {clients_per_row})")
     ax.set_title("Client Task Timeline")
-    ax.set_ylim(-1, len(data))
+    ax.set_ylim(-1, num_rows)
 
     # Adjust y-axis tick labels
-    ax.set_yticks(range(len(data)))
-    ax.set_yticklabels(range(1, len(data) + 1))
+    # ax.set_yticks(range(len(data)))
+    # ax.set_yticklabels(range(1, len(data) + 1))
 
     # Add a legend
     ax.barh(0, 0, color="yellow", alpha=0.7, label="Queue Time")
     ax.barh(0, 0, color="green", alpha=0.7, label="Network Time")
     ax.barh(0, 0, color="blue", alpha=0.7, label="Processing Time")
     ax.barh(0, 0, fill=False, edgecolor="red", linewidth=2, label="Failed Operation")
-    ax.legend(loc="lower right")
+    ax.legend(loc="upper right")
 
     plt.tight_layout()
-    plt.savefig(f"{os.path.basename(db_path)}_client_tasks.png", dpi=300)
+    plt.savefig(
+        f"{os.path.basename(db_path)}_client_tasks.png", dpi=300, bbox_inches="tight"
+    )
     plt.close()
 
 

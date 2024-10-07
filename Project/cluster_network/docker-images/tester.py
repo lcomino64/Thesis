@@ -12,11 +12,11 @@ import numpy as np
 
 
 # Raspberry Pi IPs
-PI_IPS = ["192.168.1.12", "192.168.1.13", "192.168.1.14"]
-BOARD_IP = "192.168.1.11"
+PI_IPS = ["192.168.1.11", "192.168.1.12", "192.168.1.13", "192.168.1.14"]
+BOARD_IP = "192.168.1.50"
 TESTER_IP = "192.168.1.100"
 
-CONFIGURATION = "raspberry-pi"
+CONFIGURATION = "arty-a7-2c-improved"
 
 
 class MetricsHandler(BaseHTTPRequestHandler):
