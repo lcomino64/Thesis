@@ -20,7 +20,8 @@ Each configuration also has benchmarks to test the capabilities of each configur
 These include:
 - Iperf3 overall ethernet throughput. 
 `iperf3 -c 192.168.1.50 -t 30 -i 1 -w 8K -P 1 -R`
-- Coremark, for processing power
+	time=30s, sample_interval=1s, window_size=8k, streams=1, reverse=true (server sends, client receives)
+- Stress-ng, for processing power
 `stress-ng --cpu 4 --io 2 --vm 1 --vm-bytes 128M --timeout 60s --metrics-brief`
 # OpenSSL Benchmarks
 Via:
@@ -173,17 +174,46 @@ stress-ng: info:  [115] io                27819     60.00      3.42     66.44   
 stress-ng: info:  [115] vm                 2464     61.54     18.10     18.32        40.04          67.66
 ```
 ### Tests:
-# Dual Core Improved:
-### Benchmarks
-Iperf3:
+
+# Dual Core Improved
+Increased max clock rate, 100MHz -> 150MHz
+Changed power input to barrel jack, 5v 900mA -> 12v 2A
+Ethernet buffers:
+```
+ETHMAC     0x80000000 0x2000 
+ETHMAC_RX  0x80000000 0x1000 
+ETHMAC_TX  0x80001000 0x1000
+```
+were increased to:
 ```shell
+ETHMAC     0x80000000 0x10000 
+ETHMAC_RX  0x80000000 0x8000 
+ETHMAC_TX  0x80008000 0x8000
+```
+This allowed us to use a 32K TCP window size as opposed to 8k, significantly increasing our throughput
+
+openSSL:
+```shell
+openssl speed -elapsed -evp aes-128-cbc aes-256-cbc
+The 'numbers' are in 1000s of bytes per second processed.
+type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes
+aes-256 cbc       1800.05k     4142.59k     6147.52k     6448.09k     6926.90k
+aes-128-cbc       1361.11k     3354.34k     6875.47k     8386.73k     8660.50k
+```
+iperf3:
+```shell
+<<<<<<< Updated upstream
 [ ID] Interval           Transfer     Bitrate         Retr
 [  5]   0.00-30.03  sec  77.4 MBytes  21.6 Mbits/sec    0             sender
 [  5]   0.00-30.00  sec  77.2 MBytes  21.6 Mbits/sec                  receiver
+=======
+
+>>>>>>> Stashed changes
 ```
-Stress-ng
+stress-ng:
 ```shell
 stress-ng --cpu 2 --io 2 --vm 1 --vm-bytes 128M --timeout 60s --metrics-brief
+<<<<<<< Updated upstream
 stress-ng: info:  [2675] setting to a 60 second run per stressor
 stress-ng: info:  [2675] dispatching hogs: 2 cpu, 2 io, 1 vm
 stress-ng: info:  [2675] successful run completed in 96.61s (1 min, 36.61 secs)
@@ -192,4 +222,14 @@ stress-ng: info:  [2675]                           (secs)    (secs)    (secs)   
 stress-ng: info:  [2675] cpu                  12     95.85    117.88      0.07         0.13           0.10
 stress-ng: info:  [2675] io                38762     60.01      2.72     45.59       645.89         802.36
 stress-ng: info:  [2675] vm                 5269     62.54     11.42     13.77        84.25         209.17
+=======
+stress-ng: info:  [94] setting to a 60 second run per stressor
+stress-ng: info:  [94] dispatching hogs: 2 cpu, 2 io, 1 vm
+stress-ng: info:  [94] successful run completed in 80.73s (1 min, 20.73 secs)
+stress-ng: info:  [94] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s
+stress-ng: info:  [94]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: info:  [94] cpu                  12     80.60     87.37      0.01         0.15           0.14
+stress-ng: info:  [94] io                60868     59.99      3.65     44.52      1014.65        1263.61
+stress-ng: info:  [94] vm                 9552     62.53     13.79     11.66       152.75         375.32
+>>>>>>> Stashed changes
 ```

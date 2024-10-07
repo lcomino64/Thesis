@@ -41,7 +41,7 @@ class ArtyA7(Board):
     }
     soc_kwargs = {
         "variant": "a7-35", 
-        "sys_clk_freq": int(100e6), 
+        "sys_clk_freq": int(150e6), 
         "with_ethernet" : True,
         "with_led_chaser" : True,
         "with_spi_flash" : True,
@@ -54,7 +54,7 @@ class ArtyA7(Board):
         Board.__init__(self, digilent_arty.BaseSoC)
 
 # Build configuration constants ------------------------
-CPU_COUNT      = 1
+CPU_COUNT      = 2
 AES_INSTRUCTION = True
 EXPOSE_CLINT_TIME = True
 WISH_BONE_MEMORY = True
