@@ -1,0 +1,77 @@
+\chapter[Evaluation]{Evaluation}
+\label{Chap:Evaluation}
+% ***************************************************
+%Evaluation 
+% ***************************************************
+
+\section{Raw Performance Benchmarks}
+Here, the different configurations of VexRiscv: single-core, dual-core and quad core; will be compared in terms of performance alongside the Raspberry Pi Model 4B 1GB. For each one, we will run the performance benchmark, \textit{stress-ng}, which profiles the IO overhead and memory usage of multiple cores, along with \textit{Iperf3}, to gauge ethernet throughput capabilities.
+
+\subsection{Iperf3}
+As ethernet is a vital component of the application, it makes sense to evaluate the capabilities of the link, especially the average bitrate we can expect. After running \texttt{iperf3 -s}, which sets the device as a server and listens, another Raspberry Pi was chosen from the cluster to act as a client via running:
+\begin{verbatim}    
+iperf3 -c 192.168.1.50 -t 30 -i 1 -w 8K -P 1 -R
+\end{verbatim}
+This begins a single-threaded (\texttt{-P 1}), client that sends and receives TCP transmissions to \textit{192.168.1.50}, for 30 seconds, sampling the bitrate every second (\texttt{-i 1}). Most notably, it constrains the TCP window size (\texttt{-w 8K}), to 8Kb, which matches the current size of the board's TX or RX ethernet buffers, more closely resembling the stop-start transfers in our software setup. Here are the results:
+\todo{Add reference to software/hardware overview}
+
+\begin{table*}[ht]
+    \centering
+    \caption{Ethernet Throughput Comparison of Configurations}
+    \begin{tabular}{lllll}
+                                & \multicolumn{3}{l}{VexRiscvSMP, 100MHz} & RPi    \\ \cline{2-5} 
+                                & Single        & Dual       & Quad       & 4B 1GB \\ \hline
+    Amount Transferred (MB)     & 31.5          & 35.5       & 42.0       & 1.13k  \\
+    Amount Recieved (MB)        & 31.4          & 35.4       & 41.9       & 1.13k  \\
+    Sending Bitrate (MBits/s)   & 8.78          & 9.90       & 11.7       & 323    \\
+    Receiving Bitrate (MBits/s) & 8.77          & 9.89       & 11.7       & 323    \\
+    TCP Retransmissions         & 0             & 0          & 1          & 0      \\ \hline
+    \end{tabular}
+    \label{ethernet1}
+\end{table*}
+
+It is clear that the gigabit ethernet capabilities of the Raspberry Pi far outweigh the ethernet capabilities of the board, achieving 26x more throughput than that of the quad-core VexRiscvSMP.
+
+
+\subsection{Stress NG}
+Stress-ng is a versatile benchmarking tool designed to stress test various components of a CPU. The command:
+\begin{verbatim}
+stress-ng --cpu $CORE_COUNT --io 2 --vm 1 --vm-bytes 128M --timeout 60s 
+--metrics-brief
+\end{verbatim}
+Runs a set of simultaneous tests: \texttt{--cpu}, creates CPU-intensive tasks equal to the core count; \texttt{--io}, creates two I/O-intensive tasks; and \texttt{--vm}, allocates and uses 128MB of virtual memory. This will evaluate for us how the system performs under combined CPU, I/O, and memory pressure, as well as how these metrics vary with the amount of cores.
+
+\begin{table*}[ht]
+    \centering
+    \caption{Stress-ng Comparison of Configurations}
+    \begin{tabular}{lllll}
+                                  & \multicolumn{3}{l}{VexRiscvSMP, 100MHz} & RPi       \\ \cline{2-5} 
+                                  & Single      & Dual        & Quad        & 4B 1GB    \\ \hline
+    CPU bogo ops                  & 6           & 12          & 24          & 12,483    \\ \hline
+    CPU real time (s)             & 125.34      & 119.09      & 121.30      & 60.03     \\
+    CPU usr time (s)              & 78.32       & 164.00      & 378.16      & 146.85    \\
+    CPU sys time (s)              & 0.01        & 0.12        & 0.09        & 0.03      \\
+    CPU bogo ops/s (real time)    & 0.05        & 0.10        & 0.20        & 207.94    \\
+    CPU bogo ops/s (usr+sys time) & 0.08        & 0.07        & 0.06        & 84.99     \\ \hline
+    IO bogo ops                   & 21,794      & 31,190      & 27,819      & 440,066   \\ \hline
+    IO real time (s)              & 60.00       & 60.01       & 60.00       & 60.00     \\
+    IO usr time (s)               & 2.74        & 3.56        & 3.42        & 10.34     \\
+    IO sys time (s)               & 25.71       & 44.44       & 66.44       & 48.56     \\
+    IO bogo ops/s (real time)     & 363.22      & 519.76      & 463.65      & 7,334.31  \\
+    IO bogo ops/s (usr+sys time)  & 766.05      & 649.79      & 398.21      & 7,472.11  \\ \hline
+    VM bogo ops                   & 2,280       & 3,053       & 2,464       & 617,668   \\ \hline
+    VM real time (s)              & 61.92       & 62.54       & 61.54       & 60.16     \\
+    VM usr time (s)               & 7.57        & 10.72       & 18.10       & 27.27     \\
+    VM sys time (s)               & 7.60        & 14.93       & 18.32       & 6.78      \\
+    VM bogo ops/s (real time)     & 36.82       & 48.82       & 40.04       & 10,266.29 \\
+    VM bogo ops/s (usr+sys time)  & 150.30      & 119.03      & 67.66       & 18,143.58 \\ \hline
+    Total time taken (s)          & 125.45      & 120.31      & 122.76      & 60.00     \\ \hline
+    \end{tabular}
+    \label{stress1} 
+\end{table*}
+
+\section{Results \& Analysis}
+\subsection{Test Suite Outline}
+\subsection{Improved Dual-Core Design}
+\section{Utilisation, Resources and Timing}
+\section{Power Usage}

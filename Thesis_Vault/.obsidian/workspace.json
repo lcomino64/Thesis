@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README FPGA Development Notes.md",
+                "file": "Report RESULTS.md",
                 "mode": "source",
                 "source": false
               }
@@ -31,8 +31,7 @@
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -82,7 +81,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "3871146c797d8bbd",
@@ -98,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Report Planning 2.md",
+                "file": "Report RESULTS.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -115,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Report Planning 2.md",
+                "file": "Report RESULTS.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -138,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Report Planning 2.md"
+                "file": "Report RESULTS.md"
               }
             }
           }
@@ -159,10 +159,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d067adc938c8b9fc",
+  "active": "8f6a5e5f52af5458",
   "lastOpenFiles": [
-    "Report RESULTS.md",
     "Report Planning 2.md",
+    "Report RESULTS.md",
     "README FPGA Development Notes.md",
     "Report Planning.md",
     "README FPGA Linux.md",

@@ -174,8 +174,22 @@ stress-ng: info:  [115] vm                 2464     61.54     18.10     18.32   
 ```
 ### Tests:
 # Dual Core Improved:
+### Benchmarks
+Iperf3:
 ```shell
 [ ID] Interval           Transfer     Bitrate         Retr
 [  5]   0.00-30.03  sec  77.4 MBytes  21.6 Mbits/sec    0             sender
 [  5]   0.00-30.00  sec  77.2 MBytes  21.6 Mbits/sec                  receiver
+```
+Stress-ng
+```shell
+stress-ng --cpu 2 --io 2 --vm 1 --vm-bytes 128M --timeout 60s --metrics-brief
+stress-ng: info:  [2675] setting to a 60 second run per stressor
+stress-ng: info:  [2675] dispatching hogs: 2 cpu, 2 io, 1 vm
+stress-ng: info:  [2675] successful run completed in 96.61s (1 min, 36.61 secs)
+stress-ng: info:  [2675] stressor       bogo ops real time  usr time  sys time   bogo ops/s     bogo ops/s
+stress-ng: info:  [2675]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: info:  [2675] cpu                  12     95.85    117.88      0.07         0.13           0.10
+stress-ng: info:  [2675] io                38762     60.01      2.72     45.59       645.89         802.36
+stress-ng: info:  [2675] vm                 5269     62.54     11.42     13.77        84.25         209.17
 ```
