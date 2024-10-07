@@ -1,67 +1,19 @@
 {
   "main": {
-    "id": "e2f66dacd7d5629c",
+    "id": "4478556b94c26183",
     "type": "split",
     "children": [
       {
-        "id": "6ae3e7e1ef02b292",
+        "id": "4e7e800de81447f8",
         "type": "tabs",
         "children": [
           {
-            "id": "39876696d81dcafa",
+            "id": "a51b23c8c2d69048",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README FPGA Linux.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "202f63a8d851baa6",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "README FPGA Development Notes.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "d5d0fc3bc9275e32",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Report RESULTS.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "5f072da946656e8f",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "README Kubernetes Cluster.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "193fd0fb38482015",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "README FPGA Development Notes.md",
+                "file": "Report Planning 2.md",
                 "mode": "source",
                 "source": false
               }
@@ -73,15 +25,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "efe3548a9a75a4ef",
+    "id": "78ee204e8faba114",
     "type": "split",
     "children": [
       {
-        "id": "fcf9c209e0f638ab",
+        "id": "225dbb892b778886",
         "type": "tabs",
         "children": [
           {
-            "id": "6221d33c288001a7",
+            "id": "d9e569af9aba67a6",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -91,7 +43,7 @@
             }
           },
           {
-            "id": "9c273622f2b9b2b4",
+            "id": "da8febb1cf5a35e9",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -106,7 +58,7 @@
             }
           },
           {
-            "id": "70e77a6db7467eda",
+            "id": "666a13f6b455747b",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -117,24 +69,23 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 300
   },
   "right": {
-    "id": "3871146c797d8bbd",
+    "id": "a1a4601ea54950df",
     "type": "split",
     "children": [
       {
-        "id": "a0f81e87ad577a0e",
+        "id": "0bbef60f0f813859",
         "type": "tabs",
         "children": [
           {
-            "id": "0493b8dc5a0db358",
+            "id": "7c4297b8da7d6ae3",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Report RESULTS.md",
+                "file": "Report Planning 2.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -146,19 +97,19 @@
             }
           },
           {
-            "id": "afe7ca10ab67e88b",
+            "id": "154ac71ee25fe0c2",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Report RESULTS.md",
+                "file": "Report Planning 2.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
             }
           },
           {
-            "id": "ddde1cfd25ed7fed",
+            "id": "30d4eb6048cbea0e",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -169,12 +120,12 @@
             }
           },
           {
-            "id": "536043b94fd777c5",
+            "id": "86c59da8f46ad928",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "Report RESULTS.md"
+                "file": "Report Planning 2.md"
               }
             }
           }
@@ -195,58 +146,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d5d0fc3bc9275e32",
+  "active": "a51b23c8c2d69048",
   "lastOpenFiles": [
-<<<<<<< Updated upstream
-    "Report Planning 2.md",
-    "Report RESULTS.md",
-    "README FPGA Development Notes.md",
     "Report Planning.md",
-    "README FPGA Linux.md",
-    "Proposal Feedback.md",
-=======
     "README FPGA Development Notes.md",
-    "README FPGA Linux.md",
-    "Report RESULTS.md",
->>>>>>> Stashed changes
-    "README Kubernetes Cluster.md",
-    "Report Planning 2.md",
-    "README Microk8s kubectl Management Commands.md",
-    "README Software.md",
-    "Report Planning.md",
-    "README Board definition files.md",
-    "README Dependencies.md",
-    "Bare_metal README.md",
-    "Seminar Feedback.md",
-    "Seminar Notes.md",
-    "Figures/example network overview.png",
-    "Figures/FPGA_Architecture_1.svg",
-    "Figures/Network_Overview.svg",
-    "Figures/Network_Overview 1.svg",
-    "Figures/tcp-ip-end-to-end.png",
-    "Proposal Feedback.md",
-    "Pasted image 20240824160042.png",
-    "Draft Proposal Notes.md",
-    "Network_Overview Code.md",
-    "FPGA_Architecture_1 Code.md",
-    "Proposal Sources List.md",
-    "Pasted image 20240401142642.png",
-    "Figures/Network_Overview Code.md",
-    "Figures/FPGA_Architecture_1 Code.md",
-    "Figures/FPGA_Architecture_1 Code2.txt",
-    "Figures/FPGA_Architecture_1 Code.txt",
-    "Figures/Untitled.md",
-    "Figures/FPGA_Architecture_2.svg",
-    "Figures/FPGA_Architecture_2 Code.md",
-    "Figures/Unconfirmed 767005.crdownload",
-    "Figures/Unconfirmed 820128.crdownload",
-    "Figures/Unconfirmed 925885.crdownload",
-    "Figures/Unconfirmed 340647.crdownload",
-    "Figures/Unconfirmed 932486.crdownload",
-    "Figures/Unconfirmed 536058.crdownload",
-    "Figures",
-    "Unconfirmed 738353.crdownload",
-    "Thesis Topic Desc..md",
-    "Welcome.md"
+    "Report RESULTS.md"
   ]
 }

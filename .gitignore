@@ -36,3 +36,6 @@ data/
 *results/
 Project/cluster_network/docker-images/test_results.json
 *workspace.json
+vivado*
+.Xil/
+Thesis_Vault/.obsidian/workspace.json
