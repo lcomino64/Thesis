@@ -1,0 +1,56 @@
+{
+  "arty-a7-1c": {
+    "arty-a7-1c_basic_3_20241004_112455.db": {
+      "max_clients": 10,
+      "max_cpu_usage": 100.0,
+      "max_memory_usage": 35.1,
+      "total_bytes_processed": 169869312,
+      "avg_bytes_per_second": 187142.46919232994,
+      "test_duration": 907.7004954200002,
+      "avg_network_time": 269.81231515407563,
+      "avg_processing_time": 0.1425820231437683,
+      "avg_queue_time": 7.65839900970459,
+      "successful_operations": 20,
+      "failed_operations": 0
+    },
+    "arty-a7-1c_basic_1_20241004_110917.db": {
+      "max_clients": 1,
+      "max_cpu_usage": 100.0,
+      "max_memory_usage": 21.6,
+      "total_bytes_processed": 104857600,
+      "avg_bytes_per_second": 221740.04742724146,
+      "test_duration": 472.88526009,
+      "avg_network_time": 470.89966344833374,
+      "avg_processing_time": 2.5521562099456787,
+      "avg_queue_time": 0.14687252044677734,
+      "successful_operations": 1,
+      "failed_operations": 0
+    },
+    "arty-a7-1c_large_scale_1000_20241004_114004.db": {
+      "max_clients": 10,
+      "max_cpu_usage": 100.0,
+      "max_memory_usage": 35.7,
+      "total_bytes_processed": 849346560,
+      "avg_bytes_per_second": 184775.07047138762,
+      "test_duration": 4596.6512573,
+      "avg_network_time": 274.5512222599983,
+      "avg_processing_time": 0.13201436281204224,
+      "avg_queue_time": 8.045639188289643,
+      "successful_operations": 100,
+      "failed_operations": 0
+    },
+    "arty-a7-1c_basic_2_20241004_111711.db": {
+      "max_clients": 10,
+      "max_cpu_usage": 100.0,
+      "max_memory_usage": 35.3,
+      "total_bytes_processed": 84934656,
+      "avg_bytes_per_second": 183567.142873062,
+      "test_duration": 462.68986198000005,
+      "avg_network_time": 279.2681820869446,
+      "avg_processing_time": 0.17197883129119873,
+      "avg_queue_time": 8.281518411636352,
+      "successful_operations": 10,
+      "failed_operations": 0
+    }
+  }
+}

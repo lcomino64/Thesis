@@ -1,39 +1,52 @@
 {
   "main": {
-    "id": "4478556b94c26183",
+    "id": "e2f66dacd7d5629c",
     "type": "split",
     "children": [
       {
-        "id": "4e7e800de81447f8",
+        "id": "6ae3e7e1ef02b292",
         "type": "tabs",
         "children": [
           {
-            "id": "a51b23c8c2d69048",
+            "id": "8f6a5e5f52af5458",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Report Planning 2.md",
+                "file": "Proposal Feedback.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "d067adc938c8b9fc",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Report RESULTS.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
   },
   "left": {
-    "id": "78ee204e8faba114",
+    "id": "efe3548a9a75a4ef",
     "type": "split",
     "children": [
       {
-        "id": "225dbb892b778886",
+        "id": "fcf9c209e0f638ab",
         "type": "tabs",
         "children": [
           {
-            "id": "d9e569af9aba67a6",
+            "id": "6221d33c288001a7",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -43,7 +56,7 @@
             }
           },
           {
-            "id": "da8febb1cf5a35e9",
+            "id": "9c273622f2b9b2b4",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -58,7 +71,7 @@
             }
           },
           {
-            "id": "666a13f6b455747b",
+            "id": "70e77a6db7467eda",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -69,23 +82,23 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
-    "id": "a1a4601ea54950df",
+    "id": "3871146c797d8bbd",
     "type": "split",
     "children": [
       {
-        "id": "0bbef60f0f813859",
+        "id": "a0f81e87ad577a0e",
         "type": "tabs",
         "children": [
           {
-            "id": "7c4297b8da7d6ae3",
+            "id": "0493b8dc5a0db358",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Report Planning 2.md",
+                "file": "Report RESULTS.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,19 +110,19 @@
             }
           },
           {
-            "id": "154ac71ee25fe0c2",
+            "id": "afe7ca10ab67e88b",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Report Planning 2.md",
+                "file": "Report RESULTS.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
             }
           },
           {
-            "id": "30d4eb6048cbea0e",
+            "id": "ddde1cfd25ed7fed",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -120,12 +133,12 @@
             }
           },
           {
-            "id": "86c59da8f46ad928",
+            "id": "536043b94fd777c5",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "Report Planning 2.md"
+                "file": "Report RESULTS.md"
               }
             }
           }
@@ -146,10 +159,50 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "a51b23c8c2d69048",
+  "active": "d067adc938c8b9fc",
   "lastOpenFiles": [
-    "Report Planning.md",
+    "Report Planning 2.md",
+    "Proposal Feedback.md",
+    "Report RESULTS.md",
     "README FPGA Development Notes.md",
-    "Report RESULTS.md"
+    "Report Planning.md",
+    "README FPGA Linux.md",
+    "README Kubernetes Cluster.md",
+    "README Software.md",
+    "RESULTS.md",
+    "README Microk8s kubectl Management Commands.md",
+    "README Board definition files.md",
+    "README Dependencies.md",
+    "Bare_metal README.md",
+    "Seminar Feedback.md",
+    "Seminar Notes.md",
+    "Figures/example network overview.png",
+    "Figures/FPGA_Architecture_1.svg",
+    "Figures/Network_Overview.svg",
+    "Figures/Network_Overview 1.svg",
+    "Figures/tcp-ip-end-to-end.png",
+    "Pasted image 20240824160042.png",
+    "Draft Proposal Notes.md",
+    "Network_Overview Code.md",
+    "FPGA_Architecture_1 Code.md",
+    "Proposal Sources List.md",
+    "Pasted image 20240401142642.png",
+    "Figures/Network_Overview Code.md",
+    "Figures/FPGA_Architecture_1 Code.md",
+    "Figures/FPGA_Architecture_1 Code2.txt",
+    "Figures/FPGA_Architecture_1 Code.txt",
+    "Figures/Untitled.md",
+    "Figures/FPGA_Architecture_2.svg",
+    "Figures/FPGA_Architecture_2 Code.md",
+    "Figures/Unconfirmed 767005.crdownload",
+    "Figures/Unconfirmed 820128.crdownload",
+    "Figures/Unconfirmed 925885.crdownload",
+    "Figures/Unconfirmed 340647.crdownload",
+    "Figures/Unconfirmed 932486.crdownload",
+    "Figures/Unconfirmed 536058.crdownload",
+    "Figures",
+    "Unconfirmed 738353.crdownload",
+    "Thesis Topic Desc..md",
+    "Welcome.md"
   ]
 }
