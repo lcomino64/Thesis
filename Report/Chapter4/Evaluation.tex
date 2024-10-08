@@ -144,11 +144,11 @@ The tests will focus only on encryption, since decryption and encryption times a
     \item Basic test 1: \\
     1 client with 1 100mb file.
     \item Basic test 2: \\
-    10 clients with varying file sizes.
+    10 clients with varying file sizes: 2mb, 5mb, 10mb, 20mb.
     \item Basic test 3: \\
-    20 clients with varying file sizes, in 10 client chunks
+    20 clients with varying file sizes, in 10 client chunks.
     \item Large scale test: \\
-    100 clients with varying files sizes, in 10 client chunks
+    100 clients with varying files sizes, in 10 client chunks.
 \end{enumerate}
 
 
@@ -167,13 +167,13 @@ Lastly, all timings were collected using the \textit{'Time'}, Python standard li
 
 \newpage
 \subsection{Single Core Results}
-\begin{figure*}[ht]
+\begin{figure}[ht]
     \begin{center}
-    \includegraphics[width=1.0\textwidth]{Chapter4/Results/1c_results/arty-a7-1c_basic_1_20241004_110917.db_server_metrics.png}
-    \caption{The University Of Queensland}
+    \caption{Single Core, Basic Test 1 Server Metrics}
     \label{Fig:1}
+    \includegraphics[width=1.0\textwidth]{Chapter4/Results/1c_results/arty-a7-1c_basic_1_20241004_110917.db_server_metrics.png}
     \end{center}
-\end{figure*}
+\end{figure}
 
 \begin{table}[!ht]
     \centering

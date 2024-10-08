@@ -6,37 +6,59 @@ Abstract
 List of Abbreviations
 Contents
 List of Figures & Tables
-
 # Part I -Introduction---------------------------------
 # Introduction
-## Motivation:
+## Motivation
 Same as before, except:
 - Introduce what RISC-V is used for, in industry and research
 - When mentioning IoT security, mention the 2024 story about the Dyn attack
-## Project Goal
-Same as before but more defined
+## Project Overview
+## Scope
 
 # Part 2 -Research------------------------------------
 # Background
-## 
-# Literature Review
-
-## Related Works
-
-## Similar Projects with LiteX
-
-## Preexisting Solutions
-
+## Computer Networks, TCP/IP
+#### Network Layer
+#### Link Layer and Ethernet PHY
+#### Ethernet Interfaces
+## Network Security Methods for Embedded Systems
+#### AES Encryption
+## RISC-V ISA
+#### Overview of RISC-V
+#### ISA Extensions
+## FPGAs
+#### VexRiscv & SpinalHDL
+#### Wishbone
+#### LiteX Overview
+#### Litex BIOS
+## Operating Systems
+#### Buildroot Linux
 
 # Part 3 -Complete Stack Overview-------------------
-## SCPNS Hardware Configuration
-
-## SCPNS Software Configuration
+## Hardware Setup
+#### Network Overview
+#### SCPNS
+#### Liteeth
+#### Custom AES Instructions
+OpenSSL Benchmarks (Put full output in the Appendix)
+Diagram of RTL
+Explanation of how it works and how the CPU "uses" it
+Instruction count with custom instructions vs without
+Discuss total footprint (FPGA utilisation) of custom instructions
+#### Proof of Encryption
+Show that the device is actually encryption/decryption capable
+1. Take sha256sum of a text file.
+2. Encrypt the text file via the board.
+3. Check that text file is encrypted.
+4. Decrypt the file via the board.
+5. Check if sha256sum is the same. 
+#### Raspberry Pi
+Specs of the Pi,
+## Software Setup
 Different Boot methods time taken chart
-## Network Cluster Testbed
+#### Buildroot Linux Configuration
 
 ## Debugging Configuration*
-
 
 # Part 4-Evaluation-----------------------------------
 ## Raw Performance Benchmarks & Theoretical Results
@@ -55,8 +77,9 @@ Different Boot methods time taken chart
 
 ## Future Improvements
 
-# Appendix-------------------------------------------
+## Reductions in Scope During Development
 
+# Appendix-------------------------------------------
 
 # Tests to Run
 ### Pi Cluster Full Kubernetes & SCPNS: 1 core, 2 core, 4 core

@@ -15,6 +15,7 @@
 *.cut
 *.tar # For docker image builds
 .DS_Store
+Report/MainThesis.pdf
 
 build/
 __pycache__/
@@ -39,3 +40,4 @@ Project/cluster_network/docker-images/test_results.json
 vivado*
 .Xil/
 Thesis_Vault/.obsidian/workspace.json
+Report/MainThesis.pdf
