@@ -152,21 +152,93 @@ The tests will focus only on encryption, since decryption and encryption times a
 \end{enumerate}
 
 
-While these tests are running, we are collecting a multitude of metrics regarding overall performance\todo{Make reference to database}, but the primary result we are concerned with is the total bytes processed (or bytes encrypted) per second. This single metric is fundamentally all we need to determine which amount of cores is superior.
+While these tests are running, we are collecting a multitude of metrics regarding overall performance\todo{Make reference to database}, but the primary result we are concerned with is the total bytes processed (or bytes encrypted) per second. This single metric is all we need to determine which amount of cores is superior for the application. It is a standard average, calculated from:
+
+$$\textit{Average Bytes Processed}(Bytes/s)=\frac{\textit{Total Bytes Processed}}{\textit{Test Duration}}$$
+
+Where \textit{'Total Bytes Processed'} is the total amount of bytes processed during the test, and \textit{'Test Duration'}, is how long the test took to execute. This is calculated from the server-side, as all the information is present there\todo{Make reference to schema}.
+
+On the client-side, we are also keeping track of the client's total time for the transaction, time spent in the queue, time spent on network transfers and the time spent processing on the server, \ie encrypting. Total time, network time and queuing time are collected in real time on client-side, leaving the processing time as the remainder, calculated via:
+
+$$\textit{Processing Time}(s)=\textit{Total Time} - \textit{Network Time} - \textit{Queue Time}$$
+
+Lastly, all timings were collected using the \textit{'Time'}, Python standard library. 
+% Using the remainder-method for getting the processing time should be more ideal, as the \textit{'Time'} library can tend to become less precise for miniscule timings less than $1\mu$s.
+
+\newpage
 \subsection{Single Core Results}
+\begin{figure*}[ht]
+    \begin{center}
+    \includegraphics[width=1.0\textwidth]{Chapter4/Results/1c_results/arty-a7-1c_basic_1_20241004_110917.db_server_metrics.png}
+    \caption{The University Of Queensland}
+    \label{Fig:1}
+    \end{center}
+\end{figure*}
 
-% \begin{figure}[h]
-%     \begin{center}
-%     \includegraphics[width=1.0\textwidth]{Chapter4/Results/1c_results/arty-a7-1c_basic_1_20241004_110917.db_server_metrics.png}
-%     \caption{The University Of Queensland}
-%     \label{Fig:1}
-%     \end{center}
-% \end{figure}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+        Single Core Tests & Basic 1 & Basic 2 & Basic 3 & Large Scale 100 \\ \hline
+        Total Bytes Processed (Mb) & 104.86 & 84.93 & 169.87 & 849.35 \\ \hline
+        Avg Bytes per Second (Kb/s) & 221.74 & 183.57 & 187.14 & 184.78 \\ \hline
+        Test Duration (s) & 472.89 & 462.69 & 907.70 & 4596.65 \\ \hline
+        Avg Network Time (ms) & 470.90 & 279.27 & 269.81 & 274.55 \\ \hline
+        Avg Processing Time (ms) & 2.55 & 0.17 & 0.14 & 0.13 \\ \hline
+        Avg Queue Time (ms) & 0.15 & 8.28 & 7.66 & 8.05 \\ \hline
+    \end{tabular}
+\end{table}
 
-
+\newpage
 \subsection{Dual Core Results}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+        Dual Core Tests & Basic 1 & Basic 2 & Basic 3 & Large Scale 100 \\ \hline
+        Total Bytes Processed (Mb) & 104.86 & 84.93 & 169.87 & 849.35 \\ \hline
+        Avg Bytes per Second (Kb/s) & 272.97 & 265.26 & 272.79 & 264.22 \\ \hline
+        Test Duration (s) & 384.13 & 320.19 & 622.70 & 3214.54 \\ \hline
+        Avg Network Time (ms) & 383.02 & 191.95 & 186.90 & 190.68 \\ \hline
+        Avg Processing Time (ms) & 1.07 & 0.13 & 0.13 & 0.13 \\ \hline
+        Avg Queue Time (ms) & 0.07 & 4.35 & 3.94 & 4.42 \\ \hline
+    \end{tabular}
+\end{table}
+
+\newpage
 \subsection{Quad Core Results}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+        Quad Core Tests & Basic 1 & Basic 2 & Basic 3 & Large Scale 100 \\ \hline
+        Total Bytes Processed (Mb) & 104.86 & 84.93 & 169.87 & 849.35 \\ \hline
+        Avg Bytes per Second (Kb/s) & 269.92 & 248.77 & 251.97 & 245.57 \\ \hline
+        Test Duration (s) & 388.48 & 341.42 & 674.16 & 3458.68 \\ \hline
+        Avg Network Time (ms) & 382.98 & 195.86 & 196.11 & 201.04 \\ \hline
+        Avg Processing Time (ms) & 0.88 & 0.13 & 0.13 & 0.13 \\ \hline
+        Avg Queue Time (ms) & 0.08 & 4.37 & 3.65 & 3.83 \\ \hline
+    \end{tabular}
+\end{table}
+
+\newpage
 \subsection{Raspberry Pi Results}
+
 \section{Improved Dual-Core Design, Results and Analysis}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+        Improved Dual Core Tests & Basic 1 & Basic 2 & Basic 3 & Large Scale 100 \\ \hline
+        Total Bytes Processed (Mb) & 104.86 & 84.93 & 169.87 & 849.35 \\ \hline
+        Avg Bytes per Second (Kb/s) & 376.04 & 406.06 & 393.59 & 403.36 \\ \hline
+        Test Duration (s) & 278.85 & 209.17 & 431.59 & 2105.67 \\ \hline
+        Avg Network Time (ms) & 276.87 & 120.00 & 129.88 & 123.35 \\ \hline
+        Avg Processing Time (ms) & 1.05 & 0.14 & 0.14 & 0.14 \\ \hline
+        Avg Queue Time (ms) & 0.08 & 3.11 & 1.95 & 2.81 \\ \hline
+    \end{tabular}
+\end{table}
 \section{Utilisation, Resources and Timing}
 \section{Power Usage}
