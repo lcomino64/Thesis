@@ -147,14 +147,31 @@ def process_queued_clients():
                 threading.Thread(target=process_client, args=(conn, addr)).start()
 
 
+def setup_optimized_socket(s):
+    s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 4 * CHUNK_SIZE)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 4 * CHUNK_SIZE)
+
+    try:
+        s.setsockopt(socket.IPPROTO_TCP, socket.TCP_SLOW_START_AFTER_IDLE, 0)
+    except AttributeError:
+        pass  # Not available on all systems
+
+    try:
+        s.setsockopt(socket.IPPROTO_TCP, socket.TCP_QUICKACK, 1)
+    except AttributeError:
+        pass  # Not available on all systems
+
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+    s.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 60)
+    s.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 10)
+    s.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 3)
+
+
 def process_client(conn, addr):
     global total_bytes_processed, active_clients
 
     print(f"New connection from {addr}")
-    conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-    conn.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 4 * CHUNK_SIZE)
-    conn.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 4 * CHUNK_SIZE)
-
     start_time = time.time()
 
     print(f"[{addr}] Waiting for operation byte")
@@ -253,6 +270,7 @@ def main():
     queue_thread.start()
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        setup_optimized_socket(s)
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.bind((host, port))
         s.listen()

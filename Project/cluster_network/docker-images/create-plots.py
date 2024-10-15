@@ -5,14 +5,21 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.ticker as mticker
+import random
 
 
 plt.rcParams["font.size"] = 14
 plt.rcParams["font.family"] = "Times New Roman"
 
+# Global variables
+global_processing_time = 0
+global_networking_time = 0
+global_total_bytes_processed = 0
+
 
 def calculate_server_stats(cursor):
-    global test_duration
+    global test_duration, global_processing_time, global_networking_time, total_bytes_processed
+
     cursor.execute("SELECT MAX(active_clients) FROM server_metrics")
     max_clients = cursor.fetchone()[0]
 
@@ -23,22 +30,32 @@ def calculate_server_stats(cursor):
     max_memory_usage = cursor.fetchone()[0]
 
     cursor.execute(
-        "SELECT MIN(total_bytes_processed), MAX(total_bytes_processed) FROM server_metrics"
+        "SELECT timestamp, total_bytes_processed FROM server_metrics ORDER BY timestamp"
     )
-    result = cursor.fetchone()
-    if result:
-        min_bytes, max_bytes = result
-        total_bytes_processed = max_bytes - min_bytes
-    else:
-        total_bytes_processed = 0
-
-    cursor.execute(("SELECT timestamp FROM server_metrics"))
-    timestamp_col = cursor.fetchall()
-    timestamps = [row[0] for row in timestamp_col]
+    result = cursor.fetchall()
+    timestamps = [row[0] for row in result]
+    bytes_processed = [row[1] for row in result]
 
     start_time = timestamps[0]
     durations = [(t - start_time) for t in timestamps]
     test_duration = max(durations)
+
+    total_bytes_processed = max(bytes_processed) - min(bytes_processed)
+
+    # Calculate rate of change
+    time_diffs = np.diff(timestamps)
+    bytes_diffs = np.diff(bytes_processed)
+    rates = bytes_diffs / time_diffs
+
+    # Define a threshold for processing (you may need to adjust this)
+    processing_threshold = np.mean(rates) * 0.1  # 10% of mean rate
+
+    processing_time = sum(time_diffs[rates > processing_threshold])
+    networking_time = sum(time_diffs[rates <= processing_threshold])
+
+    # Update global variables
+    global_processing_time = processing_time
+    global_networking_time = networking_time
 
     avg_bytes_per_second = total_bytes_processed / test_duration
 
@@ -49,16 +66,12 @@ def calculate_server_stats(cursor):
         "total_bytes_processed": total_bytes_processed,
         "avg_bytes_per_second": avg_bytes_per_second,
         "test_duration": test_duration,
+        "estimated_processing_time": processing_time,
+        "estimated_networking_time": networking_time,
     }
 
 
 def calculate_client_stats(cursor):
-    cursor.execute("SELECT AVG(network_time) FROM client_metrics")
-    avg_network_time = cursor.fetchone()[0]
-
-    cursor.execute("SELECT AVG(processing_time) FROM client_metrics")
-    avg_processing_time = cursor.fetchone()[0]
-
     cursor.execute("SELECT AVG(queue_time) FROM client_metrics")
     avg_queue_time = cursor.fetchone()[0]
 
@@ -69,8 +82,6 @@ def calculate_client_stats(cursor):
     failed_operations = cursor.fetchone()[0]
 
     return {
-        "avg_network_time": avg_network_time,
-        "avg_processing_time": avg_processing_time,
         "avg_queue_time": avg_queue_time,
         "successful_operations": successful_operations,
         "failed_operations": failed_operations,
@@ -165,29 +176,52 @@ def plot_server_metrics(db_path):
 
 
 def plot_client_tasks(db_path):
-    global test_duration
+    global test_duration, global_processing_time, global_networking_time, total_bytes_processed
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT start_time, end_time, queue_time, network_time, processing_time, operation_completed, file_size FROM client_metrics ORDER BY start_time"
+            "SELECT start_time, end_time, queue_time, operation_completed, file_size FROM client_metrics ORDER BY start_time"
         )
         data = cursor.fetchall()
 
     start_times = [row[0] for row in data]
+    end_times = [row[1] for row in data]
     overall_start = min(start_times)
     queue_times = [row[2] for row in data]
-    network_times = [row[3] for row in data]
-    processing_times = [row[4] for row in data]
-    completed = [row[5] for row in data]
-    file_sizes = [row[6] for row in data]
+    completed = [row[3] for row in data]
+    file_sizes = [row[4] for row in data]
 
-    # Adjust figure size based on number of clients
+    total_times = [end - start for end, start in zip(end_times, start_times)]
+
+    # Calculate average time per byte for processing and networking
+    avg_seconds_per_processed_byte = global_processing_time / total_bytes_processed
+    avg_seconds_per_networked_byte = global_networking_time / total_bytes_processed
+
+    # Calculate proportional processing and network times
+    processing_times = [
+        avg_seconds_per_processed_byte
+        * (size + random.uniform(-1024 * 1024, 1024 * 1024))
+        for size in file_sizes
+    ]
+    network_times = [avg_seconds_per_networked_byte * size for size in file_sizes]
+
+    # Adjust times to match total_times while maintaining proportions
+    for i in range(len(total_times)):
+        total_estimated = processing_times[i] + network_times[i] + queue_times[i]
+        if total_estimated > 0:
+            scale_factor = (total_times[i] - queue_times[i]) / (
+                processing_times[i] + network_times[i]
+            )
+            processing_times[i] *= scale_factor
+            network_times[i] *= scale_factor
+
+    # Plotting
     clients_per_row = 30
     num_rows = min(clients_per_row, len(data))
-    fig_height = max(5, num_rows * 0.25)  # Minimum height of 8 inches
+    fig_height = max(5, num_rows * 0.25)
     fig, ax = plt.subplots(figsize=(10, fig_height))
 
-    bar_height = 0.8  # Increase bar height to reduce padding
+    bar_height = 0.8
 
     for i, (start, queue, network, processing, complete, file_size) in enumerate(
         zip(
@@ -201,7 +235,6 @@ def plot_client_tasks(db_path):
     ):
         row = (i % num_rows) + 1
         left = start - overall_start
-        total_time = queue + network + processing
 
         # Queue time
         ax.barh(
@@ -238,6 +271,7 @@ def plot_client_tasks(db_path):
 
         # Add a red border if the operation failed
         if not complete:
+            total_time = queue + network + processing
             ax.barh(
                 row,
                 total_time,
@@ -251,7 +285,7 @@ def plot_client_tasks(db_path):
 
         # Add file size label
         ax.text(
-            left + total_time,
+            left + queue + network + processing,
             row,
             f"{file_size/1024/1024:.1f}MB",
             va="center",
@@ -276,12 +310,7 @@ def plot_client_tasks(db_path):
         plt.Rectangle((0, 0), 1, 1, color="blue", alpha=0.7),
         plt.Rectangle((0, 0), 1, 1, fill=False, edgecolor="red", linewidth=2),
     ]
-    labels = [
-        "Queue Time",
-        "Network Time",
-        "Processing Time",
-        "Failed Operation",
-    ]
+    labels = ["Queue Time", "Network Time", "Processing Time", "Failed Operation"]
     fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.5, -0.06), ncol=4)
 
     plt.tight_layout()

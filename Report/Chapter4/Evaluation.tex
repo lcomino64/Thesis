@@ -167,13 +167,6 @@ Lastly, all timings were collected using the \textit{'Time'}, Python standard li
 
 \newpage
 \subsection{Single Core Results}
-\begin{figure}[ht]
-    \begin{center}
-    \caption{Single Core, Basic Test 1 Server Metrics}
-    \label{Fig:1}
-    \includegraphics[width=1.0\textwidth]{Chapter4/Results/1c_results/arty-a7-1c_basic_1_20241004_110917.db_server_metrics.png}
-    \end{center}
-\end{figure}
 
 \begin{table}[!ht]
     \centering
@@ -183,9 +176,9 @@ Lastly, all timings were collected using the \textit{'Time'}, Python standard li
         Total Bytes Processed (Mb) & 104.86 & 84.93 & 169.87 & 849.35 \\ \hline
         Avg Bytes per Second (Kb/s) & 221.74 & 183.57 & 187.14 & 184.78 \\ \hline
         Test Duration (s) & 472.89 & 462.69 & 907.70 & 4596.65 \\ \hline
-        Avg Network Time (ms) & 470.90 & 279.27 & 269.81 & 274.55 \\ \hline
-        Avg Processing Time (ms) & 2.55 & 0.17 & 0.14 & 0.13 \\ \hline
-        Avg Queue Time (ms) & 0.15 & 8.28 & 7.66 & 8.05 \\ \hline
+        Total Network Time (s) & 173.70 & 188.40 & 377.81 & 2100.95 \\ \hline
+        Total Processing Time (s) & 299.18 & 274.29 & 529.89 & 2495.71 \\ \hline
+        Avg Queue Time (s) & 0.15 & 8.28 & 7.66 & 8.05 \\ \hline
     \end{tabular}
 \end{table}
 
@@ -200,9 +193,9 @@ Lastly, all timings were collected using the \textit{'Time'}, Python standard li
         Total Bytes Processed (Mb) & 104.86 & 84.93 & 169.87 & 849.35 \\ \hline
         Avg Bytes per Second (Kb/s) & 272.97 & 265.26 & 272.79 & 264.22 \\ \hline
         Test Duration (s) & 384.13 & 320.19 & 622.70 & 3214.54 \\ \hline
-        Avg Network Time (ms) & 383.02 & 191.95 & 186.90 & 190.68 \\ \hline
-        Avg Processing Time (ms) & 1.07 & 0.13 & 0.13 & 0.13 \\ \hline
-        Avg Queue Time (ms) & 0.07 & 4.35 & 3.94 & 4.42 \\ \hline
+        Total Network Time (s) & 152.47 & 110.49 & 256.35 & 1166.14 \\ \hline
+        Total Processing Time (s) & 231.66 & 209.70 & 366.36 & 2048.41 \\ \hline
+        Avg Queue Time (s) & 0.07 & 4.35 & 3.94 & 4.42 \\ \hline
     \end{tabular}
 \end{table}
 
@@ -217,16 +210,29 @@ Lastly, all timings were collected using the \textit{'Time'}, Python standard li
         Total Bytes Processed (Mb) & 104.86 & 84.93 & 169.87 & 849.35 \\ \hline
         Avg Bytes per Second (Kb/s) & 269.92 & 248.77 & 251.97 & 245.57 \\ \hline
         Test Duration (s) & 388.48 & 341.42 & 674.16 & 3458.68 \\ \hline
-        Avg Network Time (ms) & 382.98 & 195.86 & 196.11 & 201.04 \\ \hline
-        Avg Processing Time (ms) & 0.88 & 0.13 & 0.13 & 0.13 \\ \hline
-        Avg Queue Time (ms) & 0.08 & 4.37 & 3.65 & 3.83 \\ \hline
+        Total Network Time (s) & 171.60 & 100.68 & 209.94 & 902.06 \\ \hline
+        Total Processing Time (s) & 216.88 & 240.74 & 464.23 & 2556.62 \\ \hline
+        Avg Queue Time (s) & 0.08 & 4.37 & 3.65 & 3.83 \\ \hline
     \end{tabular}
 \end{table}
 
 \newpage
 \subsection{Raspberry Pi Results}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+        Raspberry Pi Tests & Basic 1 & Basic 2 & Basic 3 & Large Scale 100 \\ \hline
+        Total Bytes Processed (Mb) & 104.86 & 55.57 & 217.06 & 946.86 \\ \hline
+        Avg Bytes per Second (Kb/s) & 8042.64 & 13853.24 & 17895.55 & 16829.84 \\ \hline
+        Test Duration (s) & 13.04 & 4.01 & 12.13 & 56.26 \\ \hline
+        Total Network Time (s) & 8.06 & 2.05 & 8.13 & 37.50 \\ \hline
+        Total Processing Time (s) & 4.97 & 1.96 & 4.00 & 18.76 \\ \hline
+        Avg Queue Time (s) & 0.00 & 0.03 & 0.02 & 0.03 \\ \hline
+    \end{tabular}
+\end{table}
 
-\section{Improved Dual-Core Design, Results and Analysis}
+\section{Improved Dual Core Design, Results and Analysis}
 \begin{table}[!ht]
     \centering
     \begin{tabular}{|l|l|l|l|l|}
@@ -235,10 +241,11 @@ Lastly, all timings were collected using the \textit{'Time'}, Python standard li
         Total Bytes Processed (Mb) & 104.86 & 84.93 & 169.87 & 849.35 \\ \hline
         Avg Bytes per Second (Kb/s) & 376.04 & 406.06 & 393.59 & 403.36 \\ \hline
         Test Duration (s) & 278.85 & 209.17 & 431.59 & 2105.67 \\ \hline
-        Avg Network Time (ms) & 276.87 & 120.00 & 129.88 & 123.35 \\ \hline
-        Avg Processing Time (ms) & 1.05 & 0.14 & 0.14 & 0.14 \\ \hline
-        Avg Queue Time (ms) & 0.08 & 3.11 & 1.95 & 2.81 \\ \hline
+        Total Network Time (s) & 51.08 & 71.65 & 108.20 & 646.95 \\ \hline
+        Total Processing Time (s) & 227.77 & 137.52 & 323.39 & 1458.72 \\ \hline
+        Avg Queue Time (s) & 0.08 & 3.11 & 1.95 & 2.81 \\ \hline
     \end{tabular}
 \end{table}
-\section{Utilisation, Resources and Timing}
+\section{Utilisation}
+\section{Timing}
 \section{Power Usage}

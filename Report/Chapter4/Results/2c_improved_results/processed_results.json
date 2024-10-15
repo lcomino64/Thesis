@@ -4,35 +4,35 @@
     "Total Bytes Processed (Mb)": "104.86",
     "Avg Bytes per Second (Kb/s)": "376.04",
     "Test Duration (s)": "278.85",
-    "Avg Network Time (ms)": "276.87",
-    "Avg Processing Time (ms)": "1.05",
-    "Avg Queue Time (ms)": "0.08"
+    "Total Network Time (s)": "51.08",
+    "Total Processing Time (s)": "227.77",
+    "Avg Queue Time (s)": "0.08"
   },
   {
     "Improved Dual Core Tests": "Basic 2",
     "Total Bytes Processed (Mb)": "84.93",
     "Avg Bytes per Second (Kb/s)": "406.06",
     "Test Duration (s)": "209.17",
-    "Avg Network Time (ms)": "120.00",
-    "Avg Processing Time (ms)": "0.14",
-    "Avg Queue Time (ms)": "3.11"
+    "Total Network Time (s)": "71.65",
+    "Total Processing Time (s)": "137.52",
+    "Avg Queue Time (s)": "3.11"
   },
   {
     "Improved Dual Core Tests": "Basic 3",
     "Total Bytes Processed (Mb)": "169.87",
     "Avg Bytes per Second (Kb/s)": "393.59",
     "Test Duration (s)": "431.59",
-    "Avg Network Time (ms)": "129.88",
-    "Avg Processing Time (ms)": "0.14",
-    "Avg Queue Time (ms)": "1.95"
+    "Total Network Time (s)": "108.20",
+    "Total Processing Time (s)": "323.39",
+    "Avg Queue Time (s)": "1.95"
   },
   {
     "Improved Dual Core Tests": "Large Scale 100",
     "Total Bytes Processed (Mb)": "849.35",
     "Avg Bytes per Second (Kb/s)": "403.36",
     "Test Duration (s)": "2105.67",
-    "Avg Network Time (ms)": "123.35",
-    "Avg Processing Time (ms)": "0.14",
-    "Avg Queue Time (ms)": "2.81"
+    "Total Network Time (s)": "646.95",
+    "Total Processing Time (s)": "1458.72",
+    "Avg Queue Time (s)": "2.81"
   }
 ]

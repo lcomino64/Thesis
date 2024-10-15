@@ -7,8 +7,8 @@
       "total_bytes_processed": 849346560,
       "avg_bytes_per_second": 403361.6534592997,
       "test_duration": 2105.6700673349987,
-      "avg_network_time": 123.34927015781403,
-      "avg_processing_time": 0.14487162590026856,
+      "estimated_processing_time": 646.9480762660014,
+      "estimated_networking_time": 1458.7219910689973,
       "avg_queue_time": 2.8114639258384706,
       "successful_operations": 100,
       "failed_operations": 0
@@ -20,8 +20,8 @@
       "total_bytes_processed": 169869312,
       "avg_bytes_per_second": 393589.61872932373,
       "test_duration": 431.5899198469997,
-      "avg_network_time": 129.87878495454788,
-      "avg_processing_time": 0.13929438591003418,
+      "estimated_processing_time": 108.1982539390001,
+      "estimated_networking_time": 323.3916659079996,
       "avg_queue_time": 1.9460625886917113,
       "successful_operations": 20,
       "failed_operations": 0
@@ -33,8 +33,8 @@
       "total_bytes_processed": 104857600,
       "avg_bytes_per_second": 376035.79585942096,
       "test_duration": 278.85004873100024,
-      "avg_network_time": 276.87434697151184,
-      "avg_processing_time": 1.0518286228179932,
+      "estimated_processing_time": 51.07508099200095,
+      "estimated_networking_time": 227.7749677389993,
       "avg_queue_time": 0.07896208763122559,
       "successful_operations": 1,
       "failed_operations": 0
@@ -46,8 +46,8 @@
       "total_bytes_processed": 84934656,
       "avg_bytes_per_second": 406055.63223243854,
       "test_duration": 209.16999853700054,
-      "avg_network_time": 120.00171463489532,
-      "avg_processing_time": 0.1370133638381958,
+      "estimated_processing_time": 71.65384420699957,
+      "estimated_networking_time": 137.51615433000097,
       "avg_queue_time": 3.1056481122970583,
       "successful_operations": 10,
       "failed_operations": 0

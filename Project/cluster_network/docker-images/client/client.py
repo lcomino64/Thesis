@@ -29,8 +29,29 @@ def verify_operation(filename, output_filename, operation):
         return original_start == decrypted_start
 
 
+def setup_optimized_socket(s):
+    s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 4 * CHUNK_SIZE)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 4 * CHUNK_SIZE)
+
+    try:
+        s.setsockopt(socket.IPPROTO_TCP, socket.TCP_SLOW_START_AFTER_IDLE, 0)
+    except AttributeError:
+        pass  # Not available on all systems
+
+    try:
+        s.setsockopt(socket.IPPROTO_TCP, socket.TCP_QUICKACK, 1)
+    except AttributeError:
+        pass  # Not available on all systems
+
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+    s.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 60)
+    s.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 10)
+    s.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 3)
+
+
 def send_file(filename, operation, metrics_url):
-    host = "192.168.1.11"
+    host = "192.168.1.50"
     port = 8080
 
     operation_completed = False
@@ -49,9 +70,7 @@ def send_file(filename, operation, metrics_url):
     network_start_time = start_time
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 4 * CHUNK_SIZE)
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 4 * CHUNK_SIZE)
+        setup_optimized_socket(s)
 
         s.connect((host, port))
         network_time = time.time() - network_start_time

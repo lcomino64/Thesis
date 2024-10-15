@@ -6,6 +6,7 @@ Abstract
 List of Abbreviations
 Contents
 List of Figures & Tables
+
 # Part I -Introduction---------------------------------
 # Introduction
 ## Motivation
@@ -14,6 +15,7 @@ Same as before, except:
 - When mentioning IoT security, mention the 2024 story about the Dyn attack
 ## Project Overview
 ## Scope
+
 
 # Part 2 -Research------------------------------------
 # Background
@@ -34,6 +36,7 @@ Same as before, except:
 ## Operating Systems
 #### Buildroot Linux
 
+
 # Part 3 -Complete Stack Overview-------------------
 ## Hardware Setup
 #### Network Overview
@@ -46,12 +49,15 @@ Explanation of how it works and how the CPU "uses" it
 Instruction count with custom instructions vs without
 Discuss total footprint (FPGA utilisation) of custom instructions
 #### Proof of Encryption
+[[Report Proof of Encryption Section]]
+Methodology:
 Show that the device is actually encryption/decryption capable
-1. Take sha256sum of a text file.
-2. Encrypt the text file via the board.
-3. Check that text file is encrypted.
-4. Decrypt the file via the board.
-5. Check if sha256sum is the same. 
+1. Create test text file.
+2. Take sha256sum of test file.
+3. Encrypt the test file via the board.
+4. Check that test file is encrypted.
+5. Decrypt the file via the board.
+6. Check if sha256sum is the same. 
 #### Raspberry Pi
 Specs of the Pi,
 ## Software Setup
@@ -60,6 +66,7 @@ Different Boot methods time taken chart
 
 ## Debugging Configuration*
 
+
 # Part 4-Evaluation-----------------------------------
 ## Raw Performance Benchmarks & Theoretical Results
 
@@ -67,6 +74,7 @@ Different Boot methods time taken chart
 
 ## Utilisation, Resources and Timing
 
+## Ethernet Throughput Analysis
 ## Power Analysis*
 
 
@@ -77,9 +85,8 @@ Different Boot methods time taken chart
 
 ## Future Improvements
 
-## Reductions in Scope During Development
+## Issues and Reductions in Scope During Development
 
-# Appendix-------------------------------------------
 
 # Tests to Run
 ### Pi Cluster Full Kubernetes & SCPNS: 1 core, 2 core, 4 core
@@ -103,3 +110,13 @@ Clients spawn at a drowning rate for 60mins - how many clients can be handled in
 
 Challenges:
 - Storage may be a concern for the files of many clients. We may need to just throw out the result of an encryption/decryption, if the file already exists. That way all client threads on the same pod, can reference the same file. 
+
+# Demo Sections of priority:
+## Introduction
+## AES sections
+## LiteX and Vexriscv sections
+## Results
+## Utilisation and Timing
+## Ethernet Sections
+## Stack overview
+## Do Poster First

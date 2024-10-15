@@ -4,10 +4,10 @@ from collections import OrderedDict
 
 # Define the order of tests
 test_order = [
-    "arty-a7-2c-improved_basic_1_20241007_121858.db",
-    "arty-a7-2c-improved_basic_2_20241007_122337.db",
-    "arty-a7-2c-improved_basic_3_20241007_122706.db",
-    "arty-a7-2c-improved_large_scale_1000_20241007_123418.db",
+    "raspberry-pi_basic_1_20241004_140120.db",
+    "raspberry-pi_basic_2_20241004_140133.db",
+    "raspberry-pi_basic_3_20241004_140137.db",
+    "raspberry-pi_large_scale_1000_20241004_140150.db",
 ]
 
 # Define human-readable field names and their formatting
@@ -15,9 +15,9 @@ field_names = {
     "total_bytes_processed": ("Total Bytes Processed (Mb)", "{:.2f}"),
     "avg_bytes_per_second": ("Avg Bytes per Second (Kb/s)", "{:.2f}"),
     "test_duration": ("Test Duration (s)", "{:.2f}"),
-    "avg_network_time": ("Avg Network Time (ms)", "{:.2f}"),
-    "avg_processing_time": ("Avg Processing Time (ms)", "{:.2f}"),
-    "avg_queue_time": ("Avg Queue Time (ms)", "{:.2f}"),
+    "estimated_processing_time": ("Total Network Time (s)", "{:.2f}"),
+    "estimated_networking_time": ("Total Processing Time (s)", "{:.2f}"),
+    "avg_queue_time": ("Avg Queue Time (s)", "{:.2f}"),
 }
 
 # Read the JSON file
@@ -25,7 +25,7 @@ with open(os.path.join("data", "test_results.json"), "r") as file:
     data = json.load(file)
 
 # Extract the relevant configuration
-config_data = data["arty-a7-2c-improved"]
+config_data = data["raspberry-pi"]
 
 # Initialize the result list
 result = []
@@ -44,7 +44,7 @@ for test in test_order:
     elif "large_scale_1000" in test:
         name = "Large Scale 100"
 
-    test_data["Improved Dual Core Tests"] = name
+    test_data["Raspberry Pi Tests"] = name
 
     for original_field, (readable_field, format_str) in field_names.items():
         value = config_data[test][original_field]

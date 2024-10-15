@@ -4,35 +4,35 @@
     "Total Bytes Processed (Mb)": "104.86",
     "Avg Bytes per Second (Kb/s)": "272.97",
     "Test Duration (s)": "384.13",
-    "Avg Network Time (ms)": "383.02",
-    "Avg Processing Time (ms)": "1.07",
-    "Avg Queue Time (ms)": "0.07"
+    "Total Network Time (s)": "152.47",
+    "Total Processing Time (s)": "231.66",
+    "Avg Queue Time (s)": "0.07"
   },
   {
     "Dual Core Tests": "Basic 2",
     "Total Bytes Processed (Mb)": "84.93",
     "Avg Bytes per Second (Kb/s)": "265.26",
     "Test Duration (s)": "320.19",
-    "Avg Network Time (ms)": "191.95",
-    "Avg Processing Time (ms)": "0.13",
-    "Avg Queue Time (ms)": "4.35"
+    "Total Network Time (s)": "110.49",
+    "Total Processing Time (s)": "209.70",
+    "Avg Queue Time (s)": "4.35"
   },
   {
     "Dual Core Tests": "Basic 3",
     "Total Bytes Processed (Mb)": "169.87",
     "Avg Bytes per Second (Kb/s)": "272.79",
     "Test Duration (s)": "622.70",
-    "Avg Network Time (ms)": "186.90",
-    "Avg Processing Time (ms)": "0.13",
-    "Avg Queue Time (ms)": "3.94"
+    "Total Network Time (s)": "256.35",
+    "Total Processing Time (s)": "366.36",
+    "Avg Queue Time (s)": "3.94"
   },
   {
     "Dual Core Tests": "Large Scale 100",
     "Total Bytes Processed (Mb)": "849.35",
     "Avg Bytes per Second (Kb/s)": "264.22",
     "Test Duration (s)": "3214.54",
-    "Avg Network Time (ms)": "190.68",
-    "Avg Processing Time (ms)": "0.13",
-    "Avg Queue Time (ms)": "4.42"
+    "Total Network Time (s)": "1166.14",
+    "Total Processing Time (s)": "2048.41",
+    "Avg Queue Time (s)": "4.42"
   }
 ]
