@@ -90,9 +90,6 @@ type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  1
 aes-256-cbc      27291.06k    29063.72k    29663.66k    29896.02k    29966.34k    29960.87k
 AES-128-CBC      36888.21k    40295.08k    41468.07k    41769.30k    41855.66k    41872.04k
 ```
-
-# Entire native setup on MacOS
-
 # Raspberry Pi Server
 ### Benchmarks:
 Iperf3:

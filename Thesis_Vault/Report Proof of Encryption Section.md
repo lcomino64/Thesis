@@ -1,3 +1,5 @@
+## Encryption/Decryption Capabilities
+Have Wireshark open the whole time.
 Show that the device is actually encryption/decryption capable. Make sure server is running.
 1. Create test text file.
 i.e.
@@ -33,10 +35,23 @@ By Running:
 python3 client.py demo_enc_proof/test-text.txt.enc decrypt
 ```
 9. Take sha256sum of decrypted file
-10. Check if sha256sum is the same. 
+10. Check if sha256sum is the same
 Using diff or cat:
 ```shell
 cat test-text2.sha256 test-text1.sha256
 cc53431630af0ef13af7e76baf742d5fc062fdffb2ed00ab95f4e1b55048cc23  test-text.txt
 cc53431630af0ef13af7e76baf742d5fc062fdffb2ed00ab95f4e1b55048cc23  test-text.txt
+```
+## Same result as OpenSSL Test
+Create test file:
+```shell
+yes "This is repeating text." | head -n 200 > test-text.txt
+```
+Get encrypted file via openSSL
+```
+openssl enc -aes-128-cbc -K 00000000000000000000000000000000 -iv 00000000000000000000000000000000 -nosalt -in test-text.txt -out test-text.txt.enc
+```
+Get Encrypted file via server:
+```shell
+python3 client.py demo_enc_proof/test-text.txt.enc decrypt
 ```

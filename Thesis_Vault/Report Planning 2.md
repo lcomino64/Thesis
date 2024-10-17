@@ -11,11 +11,8 @@ List of Figures & Tables
 # Introduction
 ## Motivation
 Same as before, except:
-- Introduce what RISC-V is used for, in industry and research
 - When mentioning IoT security, mention the 2024 story about the Dyn attack
-## Project Overview
-## Scope
-
+## Project Overview and Scope
 
 # Part 2 -Research------------------------------------
 # Background
@@ -26,22 +23,25 @@ Same as before, except:
 ## Network Security Methods for Embedded Systems
 #### AES Encryption
 ## RISC-V ISA
-#### Overview of RISC-V
-#### ISA Extensions
-## FPGAs
+Overview of RISC-V, it's current state in the market.
+ISA structure compared to other ISAs
+ISA Extensions
+ISA modes: User, Supervisor, machine etc.
+## FPGAs and Softcore CPUs
+What are FPGAs and what are softcore CPUs? What is the current fastest softcore CPU?
 #### VexRiscv & SpinalHDL
-#### Wishbone
-#### LiteX Overview
+#### CPU Buses and Wishbone
+#### VexRiscvSMP Linux
+Si-Five PLIC/CLINT. How do cores synchronise?
+## LiteX Overview
+#### Cores, Liteeth
 #### Litex BIOS
 ## Operating Systems
 #### Buildroot Linux
 
-
 # Part 3 -Complete Stack Overview-------------------
 ## Hardware Setup
-#### Network Overview
-#### SCPNS
-#### Liteeth
+#### FPGA Board: Digilent Arty A7-35T
 #### Custom AES Instructions
 OpenSSL Benchmarks (Put full output in the Appendix)
 Diagram of RTL
@@ -59,12 +59,13 @@ Show that the device is actually encryption/decryption capable
 5. Decrypt the file via the board.
 6. Check if sha256sum is the same. 
 #### Raspberry Pi
-Specs of the Pi,
+Specs of the Pi, but especially mention the gigabit ethernet
+#### Network Overview
 ## Software Setup
 Different Boot methods time taken chart
 #### Buildroot Linux Configuration
-
-## Debugging Configuration*
+Show linux compilation graphs
+## Developer Setup
 
 
 # Part 4-Evaluation-----------------------------------
@@ -74,7 +75,7 @@ Different Boot methods time taken chart
 
 ## Utilisation, Resources and Timing
 
-## Ethernet Throughput Analysis
+## Improved Dual Core
 ## Power Analysis*
 
 
@@ -84,9 +85,12 @@ Different Boot methods time taken chart
 ## Limitations & Security Vulnerabilities
 
 ## Future Improvements
-
+Different boards for more ethernet throughput and extra RAM dimensions/Ethernet Ports
+Use a board with hardcore CPUs attached, i.e. Zynq for ARM, PolarFire for RISC-V
 ## Issues and Reductions in Scope During Development
-
+Zephyr not working
+Socat not working in buildroot linux, "File Descriptor error", had to use python instead
+Not enough RPi RAM for containers running python, therefore, python was just run natively.
 
 # Tests to Run
 ### Pi Cluster Full Kubernetes & SCPNS: 1 core, 2 core, 4 core
@@ -113,10 +117,22 @@ Challenges:
 
 # Demo Sections of priority:
 ## Introduction
+## RISC-V Overview
 ## AES sections
+Be able to explain how AES encryption works. 
+"Where" do the AES instructions exist on the board?
+Get an RTL schematic of the added instructions
+
 ## LiteX and Vexriscv sections
+Find example of SpinalHDL vs Verilog vs VHDL
 ## Results
+Do a graphical plot of all the final metrics for the tests
 ## Utilisation and Timing
+Utilisation and timing for each FPGA processor
+Briefly mention timing constraints, whether or not they were met, failing endpoints etc.
+## Power Analysis
+What it says in Vivado vs. Real-life on multimeter
 ## Ethernet Sections
+Entire ethernet throughput overview diagram displaying bottlenecks. This diagram will show the complete process for receiving/sending on the FPGA end.
+TCP Vs. UDP - i.e. why didn't I use UDP?
 ## Stack overview
-## Do Poster First
