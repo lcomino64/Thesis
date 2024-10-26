@@ -1,4 +1,6 @@
 *.fd
+*.bst
+*.tdo
 *.aux
 *.bbl
 *.blg

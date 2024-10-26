@@ -10,6 +10,126 @@
 
 
 % Literature Review %
+% Computer Networks %
+@book{Forouzan2021,
+  author    = {Forouzan, B. A.},
+  title     = {TCP/IP Protocol Suite},
+  edition   = {5th},
+  publisher = {McGraw-Hill Education},
+  year      = {2021}
+}
+
+@book{KuroseRoss2021,
+  author    = {Kurose, J. F. and Ross, K. W.},
+  title     = {Computer Networking: A Top-Down Approach},
+  edition   = {8th},
+  publisher = {Pearson},
+  year      = {2021}
+}
+
+@book{SahaRony2016,
+  note      = {\url{https://www.researchgate.net/figure/TCP-and-UDP-Headers_fig56_305506264}},
+  author    = {Saha, Rony},
+  year      = {2016},
+  month     = {07},
+  pages     = {},
+  publisher = {M. Eng. (ICT), AIT, THAILAND},
+  title     = {TELECOMMUNICATIONS ENGINEERING - Technical Note}
+}
+
+@misc{rfc8446,
+  series       = {Request for Comments},
+  number       = 8446,
+  howpublished = {RFC 8446},
+  publisher    = {RFC Editor},
+  doi          = {10.17487/RFC8446},
+  url          = {https://www.rfc-editor.org/info/rfc8446},
+  author       = {Eric Rescorla},
+  title        = {{The Transport Layer Security (TLS) Protocol Version 1.3}},
+  pagetotal    = 160,
+  year         = 2018,
+  month        = aug,
+  abstract     = {This document specifies version 1.3 of the Transport Layer Security (TLS) protocol. TLS allows client/server applications to communicate over the Internet in a way that is designed to prevent eavesdropping, tampering, and message forgery. This document updates RFCs 5705 and 6066, and obsoletes RFCs 5077, 5246, and 6961. This document also specifies new requirements for TLS 1.2 implementations.}
+}
+
+@inproceedings{Isobe2010,
+  title        = {10Gbps Implementation of {TLS/SSL} Accelerator on {FPGA}},
+  author       = {Isobe, Takashi and Tsutsumi, Satoshi and Seto, Koichiro and Aoshima, Kenji and Kariya, Kazutoshi},
+  booktitle    = {2010 International Conference on Quality, Reliability, Risk, Maintenance, and Safety Engineering},
+  pages        = {1--6},
+  year         = {2010},
+  organization = {IEEE}
+}
+
+@article{Restuccia2020,
+  title     = {Low-Power {IoT} Communication Security: On the Performance of {DTLS} and {TLS} 1.3},
+  author    = {Restuccia, Gabriele and Tschofenig, Hannes and Baccelli, Emmanuel},
+  journal   = {IEEE Access},
+  year      = {2020},
+  publisher = {IEEE}
+}
+
+@online{Ethernet_Wikipedia_2024,
+  note      = {\url{https://en.wikipedia.org/wiki/Ethernet_frame}},
+  title     = {Ethernet Frame},
+  author    = {Wikipedia},
+  publisher = {Wikimedia Foundation},
+  year      = {2024},
+  month     = {Mar}
+}
+
+@manual{xilinx_tri_mode,
+  title        = {Tri-Mode Ethernet MAC LogiCORE IP Product Guide},
+  organization = {Xilinx},
+  year         = {2023},
+  note         = {PG051},
+  url          = {https://docs.amd.com/r/en-US/pg051-tri-mode-eth-mac/Introduction}
+}
+
+@manual{xilinx_axi_eth,
+  title        = {AXI 1G/2.5G Ethernet Subsystem Product Guide},
+  organization = {Xilinx},
+  year         = {2024},
+  note         = {PG138},
+  url          = {https://docs.amd.com/r/en-US/pg138-axi-ethernet/Introduction}
+}
+
+@manual{xilinx_lite_mac,
+  title        = {AXI Ethernet Lite MAC LogiCORE IP Product Guide},
+  organization = {Xilinx},
+  year         = {2021},
+  note         = {PG135},
+  url          = {https://docs.amd.com/r/en-US/pg135-axi-ethernetlite/AXI-Ethernet-Lite-MAC-v3.0-LogiCORE-IP-Product-Guide}
+}
+
+@online{MII_Wikipedia_2024,
+  note      = {\url{https://en.wikipedia.org/wiki/Media-independent_interface}},
+  title     = {Media-independent interface},
+  author    = {Wikipedia},
+  publisher = {Wikimedia Foundation},
+  year      = {2024},
+  month     = {Mar}
+}
+
+@online{SFP_Wikipedia_2024,
+  note      = {\url{https://en.wikipedia.org/wiki/Small_Form-factor_Pluggable}},
+  title     = {Small Form-factor Pluggable},
+  author    = {Wikipedia},
+  publisher = {Wikimedia Foundation},
+  year      = {2024},
+  month     = {Mar}
+}
+
+@techreport{Yamasaki2015,
+  title       = {Three Things You Should Know about Ethernet PHY},
+  author      = {{Garrett Yamasaki}},
+  year        = 2015,
+  month       = July,
+  url         = {https://www.ti.com/document-viewer/lit/html/SSZTCH5},
+  institution = {Texas Instruments}
+}
+
+% Network Security % 
 @inproceedings{Shao2003,
   author    = {Shao, Z. and Zhuge, Q. and He, Y. and Sha, E.H.-M.},
   booktitle = {19th Annual Computer Security Applications Conference, 2003. Proceedings.},
@@ -21,6 +141,19 @@
   keywords  = {Embedded system;Buffer overflow;Hardware;Embedded software;Protection;Computer security;Computer worms;Military aircraft;Application software;Helium},
   doi       = {10.1109/CSAC.2003.1254340}
 }
+
+@article{Tsoutsos2018,
+  author   = {Tsoutsos, Nektarios Georgios and Maniatakos, Michail},
+  journal  = {IEEE Embedded Systems Letters},
+  title    = {Anatomy of Memory Corruption Attacks and Mitigations in Embedded Systems},
+  year     = {2018},
+  volume   = {10},
+  number   = {3},
+  pages    = {95-98},
+  keywords = {Program processors;Programming;Safety;Buffer overflows;Computer security;Buffer overflows;control-flow integrity protections;memory safety violations;return oriented programming (ROP)},
+  doi      = {10.1109/LES.2018.2829777}
+}
+
 
 @online{Wikipedia_AES_2024,
   note      = {\url{https://en.wikipedia.org/wiki/Advanced_Encryption_Standard}},
@@ -43,4 +176,48 @@
   note         = {Updated May 9, 2023},
   url          = {https://doi.org/10.6028/NIST.FIPS.197-upd1},
   organization = {U.S. Department of Commerce}
+}
+
+% Risc-V Overview %
+@techreport{asanovic2014instruction,
+  title       = {Instruction sets should be free: The case for {RISC-V}},
+  author      = {Asanovi\'{c}, Krste and Patterson, David A},
+  year        = {2014},
+  institution = {EECS Department, University of California, Berkeley},
+  number      = {UCB/EECS-2014-146},
+  type        = {Technical Report}
+}
+
+@online{sifive2022performance,
+  title   = {{SiFive Performance P670 and P470 RISC-V Cores Set New Standards}},
+  author  = {{SiFive}},
+  year    = {2022},
+  url     = {https://www.sifive.com/press/sifive-performance-p670-and-p470-risc-v-cores-set-new-standards},
+  urldate = {2024-01-15}
+}
+
+@inproceedings{dabbelt2018vector,
+  title     = {Vector extensions for decision making in the {IoT} era},
+  author    = {Dabbelt, Drew and Schmidt, Colin and Love, Eric and Mao, Howard and Karandikar, Sagar and Asanovi\'{c}, Krste},
+  booktitle = {Proceedings of the 45th Annual International Symposium on Computer Architecture},
+  series    = {ISCA '18},
+  year      = {2018},
+  publisher = {IEEE Press}
+}
+
+@online{riscv2023state,
+  title   = {{RISC-V State of the Union}},
+  author  = {{RISC-V International}},
+  year    = {2023},
+  url     = {https://riscv.org/announcements/2023/12/risc-v-international-releases-annual-state-of-the-union-at-risc-v-summit},
+  urldate = {2024-01-15}
+}
+
+@online{shilov2024nvidia,
+  title     = {Nvidia to ship a billion of {RISC-V} cores in 2024},
+  author    = {Shilov, Anton},
+  year      = {2024},
+  url       = {https://www.tomshardware.com/pc-components/gpus/nvidia-to-ship-a-billion-of-risc-v-cores-in-2024},
+  urldate   = {2024-01-24},
+  publisher = {Tom's Hardware}
 }
