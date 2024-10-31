@@ -90,6 +90,20 @@ type             16 bytes     64 bytes    256 bytes   1024 bytes   8192 bytes  1
 aes-256-cbc      27291.06k    29063.72k    29663.66k    29896.02k    29966.34k    29960.87k
 AES-128-CBC      36888.21k    40295.08k    41468.07k    41769.30k    41855.66k    41872.04k
 ```
+
+# TLS Benchmarks
+Set up certificates:
+```shell
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+```
+Start Server:
+```shell
+`openssl s_server -cert cert.pem -key key.pem -accept 8443 -cipher AES128-GCM-SHA256`
+```
+Client side, test 1GB of random character data throughput.
+```shell
+`time dd if=/dev/zero bs=1M count=1024 | openssl s_client -connect 192.168.1.50:8443 -cipher AES128-GCM-SHA256 2>/dev/null | pv > /dev/null`
+```
 # Raspberry Pi Server
 ### Benchmarks:
 Iperf3:
