@@ -5,6 +5,127 @@
 \label{Chap:Conclusion}
 
 \section{Summary}
+This project explored the viability of implementing a network security processor using RISC-V softcores on FPGA hardware, with a specific focus on AES encryption acceleration. Through the development of custom AES instructions and implementation of various VexRiscvSMP configurations on the Artix-7 FPGA, we demonstrated both the potential and limitations of FPGA-based security solutions. The optimal configuration—an improved dual-core design running at 150MHz with expanded ethernet buffers—achieved a maximum throughput of 406 KB/s, representing an 84\% improvement over the baseline single-core implementation.
+
+However, comparative analysis with a Raspberry Pi 4B revealed significant performance disparities, with the ARM-based system achieving throughput rates approximately 40 times higher than our best FPGA implementation. This gap widened further when implementing full TLS 1.3 encryption, where our hardware-accelerated AES instructions showed minimal impact on overall system performance, suggesting that the primary bottlenecks lie not in the cryptographic operations themselves but in the surrounding infrastructure—particularly ethernet throughput and memory access patterns. Despite these limitations, the project successfully demonstrated that FPGA-based security processors are feasible, albeit with performance characteristics better suited to low-to-medium throughput applications rather than high-performance computing scenarios.
+
+\newpage
 \section{Limitations and Security Vulnerabilities}
+The implementation faces several significant technical limitations and potential security concerns that should be considered:
+
+\subsubsection{Technical Limitations:}
+\begin{itemize}
+    \item Network Throughput: The most severe limitation is the 100Mbps ethernet PHY combined with limited buffer sizes, creating a fundamental bottleneck that persists even with increased processing power. Even with optimisations, the system achieves only 21.6 Mbps throughput on a physical switch, far below modern networking requirements.
+    \item Memory Constraints: The shared memory architecture creates contention between cores, particularly evident in the quad-core configuration where additional processing power provided diminishing returns due to memory access bottlenecks.
+    \item Clock Speed Ceiling: While we achieved 150MHz operation, timing violations in the DDR3 interface suggest we've reached the practical frequency limit for this design on the Digilent Arty A7. Higher frequencies would require significant redesign of memory interfaces.
+    \item Power Management: The lack of power-saving states means the FPGA maintains constant power draw even when idle, limiting its suitability for battery-powered applications.
+\end{itemize}
+
+\subsubsection{Security Vulnerabilities:}
+
+To reiterate, producing a fully-secure IoT device was out of scope for this thesis. However, to improve the security of this particular device, several areas must be considered:
+
+\begin{itemize}
+    \item Side-Channel Attack Vulnerability: The fixed-frequency operation and consistent power consumption patterns could make the system vulnerable to power analysis attacks, as no countermeasures were implemented against side-channel analysis.
+    \item Key Management: The current implementation uses hardcoded test keys and IVs for AES operations. A production system would require secure key storage and management capabilities, possibly through a dedicated secure element.
+    \item Memory Protection: While RISC-V provides memory protection features through PMP, our implementation focuses solely on encryption performance and doesn't implement these security features, leaving potential vulnerabilities in memory access control. We also did not test or evaluate these features.
+    \item TLS Implementation: The minimal performance improvement in TLS operations despite AES acceleration suggests potential vulnerabilities in how secure connections are handled, particularly in terms of session management and key exchange operations.
+\end{itemize}
+
+These limitations and vulnerabilities must be considered for future iterations of the design, particularly if the design is intended for production use in security-critical applications.
+
+
 \section{Future Improvements}
-\section{Issues During Development}
+While this project demonstrates the feasibility of an FPGA-based network security processor, the performance analysis revealed several critical bottlenecks and limitations that should be addressed in future iterations. The most significant improvements should target three key areas: the network infrastructure that limits overall throughput, the memory architecture that constrains multi-core scaling, and the TLS implementation that currently shows minimal benefit from hardware acceleration. Additionally, optimisations in power management and software integration could enhance the system's practicality for real-world deployment. The following sections detail specific improvements in each area, with particular attention to maintaining security while achieving better performance.
+
+\subsubsection{Network Infrastructure:}
+\begin{itemize}
+    \item Use an evaluation board with a gigabit ethernet PHY with direct memory access (DMA) to bypass CPU involvement in data transfers.
+    \item Develop custom network offload engines to handle TCP/IP stack processing in hardware.
+    \item Design more dedicated instructions for superior simultaneous network I/O and encryption operations (such as a TCP checksum acceleration).
+    \item Consider an evaluation board with multiple ethernet interfaces, since we cannot just increase the clockrate of the softcore processor (parallelisation).
+\end{itemize}
+
+\subsubsection{Memory Architecture:}
+
+In our timing analysis (Section \ref{section:timing-analysis}), we determined that critical path failures begin at 150MHz around the memory interfaces with the DDR3 RAM module. Fixing these timing constraints would require some advanced knowledge of CPU architecture and interfacing, but there may be some tweaks available for LiteDRAM to try to mitigate these issues.
+
+\subsubsection{TLS Acceleration:}
+
+We determined in Section \ref{section:TLS-benchmarking}, that our raw TCP throughput becomes severely crippled due to the overhead of the full TLS1.3 stack. Improvements for this aspect of the design should be inspired by the research by Isobe \etal \cite{Isobe2010}, by considering hardware acceleration for the more critical bottlenecks of the TLS stack. This should include:
+
+\begin{itemize}
+    \item Implement hardware acceleration for key TLS 1.3 primitives:
+    \begin{itemize}
+        \item RSA/ECC for asymmetric cryptography during handshakes
+        \item SHA-256/SHA-384 for hash functions
+        \item ChaCha20-Poly1305 as an alternative to AES-GCM
+    \end{itemize}
+    \item Design a dedicated TLS protocol processor to offload handshake operations in an SoC.
+    \item For TLS testing and implementation, there do exist alternatives better suited for embedded Linux than our OpenSSL test implementation. Two examples are wolfSSL and MbedTLS.
+\end{itemize}
+
+The python application currently uses an entire OpenSSL subprocess for encryption which can be performance intensive. This was necessary because the patch for the custom AES instructions was targeted for the LibreSSL library, and the python crypto library uses the default OpenSSL library.
+
+\subsubsection{Power Optimisation}
+We covered considerations for optimising the power usage when we conducted the power analysis in Section \ref{section:PowerAnalysis}. To reiterate, these considerations should be:
+
+\begin{itemize}
+    \item Implement clock gating for idle cores.
+    \item Design power domains that can be completely disabled when not in use.
+    \item Add a low-power microcontroller for power management and quick-wake capabilities.
+\end{itemize}
+
+Fortunately, the AES instructions only used a minimal amount of additional power and FPGA utilisation. This means that implementing more components of the TLS stack, such as the ones mentioned before, should also be cheap in terms of resources.
+
+\subsubsection{Software Stack}
+We do not have to rely on just hardware optimisations however, there is still significant room for improvement around the software layer. Two key considerations include:
+
+\begin{itemize}
+    \item Replacing the Python-based server with a C implementation (using the POSIX API) for reduced overhead.
+    \item Implement direct OpenSSL engine support rather than using subprocess calls, via crypto libraries for C or Python.
+\end{itemize}
+
+\subsubsection{FPGA Platform}
+Lastly, choice of FPGA platform and evaluation board could provide some benefit, but the bottlenecks ultimately lie in the softcore processor itself. The simplest route to significantly improving the design would be to use modern FPGA families with hardened processor systems (\eg, the Zynq line for ARM or Microchip's BeagleV-Fire for RISC-V), to combine the benefits of both hardware and software processing. Of course, however, this neglects the usage of a softcore processor which was not the aim of this thesis.
+
+\newpage
+\section{Issues During Development Resulting in Scope Adjustments}
+Several significant technical challenges encountered during development necessitated adjustments to the project's scope. These issues provide valuable insights for future similar implementations.
+
+\subsection{Major Issues}
+\subsubsection{Zephyr Locking up on VexrsicvSMP}
+Despite following established patterns from similar RISC-V implementations like the Polarfire and SiFive boards, the Zephyr RTOS failed to properly initialise on our VexriscvSMP configuration. GDB debugging revealed critical errors due to spurious interrupts (see Figure \ref{GDBOutput}), suggesting incompatibilities between our PLIC/CLINT implementation and Zephyr's expectations. While the interrupt controller configuration appeared correct in both device tree and defconfig files, the persistent crashes led to abandoning Zephyr in favor of Buildroot Linux, which without any additional effort, was able to correctly interpret our interrupt configuration (can be seen in Appendix \ref{Fig:A1.23}), thus providing a more stable platform for our application.
+
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=1\textwidth]{Conclusion/Figures/GDBoutput.png}
+    \end{center}
+    \caption{GDB Output Showing Spurious Interrupt Errors}
+    \label{GDBOutput}
+\end{figure}
+
+\subsubsection{Socat Not Working on Buildroot Linux}
+Initial plans to use $Socat$ (a more robust re-implementation of $Netcat$), for managing multiple client connections were thwarted by consistent \texttt{FD\_SETSIZE} errors in Buildroot Linux:
+\begin{verbatim}
+    root@buildroot:~# socat - TCP-LISTEN:1024,fork,reuseaddr
+    *** bit out of range 0 - FD_SETSIZE on fd_set ***: terminated
+\end{verbatim}
+This limitation forced a pivot to a Python-based implementation. While this added development complexity, it ultimately proved beneficial by enabling easier integration of metrics collection through Python's standard libraries.
+
+\subsubsection{Not Enough RAM on Pi Model 4Bs for Docker Containers}
+The original test architecture planned to use Kubernetes ($microk8s$ implementation for Pi Clusters), for client orchestration using minimal Debian images (150MB). However, the transition to Python-based clients increased the container image size to 550MB, exceeding the practical virtualisation capabilities of the 1GB RAM Raspberry Pi 4B models. This led to reimplementing the client scaling using Python threads instead of containers, maintaining functional equivalence while working within hardware constraints.
+
+\subsection{Minor Issues}
+\subsubsection{Peripherals Working in LiteX BIOS but not in Buildroot Linux}
+While I2C and SPI peripherals were functional in the LiteX BIOS, they became inaccessible in Buildroot Linux. This was likely due to device tree mismatches between LiteX and Linux implementations. Given the peripherals weren't critical to the core encryption functionality, resolving this remained a lower priority.
+
+\subsubsection{F4PGA Synthesis Toolchain not Completing Synthesis Process}
+Initial attempts to maintain a fully open-source toolchain using F4PGA (Yosys) for synthesis proved unsuccessful with VexriscvSMP configurations. Rather than debugging the F4PGA compatibility issues, the project pragmatically shifted to Vivado for synthesis, ensuring reliable bitstream generation at the cost of using proprietary tools.
+
+\section{GitHub Repository}
+All of the files used in developing this project can be found in my GitHub Repository:
+
+\url{https://github.com/lcomino64/Thesis}
+
+Although, at the time of submission, the files are unsorted and spread across multiple branches. The branch labelled ``pi\_vs\_pis'', is the most recent branch.

@@ -9,22 +9,24 @@ echo "=================================================="
 
 for size in "${TEST_SIZES[@]}"; do
     echo "Testing ${size}KB transfer..."
-    
+
     # Run test 3 times for average
     for i in {1..3}; do
         echo "Run $i:"
-        START=$(date +%s.%N)
         
+        # Capture timing with microsecond precision
+        START=$(($(gdate +%s%N)/1000000))
+
         dd if=/dev/zero bs=1K count=$size 2>/dev/null | \
         openssl s_client -connect ${SERVER_IP}:${SERVER_PORT} \
         -cipher AES128-GCM-SHA256 2>/dev/null | \
         dd of=/dev/null 2>/dev/null
-        
-        END=$(date +%s.%N)
-        DURATION=$(echo "$END - $START" | bc)
-        THROUGHPUT=$(echo "scale=2; $size / $DURATION" | bc)
-        
-        echo "Duration: ${DURATION}s"
+
+        END=$(($(gdate +%s%N)/1000000))
+        DURATION=$(echo "scale=3; ($END - $START)/1000" | bc)
+        THROUGHPUT=$(echo "scale=2; ($size / $DURATION)" | bc)
+
+        echo "Duration: ${DURATION} seconds"
         echo "Throughput: ${THROUGHPUT} KB/s"
         echo "------------------------"
     done

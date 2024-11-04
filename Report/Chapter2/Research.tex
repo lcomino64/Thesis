@@ -1,7 +1,7 @@
 \chapter[Literature Review]{Literature Review}
 \label{Chap:Literature Review}
 \section{Computer Networking}
-Communication between devices on a network is enabled through a standardized set of protocols and interfaces, allowing devices to communicate regardless of any underlying hardware or architecture. The TCP/IP protocol suite is most common set of protocols which organises these protocols into distinct layers to handle different aspects of network communication. This layered approach allows for modular development and maintenance of network functionality \cite{Forouzan2021}\cite{SahaRony2016}\cite{KuroseRoss2021}. 
+Communication between devices on a network is enabled through a standardised set of protocols and interfaces, allowing devices to communicate regardless of any underlying hardware or architecture. The TCP/IP protocol suite is most common set of protocols which organises these protocols into distinct layers to handle different aspects of network communication. This layered approach allows for modular development and maintenance of network functionality \cite{Forouzan2021}\cite{SahaRony2016}\cite{KuroseRoss2021}. 
 
 \begin{wrapfigure}[16]{r}{0.38\textwidth}
     \caption{TCP/IP Model \cite{Forouzan2021}}
@@ -36,10 +36,9 @@ Responsible for transmitting raw bits over physical media (copper wire, fiber op
 In the coming sections, we will detail each of the relevant layers in the project and the important protocols in each. It should be noted that the technologies and protocols spanning the TCP/IP stack are vast and extensively documented; the following sections serve only as a rudimentary summary of the concepts most pertinent to this project's implementation.
 
 \subsection{Transport Layer}
-The transport layer provides end-to-end communication services between applications running on different hosts. At its core, this layer segments application data into smaller units called packets - formatted blocks of data that include both control information and user data. A packet consists of a header containing protocol-specific control information, and a payload containing the actual data being transmitted \cite{SahaRony2016}.
+The transport layer provides end-to-end communication services between applications running on different hosts. At its core, this layer segments application data into smaller units called packets. A packet consists of a header containing protocol-specific control information, and a payload containing the actual data being transmitted \cite{SahaRony2016}.
 
-In terms of how these packets are handled, we have two over-arching protocols which distinctly handle the two most prominent types of data transfer. For lossless transmission and reliability at the cost of a performance overhead, we have the Transmission Communication Protocol, TCP. For connectionless transfers where only data throughput is prioritised, we have User Datagram Protocol. 
-The idea behind each protocol is best demonstrated in the contrast between how packets are formatted, a visual representation of which can be seen in figure \ref{TCPvsUDP}:
+In terms of how these packets are handled, we have two over-arching protocols which distinctly handle the two most prominent types of data transfer. For lossless transmission and reliability at the cost of a performance overhead, we have the Transmission Communication Protocol, TCP. For connectionless transfers where only data throughput is prioritised, we have User Datagram Protocol. The idea behind each protocol is best demonstrated in the contrast between how packets are formatted, a visual representation of which can be seen in figure \ref{TCPvsUDP}:
 \begin{figure}[!ht]
     \caption{TCP and UDP headers \cite{SahaRony2016}}
     \label{TCPvsUDP}
@@ -52,15 +51,11 @@ Before a TCP data transmission begins, connection through a three-way handshake 
 
 UDP takes a  different approach, operating as a connectionless protocol with minimal overhead. Unlike TCP, UDP begins transmitting data immediately without establishing a connection or maintaining state information \cite{KuroseRoss2021}. It simply sends packets (called datagrams in UDP) to the target destination without guaranteeing their arrival or ordering. This means UDP cannot guarantee reliable delivery, but it achieves lower latency and higher throughput compared to TCP \cite{KuroseRoss2021}.
 
-Applications requiring guaranteed data delivery and correct ordering, such as file transfers or database operations, typically use TCP despite its performance overhead. Conversely, applications where speed is crucial and occasional packet loss is acceptable, such as real-time video streaming or online gaming, often choose UDP \cite{Forouzan2021}.
-
 \subsubsection{Sockets and Ports}
 Seen in Figure \ref{TCPvsUDP}, both headers for UDP and TCP contain source/destination port fields. The Transport layer implements the concept of ports and sockets in order to multiplex network connections on a single device \cite{Forouzan2021}. A socket, representing the combination of an IP address and 16-bit port number, creates a unique communication endpoint, which is an abstraction that allows for multiple applications to communicate simultaneously without conflict.
 
 \subsection{Network Layer}
 The Network layer handles the routing and addressing of packets between networks using the Internet Protocol (IP). For devices on a local network switch, as in this project, the Network layer's role is relatively straightforward - it primarily handles packet routing through IP and basic packet fragmentation when necessary \cite{KuroseRoss2021}. Since all project devices exist within the same network segment connected via an ethernet switch, there is no complex routing involved; packets are simply addressed between known IP addresses on the local subnet, \ie, no device will be separated by more than two links. The layer does, however, still maintain its responsibility for packet fragmentation and reassembly, ensuring data can be transmitted within the Maximum Transmission Unit (MTU) size of the local network \cite{Forouzan2021}.
-
-\newpage
 
 \subsection{Data Link Layer, Ethernet MAC}
 \label{section:Link}
@@ -82,7 +77,7 @@ Ethernet MAC implementations on FPGAs typically use vendor-provided IP cores tha
 \label{section:PHY}
 The Physical layer is responsible for the actual transmission of raw bits across the physical medium, typically through twisted-pair copper cables in modern Ethernet networks. At this layer, digital data from above is converted into electrical signals suitable for transmission.
 
-The connection between the MAC and PHY is standardized through the Media Independent Interface (MII). This interface exists in several variants that support different speeds:
+The connection between the MAC and PHY is standardised through the Media Independent Interface (MII). This interface exists in several variants that support different speeds:
 \begin{itemize}
     \item MII: The standard interface supporting 10/100 Mbps using a 4-bit data path
     \item RMII (Reduced MII): A simplified interface using a 2-bit data path to reduce pin count
@@ -96,17 +91,16 @@ To attach a basic PHY interface, the Management Data Input/Output (MDIO) provide
 In FPGA implementations, achieving maximum throughput requires consideration of several factors. Clock domain crossing between the MAC and PHY interfaces must be properly managed, along with appropriate sizing of transmit/receive buffers. Most important, however, is the processing capability of the system itself - insufficient processing speed is guaranteed to bottleneck a higher-end ethernet interface.
 
 \subsubsection{Data Link/Physical Layer Summary}
-We mentioned several different interfaces in sections: \ref{section:Link} and \ref{section:PHY}, that carry an ethernet signal from the port to the CPU. Figure \ref{EthernetPHYSystem} is a high level overview of a typical implementation:
+We mentioned several different interfaces in sections: \ref{section:Link} and \ref{section:PHY}, that carry an ethernet signal from the port to the CPU. Figure \ref{EthernetPHYSystem} is a high-level overview of a typical implementation, from an RJ-45 ethernet cable (right) to the device (left):
 
 \begin{figure}[!ht]
     \begin{center}
         \caption{Ethernet PHY System Block Diagram\cite{Yamasaki2015}}
+        \label{EthernetPHYSystem}
         \includegraphics[width=1.0\textwidth]{./Chapter2/Figures/EthernetPHYSystem.png}
-    \label{EthernetPHYSystem}
     \end{center}
 \end{figure}
-
-\newpage
+\raggedbottom
 \section{Network Security}
 As more applications rely on IoT edge-computing, it is critical that engineers ensure that computer networks still remain secure. Unfortunately, the more we protocols we implement, especially at the hardware-level, the more complicated our applications become; straining edge computers which are most efficient when they are only single-purpose (as seen in \cite{Isobe2010} and \cite{Restuccia2020}).
 
@@ -114,19 +108,27 @@ Additionally, it's not only network transfers where vulnerabilities can exist. P
 
 We can address these issues, and still have robust security posture for networked embedded systems, however, to be implemented properly, regular reviews and updates are also required as the field of cybersecurity is constantly adapting to new vulnerabilities. Due to the vast scope, this thesis will only focus on secure transfers rather than memory protection.
 
-\subsubsection{Transport Layer Security (TLS)}
+\subsection{Transport Layer Security (TLS)}
 Transport Layer Security (TLS) operates in an additional layer, the Presentation layer (OSI model), between the Transport and Application layers of the TCP/IP stack. As defined in RFC 8446 \cite{rfc8446}, TLS ensures three crucial security properties: confidentiality through encryption, integrity via Message Authentication Codes (MACs, not to be confused with Media Access Control (MAC)), and authentication using digital certificates.
 
-The complete explanation of TLS 1.3 is out of scope for this thesis, but for a basic summary, TLS begins with a handshake phase where communicating parties negotiate protocol versions and cryptographic algorithms, authenticate identities, and establish shared secret keys. After this handshake, the TLS Record Protocol handles the bulk encryption of application data, breaking it into blocks, encrypting it with the negotiated algorithms, and adding integrity checks before transmission \cite{rfc8446}. Essentially, TLS ensures that no sensitive data is transferred without proper authorisation.
+The complete explanation of TLS 1.3 is out of scope for this thesis, but for a basic summary, TLS begins with a handshake phase where communicating parties negotiate protocol versions and cryptographic algorithms, authenticate identities, and establish shared secret keys. After this handshake, the TLS Record Protocol handles the bulk encryption of application data, breaking it into blocks, encrypting it with the negotiated algorithms, and adding integrity checks before transmission \cite{rfc8446}. Essentially, TLS ensures that no sensitive data is transferred without proper authorisation and end-to-end encryption. Figure \ref{TLSexchange} shows this exchange in addition to the TCP stream creation.
 
-The computational overhead of TLS in IoT contexts has been extensively studied. Isobe \etal \cite{Isobe2010} demonstrated that even with dedicated FPGA acceleration, achieving 10Gbps throughput requires significant architectural considerations including parallel processing circuits, shared transmission/reception pathways, and optimized switch designs to reduce wire overhead. Their implementation, while achieving high performance (10Gbps), required significant FPGA resources - approximately 48,000 slices for the complete TLS stack and 23W of constant power. Keep in mind as well, this work from 2010 predates modern TLS 1.3, which introduces its own set of performance considerations and security limitations \cite{rfc8446}.
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=.7\textwidth]{Chapter2/Figures/TLSexchange.png}
+    \end{center}
+    \caption{TLS and TCP Exchange Diagram \cite{grigorik2013hpb}}
+    \label{TLSexchange}
+\end{figure}
 
-For resource-constrained IoT devices, Restuccia et al. \cite{Restuccia2020} revealed that the choice of cryptographic operations drastically impacts energy consumption. Their measurements showed that while TLS with Pre-Shared Keys (PSK) and AES-128-CCM consumed only 2.3 millicoulombs of charge during a complete handshake, upgrading to Elliptic Curve Diffie-Hellman (ECDHE) with ECDSA increased this to 63.4 millicoulombs - a factor of nearly 28x. They also demonstrated that moving from AES-128-CCM to AES-256-GCM increased memory requirements significantly, with heap usage growing from 5.7KB to 20.6KB for TLS 1.2 \cite{Restuccia2020}.
+\subsubsection{TLS Stacks in Embedded Systems}
+The computational overhead of TLS in IoT contexts has been extensively studied. Isobe \etal \cite{Isobe2010} demonstrated that even with dedicated FPGA acceleration, achieving 10Gbps throughput requires significant architectural considerations including parallel processing circuits, shared transmission/reception pathways, and optimised switch designs to reduce wire overhead. Their implementation, while achieving high performance (10Gbps), required significant FPGA resources - approximately 48,000 slices for the complete TLS stack and 23W of constant power. Keep in mind as well, this work from 2010 predates modern TLS 1.3, which introduces its own set of performance considerations and security limitations \cite{rfc8446}.
 
-To summarise, the choice of cryptographic operations significantly impacts resource utilization and power used, especially when implementing hardware-accelerated AES operations \cite{Restuccia2020}. These implementation decisions become crucial when deploying TLS in resource-constrained environments where computational capabilities, memory, and power consumption must be carefully balanced against security requirements.
+For resource-constrained IoT devices, Restuccia et al. \cite{Restuccia2020} revealed that the choice of cryptographic operations drastically impacts energy consumption. Their measurements showed that while TLS with Pre-Shared Keys (PSK) and AES-128-CCM consumed only 2.3 millicoulombs of charge during a complete handshake, upgrading to Elliptic Curve Diffie-Hellman (ECDHE) with ECDSA, for example, increased this to 63.4 millicoulombs - a factor of nearly 28x. They also demonstrated that moving from AES-128-CCM to AES-256-GCM increased memory requirements significantly, with heap usage growing from 5.7KB to 20.6KB for TLS 1.2 \cite{Restuccia2020}.
 
 \newpage
 \subsection{AES Encryption}
+\label{section:AESEncryptionBackground}
 This thesis will focus on efficiently implementing one such security consideration, albeit a critical one, which is encryption. Specifically, we will be implementing the Advanced Encryption Standard (AES), which has become the de-facto standard for symmetric key encryption in computer security.
 
 At its core, AES is a block cipher that operates on fixed-size blocks of data (128 bits) using cipher keys of 128, 192, or 256 bits. The encryption process consists of multiple rounds of several processing steps, all of which aim to obfuscate the input data, yet also maintain reversibility for decryption. Here is a high-level overview of the specific steps to perform an AES encryption, paraphrased from the \textit{Wikipedia} article, \cite{Wikipedia_AES_2024}. \\ \\
@@ -164,13 +166,12 @@ XOR. This function is responsible for incorporating the key into encryption proc
     \end{minipage}
 \end{figure}
 
-The final output is our encrypted input text. AES has been heavily and publicly scrutinised for decades since its adoption by the U.S. government \cite{FIPS197} (aside from side-channel attacks, not technically a fault of the algorithm). It's also performant, as it can be implemented in-place with constant-time operations. And it's flexible, as multiple key-sizes are available and can be chosen based on an application's memory/time complexity constraints.
+The final output is our encrypted input text. AES has been heavily and publicly scrutinised for decades since its adoption by the U.S. government \cite{FIPS197} (aside from side-channel attacks, not technically a fault of the algorithm). It's also performant, as it can be implemented in-place with constant-time operations. And it's flexible, as multiple key-sizes are available and can be chosen based on an application's memory/time complexity constraints. However, due to the sequential nature of the CBC, CCM and GCM, AES variants, parallelisation, \ie processing blocks in parallel, is not a viable option for accelerating proper encryption; since each block is used in the following round.
 
 It's worth mentioning too that the decryption process essentially reverses the encryption process; only it uses inverse versions of the encryption steps, applied in a reverse order.
 
-\newpage
 \subsection{Performing an AES encryption via OpenSSL}
-A single AES 256-bit CBC encryption of a text file can be performed via the open-source, OpenSSL library which implements SSL and TLS protocols for linux systems:
+A single AES 256-bit CBC encryption of a text file can be performed via the open-source, OpenSSL library which implements SSL and TLS protocols for linux systems \cite{openssl_docs}:
 
 \texttt{
 ```
@@ -181,34 +182,250 @@ openssl enc -aes-256-cbc -salt -in plaintext.txt -out encrypted.bin -k \\ MySecr
 Where:
 \begin{itemize}
     \item \texttt{-aes-256-cbc}: Specifies the encryption algorithm (AES-256 in CBC mode).
-    \item \texttt{-salt}: Adds a salt to the password for added security.
+    \item \texttt{-salt}: Adds a salt to the password to prevent specific attacks, (dictionary and rainbow tables attacks) \cite{openssl_docs}.
     \item \texttt{-in plaintext.txt}: The input file to be encrypted.
     \item \texttt{-out encrypted.bin}: The output file where the encrypted data will be stored.
     \item \texttt{-k MySecretKey}: The key used for encryption.
     \item \texttt{-pbkdf2}: Uses PBKDF2 (Password-Based Key Derivation Function 2) for key generation, which is more secure than the default (A warning for deprecated key generation usage will appear if this is omitted (OpenSSL 3.3.1)).
 \end{itemize}
 The `\texttt{plaintext.txt}' file is only securely encrypted if the key is not made public.
-\section{RISC-V Instruction Set Architecture}
-RISC-V is an open-source Instruction Set Architecture (ISA) developed at the University of California, Berkeley in 2010 [1]. It aims to provide a modern, modular, and extensible ISA for a wide range of computing devices. The RISC-V ecosystem has grown rapidly, with major tech companies and startups adopting the architecture. As of 2024, RISC-V processors have made substantial progress in performance, though they still lag behind the most advanced x86 and ARM designs in high-performance applications. For instance, the SiFive Performance P670 core, announced in late 2022, claimed performance comparable to Arm Cortex-A77 cores from 2019 [2].
 
-RISC-V's main advantage, is in it's open-sourceness and potential for customization. Many companies are leveraging RISC-V for specialized applications, such as AI accelerators, where the ability to add custom instructions can provide significant advantages [3]. While RISC-V is still maturing in the high-performance computing space, it has already found significant success in microcontrollers and embedded systems. As of 2023, RISC-V International reported that over 10 billion RISC-V cores have been shipped, primarily in microcontrollers and embedded devices [4]. As the ecosystem continues to evolve, with more software support and advanced implementations, RISC-V is poised to become an increasingly important player in the processor market across various computing domains.
+\section{RISC-V ISA Technical Overview}
+\subsection{Core Design Philosophy}
+RISC-V distinguishes itself from other Instruction Set Architectures (ISAs) through its fundamental design principles of modularity, simplicity, and extensibility. Unlike complex instruction set computing (CISC) architectures such as x86, which have accumulated thousands of instructions over decades of development, RISC-V begins with a minimal base integer instruction set (RV32I or RV64I) and uses a fixed-width 32-bit instruction format \cite{RiscvManual2017}. This base ISA remains fixed for compatibility while allowing architectural evolution through optional extensions, a key difference from both x86's variable-length instructions (1-15 bytes) and traditional RISC architectures like MIPS or SPARC that had relatively fixed ISAs \cite{RiscvOpenStandard2014}. The architecture mandates that all processors must implement this base instruction set (CSR access and control is located here as well), but allows selective implementation of both standard extensions (denoted by letters like 'M' for integer multiplication, 'F' for floating-point) and custom extensions, enabling developers to create application-specific processors \cite{RiscvAtlas2017}.
+
+\newpage
+\subsection{Standard Extensions}
+\label{section:RiscvExtensions}
+RISC-V's modular design allows implementors to selectively include standard extensions based on their application requirements. Each extension is denoted by a single letter, with additional modifiers for variant specifications. Table \ref{ExtensionsTable} outlines the instruction extensions that are currently supported by the chosen softcore processor, VexRiscv (a softcore 32-bit processor), which will be described later in section \ref{section:VexRiscv}. Rows that are bold in Table \ref{ExtensionsTable}, are the chosen instruction sets that are implemented in the bitstream, since a key advantage of RISC-V's extensibility in FPGA implementations is the ability to omit unused features, saving on FPGA resources.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{l|l}
+    \textit{Extension} & \textit{Name}                            \\ \hline
+    \textbf{M}         & \textbf{Integer Multiplication/Division} \\
+    \textbf{A}         & \textbf{Atomic Instructions}             \\
+    F                  & Single-Precision Float                   \\
+    C                  & Compressed Instructions                  \\        
+    \end{tabular}
+    \caption{Common Risc-V Extensions in Embedded Systems and Descriptions}
+    \label{ExtensionsTable}
+\end{table}
+
+The M (Integer Multiplication and Division) extension adds multiply, divide, and remainder operations to the base integer instruction set. It's a critical extension for general-purpose computing, providing both full-width (MUL, DIV, REM) and reduced-width operations (MULH, DIVU, REMU) that operate on integers \cite{RiscvManual2017}.
+
+The Atomic (A) extension is particularly important for multicore implementations, providing atomic memory operations that are adapted for inter-core synchronisation. These instructions, such as atomic-add (AMOADD) and atomic-swap (AMOSWAP), perform read-modify-write operations in a single, uninterruptible sequence, ensuring thread-safe memory access in concurrent systems \cite{RiscvManual2017}.
+
+The Compressed (C) extension is notable, as it's designed to improve code density and thus memory usage. It provides 16-bit versions of common 32-bit instructions, enabling up to a 30\% reduction in code size \cite{RiscvAtlas2017}. The extension achieves this by encoding frequently used instruction patterns with shorter formats, such as common register-to-register operations or small immediate values. This can be valuable in applications where memory is limited \cite{asanovic2014instruction}. But of course, using compressed instructions does come with a constant performance overhead from decoding.
+
+Finally, floating-point extensions (F for 32-bit, D for 64-bit and Q for 128-bit precision), we have omitted, since floating-point operations aren't required in the application. This saves on DSP blocks and logic elements but relateively, they are inexpensive to implement compared to the significant boost in floating point calculations they provide.
+
+\subsection{ISA-Level Security Features}
+Outlined in volume two of the RISC-V Manual \cite{RiscvManualV22017}, are several architectural features that increase security at the ISA level. To reiterate, hardware-level security is not the objective of this thesis, but it's still worth mentioning since these features are simple to generate using $LiteX$ and are supported by $Zephyr$ and $Buildroot$ $Linux$ (we will cover these in their respective sections). For instance, The privilege mode system is one such feature, it divides instructions into three levels: Machine (M), Supervisor (S), and User (U) modes.
+
+\begin{table}[!ht]
+    \begin{center}
+        \includegraphics[width=.6\textwidth]{./Chapter2/Figures/Risc-VPrivileges.png}
+        \caption{RISC-V privilege levels \cite{RiscvManualV22017}.}
+    \label{RiscvPrivileges}
+    \end{center}
+\end{table}
+
+Machine mode has the highest privileges and is typically used for critical system functions, Supervisor mode enables operating system functionality like virtual memory management, while User mode runs application code with restricted access to system resources (the ISA extensions from Section \ref{section:RiscvExtensions} are implemented at the User level) \cite{RiscvManualV22017}. This hierarchical approach ensures strict isolation between different software components. 
+
+Additionally, Physical Memory Protection (PMP) allows Machine mode to set memory access permissions and restrictions for lower privilege modes, enabling additional control over memory regions. PMP can prevent unauthorised access to sensitive memory areas and is particularly valuable in embedded systems where memory protection is crucial \cite{RiscvManualV22017}. Once again, these features support a strong case for the usage of RISC-V in security, but ultimately it is out of the project's scope. Research does exist however, in the effectiveness of these security approaches; for example, Lu \etal \cite{Lu2021}.
+
+\subsection{Implementing Custom Instructions}
+
+We have discussed minimising/expanding the instruction set, but it is also possible to implement your own custom instructions. RISC-V reserves custom opcode spaces that exist in the G extension (general-purpose) \cite{RiscvManual2017}, see `'$custom-0/1$' in Table \ref{RiscvOpcodes}. Each of these spaces can accomodate multiple 32-bit instructions.
+
+\begin{table}[!ht]
+    \begin{center}
+        \includegraphics[width=1\textwidth]{./Chapter2/Figures/Risc-vOpcodeMap.png}
+        \caption{RISC-V base opcode map, inst[1:0]=11 \cite{RiscvManual2017}.}
+    \label{RiscvOpcodes}
+    \end{center}
+\end{table}
+
+Custom instructions can be added by defining the instruction format (typically following RISC-V's standard R, I, S, or U-type formats), allocating opcode fields, and implementing the corresponding execution logic. The instruction is then integrated into the processor pipeline, usually in the decode and execute stages. These instructions can then be used most-primitively via inline assembly in C.
+\raggedbottom
+\newpage
 
 \section{FPGAs}
+Field Programmable Gate Arrays (FPGAs) are integrated circuits designed to be configured by customers after manufacturing. Unlike ASICs, FPGAs provide flexibility through their reprogrammable nature, making them ideal for creating custom hardware.
+
+The architecture of an FPGA consists of a grid-like arrangement of configurable logic blocks distributed across a silicon die, connected by a programmable interconnect network. This grid structure, often called the "fabric", contains several fundamental building blocks \cite{maxfield2020fundamentals}:
+
+\begin{itemize}
+    \item Look-Up Tables (LUTs): Combinational logic functions.
+    \item Flip-Flops: Store state information and implement sequential logic.
+    \item Block RAM (BRAM): Provides on-chip memory resources.
+    \item DSP Slices: Digital signal processing operations.
+    \item Programmable Interconnects: Connect logic blocks via configurable routing.
+\end{itemize}
+
+And the price of an FPGA chip is largely dependent on the amount of these building blocks. 
+
+Digital circuits are implemented on FPGAs through a process called synthesis, where hardware descriptions (written in HDL or higher-level languages) are transformed into configurations of these basic building blocks. The synthesis tools (such as Xilinx's $Vivado$), handle the complex tasks of mapping logic to physical resources and routing connections between them \cite{maxfield2020fundamentals}.
+
 \subsection{Softcore CPUs}
+Softcore processors are CPU cores implemented using the programmable logic resources of an FPGA. Unlike hardcore processors that are physically implemented in silicon, softcore CPUs offer customization flexibility at the cost of lower performance \cite{maxfield2020fundamentals}. Their configurability makes them particularly valuable in specialised FPGA applications where sequential processing is required.
 
-\subsection{Chosen Softcore CPU: VexRiscv}
+Currently, there's no shortage of RISC-V cores to choose from, according to this list \cite{RiscVCoresList}. In terms of performance comparison, there is a blog article created in 2020 (presumably outdated by now), by \textit{Just Another Electronics Blog} \cite{jaeblog2023riscv} which profiles significant variations among popular cores in terms of performance, resource utilization, and features. VexRiscv notably achieves a balance between performance (0.75 DMIPS/MHz) and resource usage (769/665 LUT/FF), but their full findings are presented in Table \ref{softcoreComparison}.
 
-\subsection{SpinalHDL}
+It's worth mentioning, due to the nature of softcore processors, there two inherent limitations compared to regular hardcore CPUs, some can be considered debilitating, depending on the application:
+\begin{enumerate}
+    \item Timing Constraints: Logic elements in FPGAs are physically separated, which introduces more propagation delay compared to regular CPUs \cite{anemaet2008microprocessor}. This is presumably why RISC-V softcore processors rarely exceed 250MHz.
+    \item Power Efficiency: The general-purpose FPGA fabric consumes more power than specialised silicon, making softcore CPUs less energy-efficient than their hardcore equivalents \cite{anemaet2008microprocessor}. 
+    \begin{itemize}
+        \item Softcore CPUs also do not support a variable clock rate for matching idle or straining loads. They run at a constant clock rate and thus are always at full power.
+    \end{itemize}
+\end{enumerate}
 
-\subsection{CPU Buses, Wishbone}
+\begin{table}[!ht]
+    \begin{center}
+        \includegraphics[width=1\textwidth]{./Chapter2/Figures/softcore-comparison.png}
+        \caption{Popular Risc-V Cores Performance and Implementation Comparision, 2020 \cite{jaeblog2023riscv}}
+    \label{softcoreComparison}
+    \end{center}
+\end{table}
+
+Despite these constraints, the open-source community still continues to push the boundaries of RISC-V softcore processor design.
+
+\section{VexRiscv}
+\label{section:VexRiscv}
+
+VexRiscv\footnote[1]{Github Repository: https://github.com/SpinalHDL/VexRiscv} represents a unique approach to RISC-V implementation through its highly modular plugin architecture. Unlike traditional CPU designs that use fixed pipeline stages with hardcoded functionality, VexRiscv employs a plugin system where virtually every CPU feature - from the instruction decoder to the register file - is implemented as a plugin \cite{vexriscv2024}. This allows for extreme configurability which is valuable for resource management in FPGAs.
+
+The core pipeline consists of 2 to 5+ stages \cite{vexriscv2024}, with optional plugin features like: MMU support for Linux compatibility, debug capabilities for GDB integration, custom instruction extensions, hardware FPU support, \etc. To get an overview of how feature count affects performance and FPGA resource utilisation, the repository itself, has a comparison\footnote[2]{Area usage and maximal frequency: https://github.com/SpinalHDL/VexRiscv/blob/master/README.md\#area-usage-and-maximal-frequency}.
+
+Additionally, VexRiscv is implemented in SpinalHDL, an abstraction language built on top of Scala (similar to how $TypeScript$ adds type safety to $JavaScript$). SpinalHDL leverages Scala's object-oriented and functional programming features to abstract away Verilog's low-level implementation details \cite{spinalhdl2024}. This higher-level approach is what makes VexRiscv's plugin architecture possible by allowing developers to write complex, modular hardware descriptions that are then automatically converted to synthesisable Verilog.
 
 \subsection{VexRiscvSMP}
+\label{section:VexRiscvSMPbackground}
+VexRiscvSMP extends the base VexRiscv design to enable multiple CPU cores to work together in parallel, in a process called "Symmetric Multi-Processing". For a brief explanation of how the multiple cores use a shared memory and peripherals, an extra interfacing layer is implemented \cite{vexriscv2024} \footnote[1]{Documentation: https://github.com/SpinalHDL/VexRiscv/blob/master/doc/smp/smp.md}, known as a MESI (Modified, Exclusive, Shared, Invalid) cache coherency protocol with three key interfaces:
+
+\begin{enumerate}
+    \item Read Interface: Allows cores to obtain new memory copies and make them unique when they need to write to them. For example, when a core needs to write to memory that other cores might have cached.
+    \item Write Interface: Used by cores to write data back to main memory and notify the system when they no longer need their cached copies.
+    \item Probe Interface: Allows the system to manage cache coherency by instructing cores to change their cache states or provide their data when another core needs it.
+\end{enumerate}
+
+Now with this interfacing layer, cores can communicate with memory and peripherals, the same way as the standard Vexriscv, through a Wishbone bus, which handles the physical connection. This entire system ensures that when multiple cores access shared resources (like UART or memory), their operations remain coordinated and data remains consistent. This explains the memory-management aspect of SMP, however, a second primary component known as an interrupt controller is also utilised for sharing interrupts from peripherals and inter-core communication (known as IPI scheduling (Inter-Processor-Interrupts)). This component is external to the VexRiscvSMP architecture and will be elaborated on in Section \ref{section:sifive}. 
 
 \section{Litex}
+\label{section:Litex}
+LiteX is an open-source SoC builder framework that overcomes the creation of complex FPGA designs by providing a Python-based (Migen), infrastructure for digital system integration. Unlike traditional hardware development flows that require manual RTL integration and bus interconnection, LiteX automates many of the tedious aspects of SoC design. It provides a collection of pre-built cores (UART, Timer, RAM, Ethernet), standardised bus interfaces (Wishbone, AXI, Avalon), and support for various softcore processors, including VexRiscv. 
 
-\subsection{Cores}
+Figure \ref{LitexOverview} shows a high-level overview of a Linux-capable SoC generated by LiteX. Note that the AXI bus is also connected to additional whitespace labelled, ``$User\ Design$'', showing that if the FPGA resources allow, additional modules and FPGA designs can be added.
 
-\subsection{Litex BIOS}
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=1.0\textwidth]{./Chapter2/Figures/litex-overview.png}
+        \caption{SoC for Running Linux on an Acorn CLE215+\cite{litex2024}}
+        \label{LitexOverview}
+    \end{center}
+\end{figure}
+
+The framework supports major FPGA vendors (Xilinx, Intel, Lattice) and can integrate components written in different HDLs (VHDL, Verilog, SpinalHDL), making it highly versatile for different development needs. Overall, the automation and flexibility provided by LiteX significantly reduces development time \cite{litex2024}.
+\subsection{Litex Cores}
+Prefixed by ``Lite'', LiteX provides a comprehensive set of IP cores that handle various system functionalities. LiteDRAM serves as the memory controller, supporting DDR2/DDR3/DDR4 SDRAM with configurable parameters and automatic PHY calibration. 
+
+For networking, LiteEth manages ethernet communication through support for 10/100/1000 PHYs, customizable buffer sizes, and hardware CRC checking. Storage access is handled by cores such as LiteSPI and LiteSDCard, which provide memory-mapped interfaces to their respective mediums with support for various transfer modes and automatic chip select handling. Additional cores include LitePCIe for PCIe endpoint/root port implementation, and LiteScope which provides an integrated logic analyzer for debugging (similar to simulation in $Vivado$). Each core is written in Migen/Python, making them portable across different FPGA platforms. 
+
+LiteX also has existing support for common vendor-specific features like Xilinx's Internal Configuration Access Port (ICAP) for runtime bitstream reconfiguration and XADC for voltage/temperature monitoring. 
+
+In our implementation, we primarily use LiteDRAM for the board's 256MB DDR3 module, LiteEth configured with 8KB TX/RX buffers for the 100Mbps ethernet and LiteSPI for the 16MB Quad-SPI flash. These cores are responsible for exposing the functionality provided by the Digilent Arty A7 evaluation board (see Section \ref{FPGABoard}).
+
+\subsection{SiFive PLIC/CLINT}
+\label{section:sifive}
+In a multi-core system, managing interrupts from various peripherals and coordinating between cores presents a conundrum. For instance, how do cores share access to a single ethernet peripheral, or how does one core signal another for task scheduling? LiteX addresses this through two standard RISC-V interrupt controllers based on the SiFive design: the Platform-Level Interrupt Controller (PLIC) and Core-Local Interruptor (CLINT) \cite{SiFiveCookbook}.
+
+The PLIC manages external interrupt sources from peripherals by routing to appropriate cores and prioritisation through 7 levels of priority (7 being the highest). The CLINT handles core-local interrupts including software interrupts (IPIs) and timer interrupts, which are essential for multi-core synchronisation and task scheduling \cite{SiFiveCookbook}.
+
+
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{./Chapter2/Figures/PLICCLINT2Hart.png}
+        \caption{PLIC + CLINT PLIC Block Diagram for Machine Mode \cite{SiFiveCookbook}}
+        \label{SiFivePLIC-CLINT}
+    \end{center}
+\end{figure}
+
+As shown in Figure \ref{SiFivePLIC-CLINT}, each HART (hardware thread, representing an execution context in RISC-V), has dedicated connections to both controllers, with the PLIC mapping global interrupts to external device interrupts (ID: 11) and the CLINT managing software (ID: 3) and timer (ID: 7) interrupts. Both controllers are scalable to accommodate varying numbers of cores and interrupt sources, with memory-mapped registers for configuration and control. 
+
+The PLIC can occupy up to 4MB of address space for interrupt configuration registers, theoretically supporting up to 1024 unique interrupt sources, while the CLINT can use up to 64KB for software interrupts and timer comparators, capable of mapping to thousands of HARTs. Essentially, the SiFive PLIC/CLINT enables coordinated interrupt handling across all cores, with routing and prioritisation \cite{SiFiveCookbook}.
+
+\subsection{LiteX BIOS}
+A key feature of LiteX that emphasises its ease of use, is the LiteX BIOS (Basic Input/Output System). This is a built-in firmware that is flashed to your SoC alongside the loading of the FPGA bitstream. It provides essential system initialization and debugging capabilities:
+
+\begin{enumerate}
+    \item System Identification: Reports the CPU type, bus configuration, and memory map of the system.
+    \item Memory Initialisation: Configures and tests the system memory (SDRAM), verifying both write and read capabilities through memtests.
+    \item Boot Options: Provides flexibility in booting from various sources (serial, SPI flash, \etc.).
+\end{enumerate}
+
+If no boot medium is provided, the BIOS will default to the LiteX console. Here, several immediate functions are provided that help test different parts of the system, such as an I2C scanner for detecting I2C devices (if I2C is a part of the SoC). The console can be accessed through a simple serial connection to the FPGA board \cite{litex2024}. See Appendix \ref{Fig:A1.21} for an example of full BIOS output.
+
+\subsection{SoC Generation with LiteX}
+
+To complement our theoretical discussion of LiteX's capabilities, we will now examine its practical development workflow. The development process for LiteX centers around board target files - Python scripts that describe hardware using Migen DSL. These files are coupled with Python's argparse library to make hardware descriptions configurable from the command line. For example, the Arty A7 target file contains the board's basic platform definition (pins, clocks, peripherals), but through command-line arguments, users can configure the specs of the softcore CPU or any of the peripherals. Here is a command-line argument that builds an example SoC for the Arty A7, assuming all dependencies are installed:
+
+\begin{verbatim}
+    ./digilent_arty.py --cpu-type neorv32 --with-spi-sdcard --with-pmod-gpio 
+    --with-can --sdcard-adapter=numato --sys-clk-freq=50e6 --with-led-chaser 
+    --integrated-main-ram-size=8192 --build
+\end{verbatim}
+
+This command configures:
+
+\begin{multicols}{2}
+    \begin{itemize}
+        \item Minimal RISC-V CPU (NEORV32)
+        \item SPI-based SD card interface
+        \item PMOD GPIO access
+        \item Automotive CAN bus support
+        \columnbreak
+        \item Numato SD card adapter
+        \item 50 MHz system clock
+        \item LED animation module
+        \item 8KB integrated block RAM
+    \end{itemize}
+\end{multicols}
+
+The build produces two main outputs: a 'gateware' directory containing FPGA synthesis products, and a `software' directory containing the BIOS and support files. To load this to the FPGA, you will need a bootloader. For simplicity, it is recommended to use \textit{openFPGALoader}\cite{openfpgaloader}. Loading the bitstream is as simple as running:
+
+\begin{verbatim}
+    openFPGALoader -b arty_a7_35t build/arty_a7/gateware/arty_a7.bit
+\end{verbatim}
+
+Then to access the BIOS, just screen the USB port. For this, $picocom$, was used. It has more features than the default Ubuntu ``screen'' command:
+
+\begin{verbatim}
+    picocom -b 115200 /dev/ttyUSB1 --imap lfcrlf
+\end{verbatim}
+
+Upon each screen into the port, the FPGA will reboot, allowing you to see the full boot process, similar to Appendix \ref{Fig:A1.21}.
+
+To start a new LiteX project, developers typically copy and modify an existing target file from the litex-boards repository, adapting it for their specific needs. Also, there are specialised repositories, built on top of LiteX, intended for generating SoCs that can run Zephyr\cite{zephyr_litex} or Buildroot Linux\cite{linux_litex}.
 
 \subsection{Buildroot Linux}
+Buildroot provides a simplified framework for generating embedded Linux systems, making necessary compromises to run on resource-constrained devices \cite{buildroot}. Unlike standard Linux distributions that prioritise flexibility and feature-richness, Buildroot creates minimal, purpose-built systems by statically linking applications and using BusyBox, a space-efficient re-implementation of common Linux utilities, as well as core embedded system features like network stacks, filesystem utilities, and system initialisation \cite{busybox}. 
+
+For example, while a standard Linux distribution might include separate vi, grep, and ps binaries totaling several megabytes, BusyBox combines simplified versions of these tools into a single binary often under 1MB. Similarly, it replaces the complex systemd init system with a basic init process that sequentially executes startup scripts.
+
+The build process involves selecting system components through a menuconfig interface, similar to the Linux kernel. However, Buildroot extends this concept across the entire system build, handling not just the kernel configuration but also the toolchain, root filesystem, and package selection. Configuration through menuconfig is hierarchical and interdependent. Selecting a particular package might automatically enable required dependencies or kernel features. For instance, enabling OpenSSL support would pull in necessary cryptographic kernel modules and certificate management tools. This dependency management ensures a coherent system build while maintaining minimal size.
+
+When targeting a RISC-V system, the build process generates five essential components:
+\begin{itemize}
+\item A compressed root filesystem (.cpio).
+\item The Linux kernel image (Image).
+\item A compiled device tree blob (.dtb), which describes the hardware configuration.
+\item The OpenSBI firmware image (opensbi.bin) providing the supervisor binary interface.
+\item A boot.json file that the LiteX BIOS uses to locate the above files.
+\end{itemize}
+
+These components work together in a specific sequence during system startup: The LiteX BIOS loads OpenSBI through an available boot medium (UART, Ethernet, SPIFlash or SD card), which then initialises the hardware and sets up the supervisor mode environment for secure booting (RISC-V supervisor privilege, see Section \ref{RiscvPrivileges}). OpenSBI then loads the Linux kernel and device tree (Image and .dtb files), with the kernel mounting the root filesystem (.cpio) to complete the bootloading process. Once the filesystem and Linux kernel are initialised in memory, Linux will then begin to boot. The full output of this process can be seen in Appendix \ref{Fig:A1.22}.
+
+OpenSBI (Supervisor Binary Interface) serves as the firmware layer between RISC-V hardware and the operating system \cite{opensbi}, exactly like how x86 systems rely on BIOS/UEFI firmware for hardware initialisation. OpenSBI takes a more minimal approach, however, by implementing only the essential firmware services: CPU initialisation, trap handling, and device tree parsing. This minimalist design aligns with RISC-V's philosophy of simplicity, providing a clean separation between hardware and software layers while remaining flexible enough to support different platform implementations.
 \raggedbottom

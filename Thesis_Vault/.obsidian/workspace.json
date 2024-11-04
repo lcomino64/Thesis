@@ -8,63 +8,20 @@
         "type": "tabs",
         "children": [
           {
-            "id": "8f6a5e5f52af5458",
+            "id": "ef933da320f04ff2",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README FPGA Development Notes.md",
+                "file": "Poster&Demo Planning.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README FPGA Development Notes"
-            }
-          },
-          {
-            "id": "b95743e2a1ce44b8",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Report Planning 2.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Report Planning 2"
-            }
-          },
-          {
-            "id": "5b194bb651d3c4da",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Report Proof of Encryption Section.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Report Proof of Encryption Section"
-            }
-          },
-          {
-            "id": "7ae44bb4777f2fc0",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Report RESULTS.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Report RESULTS"
+              "title": "Poster&Demo Planning"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -206,24 +163,27 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "5b194bb651d3c4da",
+  "active": "ef933da320f04ff2",
   "lastOpenFiles": [
+    "Report TLS Benchmarks.md",
     "Report RESULTS.md",
-    "Poster&Demo Planning.md",
-    "Report Planning 2.md",
     "Report Proof of Encryption Section.md",
-    "README FPGA Development Notes.md",
-    "README Kubernetes Cluster.md",
-    "README FPGA Linux.md",
-    "Report Planning.md",
     "README Software.md",
+    "Poster&Demo Planning.md",
+    "Report Future Improvements.md",
+    "README Board definition files.md",
+    "README FPGA Development Notes.md",
+    "README FPGA Linux.md",
     "README Microk8s kubectl Management Commands.md",
+    "README Kubernetes Cluster.md",
     "README Dependencies.md",
+    "Report Planning 2.md",
+    "Pasted image 20241027173506.png",
+    "Report Planning.md",
     "Seminar Notes.md",
     "Seminar Feedback.md",
     "Proposal Feedback.md",
     "RESULTS.md",
-    "README Board definition files.md",
     "Bare_metal README.md",
     "Figures/example network overview.png",
     "Figures/FPGA_Architecture_1.svg",
@@ -242,7 +202,6 @@
     "Figures/FPGA_Architecture_1 Code.txt",
     "Figures/Untitled.md",
     "Figures/FPGA_Architecture_2.svg",
-    "Figures/FPGA_Architecture_2 Code.md",
     "Figures/Unconfirmed 767005.crdownload",
     "Figures/Unconfirmed 820128.crdownload",
     "Figures/Unconfirmed 925885.crdownload",
@@ -250,7 +209,6 @@
     "Figures/Unconfirmed 932486.crdownload",
     "Figures/Unconfirmed 536058.crdownload",
     "Figures",
-    "Unconfirmed 738353.crdownload",
-    "Thesis Topic Desc..md"
+    "Unconfirmed 738353.crdownload"
   ]
 }

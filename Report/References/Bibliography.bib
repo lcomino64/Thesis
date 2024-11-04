@@ -8,6 +8,59 @@
 
 %If you want to make separate Bibliography for each Chapter then you can make separate .bib file for each individual Chapter and call them at the end of that Chapter.tex file.
 
+% Introduction %
+@article{Alam2018,
+  author  = {Alam, Tanweer},
+  journal = {International Journal of Scientific Research in Computer Science, Engineering and Information Technology},
+  url     = {https://www.researchgate.net/publication/325645304_A_Reliable_Communication_Framework_and_Its_Use_in_Internet_of_Things_IoT},
+  title   = {A Reliable Communication Framework and Its Use in Internet of Things (IoT)},
+  year    = {2018},
+  month   = {May},
+  volume  = {3}
+}
+
+@online{Michael2019,
+  author       = {Michael, Melissa},
+  title        = {Attack Landscape H1 2019: IoT, SMB traffic abound},
+  year         = {2019},
+  month        = {September},
+  day          = {12},
+  url          = {https://blog.f-secure.com/attack-landscape-h1-2019-iot-smb-traffic-abound/},
+  organization = {F-Secure}
+}
+
+@article{Frustaci2018,
+  author  = {Frustaci, M. and Pace, P. and Aloi, G. and Fortino, G.},
+  title   = {Evaluating Critical Security Issues of the IoT World: Present and Future Challenges},
+  journal = {IEEE Internet of Things Journal},
+  year    = {2017},
+  month   = {October},
+  day     = {27},
+  url     = {https://ieeexplore.ieee.org/document/8086136},
+  volume  = {5},
+  number  = {4},
+  pages   = {2483--2495},
+  doi     = {10.1109/JIOT.2017.2767291}
+}
+
+@online{shilov2024nvidia,
+  title     = {Nvidia to ship a billion of {RISC-V} cores in 2024},
+  author    = {Shilov, Anton},
+  year      = {2024},
+  url       = {https://www.tomshardware.com/pc-components/gpus/nvidia-to-ship-a-billion-of-risc-v-cores-in-2024},
+  urldate   = {2024-01-24},
+  publisher = {Tom's Hardware}
+}
+
+@article{Woolf2016,
+  author  = {Woolf, Nicky},
+  title   = {{DDoS} attack that disrupted internet was largest of its kind in history, experts say},
+  journal = {The Guardian},
+  date    = {2016-10-27},
+  year    = {2016},
+  month   = {October},
+  url     = {https://www.theguardian.com/technology/2016/oct/26/ddos-attack-dyn-mirai-botnet}
+}
 
 % Literature Review %
 % Computer Networks %
@@ -43,13 +96,24 @@
   howpublished = {RFC 8446},
   publisher    = {RFC Editor},
   doi          = {10.17487/RFC8446},
-  url          = {https://www.rfc-editor.org/info/rfc8446},
+  note         = {\url{https://www.rfc-editor.org/info/rfc8446}},
   author       = {Eric Rescorla},
   title        = {{The Transport Layer Security (TLS) Protocol Version 1.3}},
   pagetotal    = 160,
   year         = 2018,
   month        = aug,
   abstract     = {This document specifies version 1.3 of the Transport Layer Security (TLS) protocol. TLS allows client/server applications to communicate over the Internet in a way that is designed to prevent eavesdropping, tampering, and message forgery. This document updates RFCs 5705 and 6066, and obsoletes RFCs 5077, 5246, and 6961. This document also specifies new requirements for TLS 1.2 implementations.}
+}
+
+@book{grigorik2013hpb,
+  author    = {Grigorik, Ilya},
+  title     = {High Performance Browser Networking},
+  chapter   = {Transport Layer Security (TLS)},
+  publisher = {O'Reilly Media},
+  year      = {2013},
+  url       = {https://hpbn.co/transport-layer-security-tls/},
+  note      = {Licensed under CC BY-NC-ND 4.0},
+  isbn      = {9781449344764}
 }
 
 @inproceedings{Isobe2010,
@@ -74,8 +138,7 @@
   title     = {Ethernet Frame},
   author    = {Wikipedia},
   publisher = {Wikimedia Foundation},
-  year      = {2024},
-  month     = {Mar}
+  year      = {2024}
 }
 
 @manual{xilinx_tri_mode,
@@ -154,7 +217,6 @@
   doi      = {10.1109/LES.2018.2829777}
 }
 
-
 @online{Wikipedia_AES_2024,
   note      = {\url{https://en.wikipedia.org/wiki/Advanced_Encryption_Standard}},
   title     = {Advanced Encryption Standard},
@@ -178,6 +240,15 @@
   organization = {U.S. Department of Commerce}
 }
 
+@manual{openssl_docs,
+  title        = {OpenSSL Documentation},
+  organization = {The OpenSSL Project},
+  year         = {2023},
+  version      = {3.2},
+  url          = {https://docs.openssl.org/master/},
+  note         = {Open source cryptography and SSL/TLS toolkit}
+}
+
 % Risc-V Overview %
 @techreport{asanovic2014instruction,
   title       = {Instruction sets should be free: The case for {RISC-V}},
@@ -188,36 +259,199 @@
   type        = {Technical Report}
 }
 
-@online{sifive2022performance,
-  title   = {{SiFive Performance P670 and P470 RISC-V Cores Set New Standards}},
-  author  = {{SiFive}},
-  year    = {2022},
-  url     = {https://www.sifive.com/press/sifive-performance-p670-and-p470-risc-v-cores-set-new-standards},
-  urldate = {2024-01-15}
+@manual{RiscvManual2017,
+  title        = {The {RISC-V} Instruction Set Manual, Volume I: User-Level ISA, Version 2.2},
+  author       = {Andrew Waterman, Krste Asanovi, SiFive Inc},
+  institution  = {RISC-V Foundation},
+  organisation = {CS Division, EECS Department, UC Berkeley},
+  year         = {2017},
+  month        = {may}
 }
 
-@inproceedings{dabbelt2018vector,
-  title     = {Vector extensions for decision making in the {IoT} era},
-  author    = {Dabbelt, Drew and Schmidt, Colin and Love, Eric and Mao, Howard and Karandikar, Sagar and Asanovi\'{c}, Krste},
-  booktitle = {Proceedings of the 45th Annual International Symposium on Computer Architecture},
-  series    = {ISCA '18},
-  year      = {2018},
-  publisher = {IEEE Press}
+@manual{RiscvManualV22017,
+  title        = {The {RISC-V} Instruction Set Manual, Volume II: Privileged Architecture, Version 2.2},
+  author       = {Andrew Waterman, Krste Asanovi, SiFive Inc},
+  institution  = {RISC-V Foundation},
+  organisation = {CS Division, EECS Department, UC Berkeley},
+  year         = {2017},
+  month        = {may}
 }
 
-@online{riscv2023state,
-  title   = {{RISC-V State of the Union}},
-  author  = {{RISC-V International}},
-  year    = {2023},
-  url     = {https://riscv.org/announcements/2023/12/risc-v-international-releases-annual-state-of-the-union-at-risc-v-summit},
-  urldate = {2024-01-15}
+@misc{RiscvOpenStandard2014,
+  title  = {{RISC-V}: An Open Standard for {SoCs}},
+  author = {Patterson, David and Waterman, Andrew},
+  url    = {https://www.eetimes.com/risc-v-an-open-standard-for-socs/?_ga},
+  year   = {2014},
+  month  = {7}
 }
 
-@online{shilov2024nvidia,
-  title     = {Nvidia to ship a billion of {RISC-V} cores in 2024},
-  author    = {Shilov, Anton},
-  year      = {2024},
-  url       = {https://www.tomshardware.com/pc-components/gpus/nvidia-to-ship-a-billion-of-risc-v-cores-in-2024},
-  urldate   = {2024-01-24},
-  publisher = {Tom's Hardware}
+@book{RiscvAtlas2017,
+  title     = {The {RISC-V} Reader: An Open Architecture Atlas},
+  author    = {Waterman, Andrew and Patterson, David},
+  year      = {2017},
+  publisher = {Strawberry Canyon}
+}
+
+@survey{Lu2021,
+  author = {Lu, Tao},
+  year   = {2021},
+  month  = {07},
+  pages  = {},
+  title  = {A Survey on RISC-V Security: Hardware and Architecture},
+  doi    = {10.48550/arXiv.2107.04175}
+}
+
+@inproceedings{Zheng2022,
+  author    = {Zheng, Tian and Cai, Gang and Huang, Zhihong},
+  booktitle = {2022 IEEE International Symposium on Circuits and Systems (ISCAS)},
+  title     = {A Soft RISC-V Processor IP with High-performance and Low-resource consumption for FPGA},
+  year      = {2022},
+  volume    = {},
+  number    = {},
+  pages     = {2538-2541},
+  keywords  = {Program processors;Circuits and systems;Redundancy;Decoding;Reliability;IP networks;Field programmable gate arrays;RISC-V;processor;soft IP;FPGA},
+  doi       = {10.1109/ISCAS48785.2022.9937742}
+}
+
+% FPGAs %
+@article{maxfield2020fundamentals,
+  title     = {Fundamentals of {FPGA}s - {Part} 4: {Getting} Started with {Xilinx} {FPGA}s},
+  author    = {Maxfield, Clive},
+  journal   = {DigiKey Electronics},
+  year      = {2020},
+  month     = {April},
+  day       = {1},
+  url       = {https://www.digikey.com/en/articles/fundamentals-of-fpgas-part-4-getting-started-with-xilinx-fpgas},
+  publisher = {DigiKey Electronics},
+  note      = {Contributed By DigiKey's North American Editors}
+}
+
+@online{RiscVCoresList,
+  note      = {\url{https://www.riscfive.com/risc-v-ip-cores/}},
+  title     = {RISC-V IP Cores},
+  author    = {RISC-V Forum and Help},
+  publisher = {Risc Five},
+  year      = {2024}
+}
+
+@online{jaeblog2023riscv,
+  title  = {FPGA Softcore SoC shootout},
+  author = {JAEblog},
+  year   = {2020},
+  note   = {Just Another Electronics Blog, \url{https://justanotherelectronicsblog.com/?p=705}}
+}
+
+@techreport{anemaet2008microprocessor,
+  title       = {Microprocessor Soft-Cores: An Evaluation of Design Methods and Concepts on {FPGA}s},
+  author      = {Anemaet, Pieter and van As, Thijs},
+  institution = {Delft University of Technology},
+  department  = {Department of Computer Engineering},
+  number      = {ET4 078},
+  year        = {2008},
+  url         = {https://pretopia.net/files/paper_softcores.pdf},
+  note        = {Computer Architecture Special Topics}
+}
+
+@misc{vexriscv2024,
+  title        = {{VexRiscv}: A {FPGA} Friendly 32 bit {RISC-V} {CPU} Implementation},
+  author       = {Charles Papon and Florent Kermarrec and Contributors},
+  year         = {2024},
+  publisher    = {GitHub},
+  howpublished = {\url{https://github.com/SpinalHDL/VexRiscv}}
+}
+
+@misc{spinalhdl2024,
+  title        = {{SpinalHDL}: A High-Level Hardware Description Language},
+  author       = {Charles Papon and Contributors},
+  year         = {2024},
+  publisher    = {GitHub},
+  journal      = {GitHub repository},
+  howpublished = {\url{https://github.com/SpinalHDL/SpinalHDL}}
+}
+
+@online{Wishbone_Wikipedia_2024,
+  note      = {\url{https://en.wikipedia.org/wiki/Wishbone_(computer_bus)}},
+  title     = {Wishbone (computer bus)},
+  author    = {Wikipedia},
+  publisher = {Wikimedia Foundation},
+  year      = {2024}
+}
+
+@misc{litex2024,
+  title        = {{LiteX}: {SoC} Builder Framework},
+  author       = {{Enjoy-Digital} and {LiteX Developers}},
+  year         = {2024},
+  publisher    = {GitHub},
+  journal      = {GitHub repository},
+  howpublished = {\url{https://github.com/enjoy-digital/litex}}
+}
+
+@manual{SiFiveCookbook,
+  title        = {SiFive Interrupt Cookboook V1.2},
+  organization = {SFive Inc.},
+  year         = {2020},
+  month        = {February},
+  url          = {https://starfivetech.com/uploads/sifive-interrupt-cookbook-v1p2.pdf}
+}
+
+@misc{zephyr_litex,
+  title  = {Zephyr on {LiteX} {VexRiscv}},
+  author = {Enjoy-Digital and Contributors},
+  year   = {2024},
+  url    = {https://github.com/litex-hub/zephyr-on-litex-vexriscv},
+  note   = {Open source repository for running Zephyr RTOS on LiteX VexRiscv}
+}
+
+@misc{linux_litex,
+  title  = {Linux on {LiteX} {VexRiscv}},
+  author = {Enjoy-Digital and Contributors},
+  year   = {2024},
+  url    = {https://github.com/litex-hub/linux-on-litex-vexriscv},
+  note   = {Open source repository for running Linux on LiteX VexRiscv}
+}
+
+@misc{openfpgaloader,
+  title  = {openFPGALoader - Universal {FPGA} Loader},
+  author = {Marini, Gwenhael and Contributors},
+  year   = {2024},
+  url    = {https://github.com/trabucayre/openFPGALoader},
+  note   = {Universal and cross-platform FPGA loader supporting numerous FPGA families}
+}
+
+@misc{buildroot,
+  title  = {Buildroot - Making Embedded Linux Easy},
+  author = {Buildroot Developers},
+  year   = {2024},
+  note   = {Open source build system for embedded Linux systems, \url{https://buildroot.org/}}
+}
+
+@misc{busybox,
+  title  = {BusyBox: The Swiss Army Knife of Embedded Linux},
+  author = {Andersen, Erik and BusyBox Developers},
+  year   = {2024},
+  note   = {Combines tiny versions of many common UNIX utilities into a single small executable, \url{https://www.busybox.net/}}
+}
+
+@misc{opensbi,
+  title  = {OpenSBI - Open Source Supervisor Binary Interface},
+  author = {Western Digital and Contributors},
+  year   = {2024},
+  note   = {Reference implementation of the RISC-V SBI specification, \url{https://github.com/riscv/opensbi}}
+}
+
+% Stack Overview %
+@manual{ArtyA7RefManual,
+  title        = {Arty A7 Reference Manual},
+  organization = {Digilent},
+  year         = {2019},
+  month        = {October},
+  note         = {\url{https://digilent.com/reference/programmable-logic/arty-s7/reference-manual}}
+}
+
+@misc{rpi4specs,
+  title        = {Raspberry Pi 4 Tech Specs},
+  author       = {{Raspberry Pi Foundation}},
+  year         = {2024},
+  url          = {\url{https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/}},
+  organization = {Raspberry Pi Foundation}
 }

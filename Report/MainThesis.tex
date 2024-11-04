@@ -39,29 +39,17 @@
 % ***************************************************
 %***THESIS TITLE***
 %Use Sentence Case (capitalise only the first word and proper nouns).
-\title{Title here: }
+\title{Embedded Systems Super Thesis Project: FPGA RISC-V Softcore Processor for Network Security}
 
 %***YOUR NAME***
 %Do not include initials or middle names. Do not include your supervisor(s)' name(s).
-\author{Name}
-%***YOUR CURRENT DEGREES***
-%Use abbreviations. Do not include the date or location of your degree. Do not include the degree for which this thesis is being submitted.
-\currentdegrees{Candidate’s academic degrees}
-
-%***ORCID ID***
-%Add and hyperlink your ORCID
-\orcid{\href{add your ORCID url here}{Candidate's ORCID}}
-
-%***YEAR OF SUBMISSION***
-\date{\{year\}}
-%***TYPE OF DEGREE***
-\submittedfor{Doctor \{Master\}}
+\author{Lachlan Comino \\ 45321199}
 
 
 %***YOUR SCHOOL***
 %Use Title Case (capitalise every word which is not a conjunction or preposition).
 %See - http://blog.apastyle.org/apastyle/2012/03/title-case-and-sentence-case-capitalization-in-apa-style.html - for help.
-\school{Name of the Enrolling Unit}
+\school{Universty of Queensland, 2024 \\ School of Electrical Engineering and Computer Science, EECS}
 
 \begin{document}
 
@@ -96,9 +84,8 @@
 %Each chapter is a separate .tex file. Use \input to load them here, as demonstrated below for Chapter 1 and Chapter 2.
 %We recommend keeping each in a separate subfolder, with its accompanying figures, etc. This is how the template is currently structured.
 %If you wish to divide your thesis into parts (each containing multiple chapters), us the \part{} command.
-\listoftodos[List of todos]
 %CHAPTER 1
-% \input{./Chapter1/Introduction.tex}
+\input{./Chapter1/Introduction.tex}
 
 % HOW TO ADD ADDITIONAL CHAPTERS
 % Step One: Add a new folder called "ChapterX" (X being the chapter number).
@@ -107,11 +94,11 @@
 % Step Four: Rename the headline to your specific chapter number, change the input command to include the name of the folder you created and the name of the file you created.
 % Repeat this process for every chapter.
 \input{./Chapter2/Research.tex}
-% \input{./Chapter3/Stack.tex}
-% \input{./Chapter4/Evaluation.tex}
+\input{./Chapter3/Stack.tex}
+\input{./Chapter4/Evaluation.tex}
 
 %CONCLUSION CHAPTER
-% \input{./Conclusion/Conclusion.tex}
+\input{./Conclusion/Conclusion.tex}
 
 % ***************************************************
 % Bibliography
@@ -139,7 +126,7 @@
 %Simply adapt the same formatting used for other chapters.
 % If you need appendix in your thesis then consider the following appendix file (you can add more if you need more) otherwise you should not consider it in your main thesis.
 \appendix
-% \include{./Appendix/Appendix}
+\include{./Appendix/Appendix}
 
 % ***************************************************
 % Examples
@@ -157,6 +144,6 @@
 % Back Matter
 %**************************************************** 
 %COMMENT OUT IF YOU DO NOT WISH TO INCLUDE BACK MATTER.
-\input{./PreliminaryAndBackPages/Back.tex}
+% \input{./PreliminaryAndBackPages/Back.tex}
 
 \end{document}

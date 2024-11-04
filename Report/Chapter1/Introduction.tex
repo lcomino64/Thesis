@@ -6,4 +6,50 @@
 % ***************************************************
 
 \section{Motivation}
-\section{Aims and Scope}
+
+The explosive growth of the Internet of Things (IoT) has led to an unprecedented increase in internet-connected devices, with estimates suggesting over 75 billion IoT devices by 2025 \cite{Alam2018}. However, this growth has brought to attention the importance of network security in embedded systems, especially where sensitive data is handled. Cyber-attacks targeting IoT devices have become more sophisticated and frequent, with the number of IoT attacks increasing by 300\% in 2019 alone \cite{Michael2019}. 
+
+The 2016 Dyn incident is perhaps the most sophisticated example of an IoT attack, where attackers compromised thousands of insecure IoT devices and  successfully targeted Dyn, a DNS provider, with a total data stream of 1.2Tb/s, effectively taking down major portions of the internet. While this happened eight years ago and Cloudflare promises that DDOS attacks of this scale can now be mitigated at a high-level\footnote[1]{https://www.cloudflare.com/en-au/ddos/}, the reality is that thousands of IoT devices, such as security cameras, smart home appliances, sensor devices \etc, were freely accessible due to a lack of security.
+
+Furthermore, traditional software-based security approaches often struggle to keep up with the real-time requirements and resource constraints of IoT devices \cite{Frustaci2018}. Frustaci et al. \cite{Frustaci2018} emphasize that the limited memory, processing power, and energy resources of IoT devices make it challenging to implement strong security measures using software alone without compromising performance and battery life.
+
+This is where a RISC-V-based SoC could show promise. Although, RISC-V processors may not yet match the raw performance of established ARM or x86 architectures, the ISA has in recent years gained significant commercial validation. Most notably, NVIDIA's recent announcement detailed plans to ship over a billion RISC-V cores by 2025 \cite{shilov2024nvidia}, accomodating for ``virtually all MCU cores'' in their GPUs \cite{shilov2024nvidia}. This move highlights a key advantage of RISC-V where its open-source nature eliminates licensing fees and royalties that typically burden proprietary architectures.
+
+\section{Project Aims}
+
+This thesis will create a case for leveraging Field Programmable Gate Arrays (FPGAs) and RISC-V to create an optimised network security solution. By utilising the flexibility of FPGAs and RISC-V's extensible architecture, it becomes possible to implement security features at the hardware level while maintaining the performance requirements of modern IoT applications.
+
+This project will aim to achieve the primary objectives:
+\begin{enumerate}
+    \item Fasten existing network security software through hardware-accelerated encryption.
+    \item Cheap implementation of hardware-acceleration, regarding FPGA utilisation.
+    \item Low-latency in packet processing and network operations.
+    \item Power-efficiency, compared to software-based solutions.
+    \item And scalablibility to accommodate additional common embedded systems peripherals.
+\end{enumerate}
+
+Additionally, the use of open-source tools for FPGA development will be used and evaluated.
+
+\section{Project Scope}
+This project focuses on the implementation and evaluation of a RISC-V softcore processor with integrated network security features, specifically targeting FPGA deployment. The scope encompasses:
+
+\begin{enumerate}
+    \item Development of a multi-core RISC-V processor implementation using the VexRiscv architecture.
+    \item Integration of hardware-accelerated AES encryption through custom instructions.
+    \item Implementation of essential networking capabilities including ethernet interfacing.
+    \item Comprehensive performance evaluation against both single-core and multi-core configurations.
+    \item Comparison with conventional software-based security implementations.
+\end{enumerate}
+
+Due to the vast, ever-changing nature of the field of cyber-security, The project will not address:
+
+\begin{itemize}
+   \item Physical security measures or tamper resistance.
+   \item Side-channel attack prevention.
+   \item Security protocols beyond the ones that use AES encryption.
+   \item Operating system-level security features.
+\end{itemize}
+
+Through this scope, we are aiming to demonstrate the effectiveness of hardware-level security implementation, while maintaining system performance within the constraints of FPGA resources.
+\raggedbottom
+

@@ -1,0 +1,26 @@
+Package name,Package size,Package size in system (%)
+skeleton-init-common,16234,0.0
+haveged,143024,0.4
+sqlite,1270948,3.8
+dhrystone-opt,17740,0.1
+whetstone,17740,0.1
+dhrystone,17752,0.1
+coremark,17796,0.1
+stress-ng,1492800,4.4
+python3,20862148,61.7
+iperf3,181276,0.5
+libressl,4790980,14.2
+netcat,38612,0.1
+busybox,942242,2.8
+libzlib,75172,0.2
+unknown,726,0.0
+libatomic_ops,10368,0.0
+libffi,30124,0.1
+python-psutil,1348528,4.0
+toolchain,230,0.0
+skeleton-init-sysv,334,0.0
+ifupdown-scripts,1937,0.0
+urandom-scripts,1243,0.0
+initscripts,831,0.0
+glibc,2426104,7.2
+host-gcc-final,129792,0.4

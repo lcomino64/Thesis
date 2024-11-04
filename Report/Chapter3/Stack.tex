@@ -1,32 +1,349 @@
-\chapter[Stack]{Stack}
-\label{Chap:Stack}
+\chapter[Stack Overview]{Stack Overview}
+\label{Chap:Stack Overview}
 
 % ***************************************************
 % Stack 
 % ***************************************************
 
+This section will now pertain to the complete stack overview of the proposed solution, starting with all of the hardware.
+
 \section{Hardware Setup}
 
-\subsection{FPGA Board: Digilent Arty A7-35T}
-
-\subsection{Custom AES instructions}
-Derived from synthesising with and without, the AES instructions were determined to consist of an additional 824 LUTs (as logic), 194 FFs and 256 F7 Muxes, contributing to approximately 1.5\% utilisation.
-
-\subsubsection{Optimisation of the Cipher}
-
-\subsection{Raspberry Pis}
-
 \subsection{Network Overview}
+The network infrastructure, illustrated in Figure \ref{network-overview}, will be a controlled environment designed to evaluate the performance of the FPGA. The network is made of three segments: one gateway router, a local area network, and six end devices. 
+
+\begin{figure}[!ht]
+    \begin{center}
+        \caption{Overview of the Devices in the Networking Application}
+        \label{network-overview}
+        \includegraphics[width=1.0\textwidth]{./Chapter3/diagrams/network-hardware-overview.png}
+    \end{center}
+\end{figure}
+
+For the end devices, there are three categories in terms of roles. A development workstation (m1mac@192.168.1.100), will do test orchestration, metrics collecting and TFTP (Trivial File Transfer Protocol). The FPGA-based security processor will be called the SCPNS for shorthand (Softcore Processor for Network Security), on scpns@192.168.1.50, and will serve as an encryption server, basically handling encryption/decryption jobs. Lastly, a cluster of four Raspberry Pi devices (pi1-pi4, addresses: .11-.14) will act as clients generating test workloads for the FPGA. The five other end devices will all be sending metrics to the workstation on 192.168.1.100.
+
+\subsection{FPGA Board}
+\label{FPGABoard}
+In this project, we will be using the Digilent Arty A7 35T, which is an evaluation board for the Xilinx Artix-7 FPGA (XC7A35). Figure \ref{arty-overview} is an overview of the functions on the board. Fortunately, this board is one of the default recommended boards for LiteX, all of the external IO, Flash and RAM modules are supported.
+
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{./Chapter3/Figures/artyA7-overview.png}
+        \caption{Labelled Arty A7 Board \cite{ArtyA7RefManual}}
+        \label{arty-overview}
+    \end{center}
+\end{figure}
+
+Notable features include the 100Mbps ethernet (3), a 256MB DDR3 external RAM module (20), 16Mb Flash (18) and PMOD expansion ports (16). It is not labelled on the diagram, but there is also an onboard FTDI FT2232HQ USB-UART bridge (located between the micro USB port (2) and the flash (18)), which allows for serial communication and JTAG programming/debugging through a single USB connection.
+
+As for the FPGA chip itself, Table \ref{arty-specs} shows all of the specifications for the Artix-7:
+\newpage
+\begin{table}[!ht]
+    \caption{Artix-7 35T Specifications}
+    \label{arty-specs}
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{Resource/Feature} & \textbf{Specification}    \\ \hline
+        Part Number               & XC7A35T-1CSG324C          \\ \hline
+        Logic Slices:              & 5,200                    \\
+        \quad - LUTs (4 per Slice) & 20,800                   \\
+        \quad - FFs (8 per Slice)  & 41,600                   \\
+        \quad - F7 Muxes (2 per Slice) & 10,400               \\
+        \quad - F8 Muxes (1 per Slice)  & 5,200               \\ \hline
+        Block RAM              & 1,800 Kb (50 * 36 Kb blocks) \\ \hline
+        DSP Slices             & 90                           \\ \hline
+        Maximum Frequency      & 464 MHz                      \\ \hline
+        Clock Management Tiles & 5                            \\ \hline
+        Processor Technology     & 28nm CMOS                  \\ \hline
+        Temp. Operating Range  & 0°C to 85°C                  \\ \hline
+    \end{tabular}
+\end{table}
+
+Additionally, on the Artix-7 there is an XADC (Xilinx Analog-to-Digital-Converter), which has a temperature sensing and external power monitoring readable via registers in the CSR. We will be using this to measure temperature throughout testing, and monitor power usage.
+
+\subsection{VexriscvSMP Configurations}
+\label{section:VexriscvSMP-configurations}
+
+Using LiteX, we have generated three different configurations for VexriscvSMP: a single-core, dual-core and quad-core. The idea is that via testing, we can determine if increasing cores results in increased performance for the SMP system. Typically, more cores is beneficial but only for raw CPU performance. If there is only one access point, say buffers in RAM for a certain resource, this can introduce contention, netting us diminishing returns for performance by the number of cores.
+
+Each configuration will maintain identical specifications and full access to the board's peripherals:
+\begin{itemize}
+    \item Custom AES instructions, detailed in Section \ref{CustomAESInstructions}.
+    \item A RV32I ISA with M and A extensions (RV32IMA).
+    \item DDR3PHY for accessing on-board DRAM module (LiteDRAM Core).
+    \item Quad-SPI access to the Flash module.
+    \item 4KB L1 cache per core, one 8KB shared L2 cache.
+    \item Linux support in the form of cache coherency and memory management (explained in Section \ref{section:VexRiscvSMPbackground}).
+    \item Initialised surrounding peripherals, this includes: I2C, SPI, UART, XADC, Ethernet (Static IP), two MMCMs, switches, leds (including RGB) and buttons.
+\end{itemize}
+
+This consistent architecture ensures that performance differences can be attributed solely to the variation in core count. The memory layout for each of these configurations can be found in Figure \ref{memList}.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{Region Name} & \textbf{Address and Size} & \multicolumn{1}{c|}{\textbf{Physical Instantiation}}             \\ \hline
+    OPENSBI              & 0x40f00000 0x80000        & \begin{tabular}[c]{@{}l@{}}256MB DDR3 \\ RAM Module\end{tabular} \\ \hline
+    PLIC                 & 0xf0c00000 0x400000       & \multirow{4}{*}{1,800KB BRAM}                                    \\
+    CLINT                & 0xf0010000 0x10000        &                                                                  \\
+    ROM                  & 0x00000000 0x10000        &                                                                  \\
+    SRAM                 & 0x10000000 0x4000         &                                                                  \\ \hline
+    MAIN\_RAM            & 0x40000000 0x10000000     & \begin{tabular}[c]{@{}l@{}}256MB DDR3 \\ RAM Module\end{tabular} \\ \hline
+    ETHMAC               & 0x80000000 0x2000         & \multirow{4}{*}{1,800KB BRAM}                                    \\
+    ETHMAC\_RX           & 0x80000000 0x1000         &                                                                  \\
+    ETHMAC\_TX           & 0x80001000 0x1000         &                                                                  \\ 
+    CSR                  & 0xf0000000 0x10000        &                                                                  \\ \hline
+    \end{tabular}
+    \caption{Memory Layout for VexRiscvSMP Linux and Physical Location.}
+    \label{memList}
+\end{table}
+
+\newpage
+\subsection{Custom AES Instructions}
+\label{CustomAESInstructions}
+The full implementation of these instructions, including the SpinalHDL code for the physical implemention in VexRiscvSMP, the C header drivers and LibreSSL patch (in Section \ref{section:LibreSSLPatch}), were all created by Charles Papon in 2021 \cite{vexriscv2024}. All of these files regarding the implementation of the `AesPlugin' can be found in the Vexriscv GitHub repository \cite{vexriscv2024}.
+
+Building upon the AES algorithm described in Section \ref{section:AESEncryptionBackground}, we will now implement hardware acceleration through custom RISC-V instructions. As discussed in Section \ref{section:RiscvExtensions}, RISC-V allows custom instruction extensions through reserved opcode spaces, specifically the $custom-0$ (0001011) opcode space in this implementation. The instructions are encoded by default as following:
+
+\begin{figure}[!ht]
+    \centering
+    \begin{bytefield}[bitwidth=1.1em]{32}
+        \bitheader{0,3,4,5,6,10,11,15,16,18,19,23,24,31} \\
+        \bitbox{4}{SS} & \bitbox{1}{L} & \bitbox{1}{D} & \bitbox{5}{RS2} 
+        & \bitbox{5}{RS1} & \bitbox{3}{000} & \bitbox{5}{RD} & \bitbox{8}{opcode} \\
+    \end{bytefield}
+    \caption{AES Instruction encoding}
+    \label{AESInstructionEncoding}
+\end{figure}
+
+Where:
+\begin{itemize}
+    \item SS: Selects which byte from RS2 to process (0-3).
+    \item L: Distinguishes between standard round (0) and last round (1).
+    \item D: Selects encryption (0) or decryption (1).
+    \item RS2: Source register 2, general-purpose register containing key data.
+    \item RS1: Source register 1, general-purpose register containing input data.
+    \item RD: Destination register for storing result.
+\end{itemize}
+The data operated on by these registers is loaded from DRAM through separate load/store instructions before and after the AES instruction execution. See Appendix \ref{Fig:A1.24} for how these instructions are defined in in-line RISC-V assembly in C.
+
+\subsubsection{Optimisation and Implementation}
+On our 32-bit RISC-V implementation (where a word is 32 bits - the natural data size the processor works with), we implement the standard AES optimisation that combines $SubBytes$, $ShiftRows$, and $MixColumns$ into a single operation \cite{Wikipedia_AES_2024}, through FPGA resources (most importantly some dedicated BRAM). This optimisation uses a 512-word ROM organised in two banks as:
+
+\begin{enumerate}
+    \item \textbf{Bank 0} (0x000-0x0FF), Forward transformations:
+    \begin{itemize}
+        \item Combines SBox lookup with $MixColumns$ multiplication.
+        \item Each word contains \{SBox*1, SBox*2, SBox*3, InvSBox\}.
+    \end{itemize}
+    \item \textbf{Bank 1} (0x100-0x1FF), Inverse transformations:
+    \begin{itemize}
+        \item Pre-computed inverse SBox with $GF(2^8)$ multiplications.
+        \item Each word contains \{InvSBox*14, *9, *13, *11\}.
+    \end{itemize}
+\end{enumerate}
+
+So when we combine multiple SBox operations, multiplications, and inverse operations into single ROM (Read-Only Memory) lookups, we're essentially pre-computing these complex substitution and arithmetic steps to save processing time.
+
+Now, to summarise, here is the full outline of steps that the RISC-V CPU undergoes when it fetches an AES instruction:
+\begin{enumerate}
+    \item Selects a byte from RS2 based on the SS field
+    \item Uses this byte to address the appropriate ROM bank
+    \item Permutes the ROM output based on the SS field and instruction type
+    \item XORs the result with RS1
+    \item Writes the final value to RD
+\end{enumerate}
+
+And the process for a single 128-bit block cipher is complete.
+
+\subsubsection{Hardware Implementation}
+Derived from synthesising with and without, the AES instructions were determined to consist of an additional 824 LUTs (as logic), 194 FFs and 256 F7 Muxes, contributing to an additional 1.5\% utilisation. 
+
+
+\newpage
+\subsection{Raspberry Pis}
+Lastly, acting as physical client devices, we have a set of four Raspberry Pis. Each Pi is a model 4B with 1GB RAM. This model features a quad-core ARM Cortex-A72 processor running at 1.8GHz, integrated Gigabit Ethernet, and uses a 32GB SD card for storage. They all will be running Ubuntu Server 22.04 LTS images (we do not need a desktop). This configuration provides a consistent test platform for generating network loads, but also, we will be able to see the SCPNS's encryption performance against a conventional ARM-based SBC \cite{rpi4specs}.
+
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=0.9\textwidth]{./Chapter3/Figures/cluster-photo-annotated.png}
+        \caption{Annotated Photo of RPi Cluster. The network switch is the grey box underneath the router and power supply.}
+        \label{RPiClusterPhoto}
+    \end{center}
+\end{figure}
+
 
 \newpage
 \section{Software Setup}
+The complete software stack consists of the software running on the end devices which is a custom client-server application where multiple clients can request for encryption/decryption services from the SCPNS. The SCPNS will be able to handle multiple threads of these clients simultaneously, due to the SMP capability and the `$Threading$' Python standard library.
 
 \subsection{Buildroot Linux Configuration}
+The SCPNS runs a compiled Buildroot Linux image, with additional packages enabled via the menuconfig. These packages can be sorted by the purpose they achieve:
+\begin{table*}[ht]
+    \begin{tabular}{p{0.45\textwidth}p{0.45\textwidth}}
+        Benchmarking:
+        \begin{itemize}
+            \item Dhrystone - standardised CPU benchmark.
+            \item Coremark - another CPU benchmark.
+            \item Stress-ng - benchmarking for multi-core performance, IO and memory accession.
+            \item Whetstone - floating point performance benchmark.
+            \item iPerf3 - TCP throughput benchmarking.
+        \end{itemize} &
+        Application-Specific:
+        \begin{itemize}
+            \item Python3
+            \item OpenSSL \& LibreSSL
+        \end{itemize}
+        Python Libraries:
+        \begin{itemize}
+            \item PSutil - for getting CPU and memory usage.
+            \item SQLite - for storing metrics.
+        \end{itemize}
+    \end{tabular}
+\end{table*}
 
-\subsection{Application: Server and Client Encryption}
+These additional packages increase the base prebuilt Linux filesystem from approximately 5MB to 33.8MB. The Buildroot Makefile also provides graphing targets to produce plots on different compile-time metrics. For instance, Figure \ref{PackageSizes} shows the size of each package in our distribution. 
 
-\subsubsection{Metrics Collection}
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=.51\textwidth]{./Chapter3/graphs/graph-size.png}
+        \caption{Size of Filesystem Packages.}
+        \label{PackageSizes}
+    \end{center}
+\end{figure}
 
-\subsection{Proof of Encryption}
+\subsubsection{LibreSSL Patch}
+\label{section:LibreSSLPatch}
+To make software at the operating system layer use our custom AES instructions we can patch the AES function calls to point to our new instructions. In this case, we have patched LibreSSL's core AES implementation to use our custom instructions, enabling hardware acceleration for all the system's cryptographic operations, especially in TLS. This means any application using LibreSSL's TLS stack (like HTTPS or secure sockets) automatically benefits from our custom AES instructions without requiring modifications to application code.
 
-\section{Debugging Setup}
+Briefly, LibreSSL is a fork of OpenSSL created in 2014 by the OpenBSD project. It focuses on providing a more secure and simplified codebase, compared to OpenSSL, which can be ideal for embedded systems. The patch targets LibreSSL version 3.2.2, which aligns with the Buildroot Branch, 2023.2.x and provides the necessary hooks for hardware acceleration.
+
+The patch modifies LibreSSL's AES implementation \texttt{aes\_core.c}, and adds two new C header files: \texttt{aes\_custom.h} and \texttt{riscv.h}, to leverage the custom AES instructions. The following is a breakdown of the patch:
+
+\begin{enumerate}
+    \item \textbf{AES Implementation Replacement}, in \texttt{aes\_core\_vexriscv.c}:
+    \begin{itemize}
+        \item Instantiates the originally software-based table lookups (Te0-Te4) in BRAM ROM.
+        \item Maintains the same API (\ie \texttt{AES\_encrypt()}, \texttt{AES\_decrypt()}, key setup functions \etc) for compatibility.
+        \item Inherits functions from \texttt{aes\_custom.h} and \texttt{riscv.h}.
+    \end{itemize}
+    
+    \item \textbf{Hardware Interface}, \texttt{aes\_custom.h} is a wrapper of the custom instruction defined in \texttt{riscv.h} (See Figure, \ref{AESInstructionEncoding}). In \texttt{aes\_custom.h}, there are two primary functions which execute the full encryption or decryption process, \texttt{vexriscv\_aes\_encrypt()} and \texttt{vexriscv\_aes\_decrypt()}, as well as surrounding formatting and memory alignment functions.
+
+    \item \textbf{Build System Integration:} Adds \texttt{VEXRISCV\_AES} option to the crypto CMakeLists.txt (and by extension, the Buildroot defconfig), to allow us to enable or disable the patch at compile-time.
+\end{enumerate}
+
+Now our hardware acceleration can be introduced at the library level without disrupting the existing software stacks.
+
+\subsubsection{LibreSSL Benchmarks}
+We can see if the instructions were implemented correctly by using OpenSSL's built-in speed test:
+\begin{verbatim}
+    openssl speed -elapsed -evp aes-128-cbc aes-256-cbc
+\end{verbatim}
+Testing raw encryption performance without memory I/O bottlenecks, both AES-128-CBC and AES-256-CBC show significant improvements with hardware acceleration. The custom instructions provide approximately 4x speedup for both variants at larger block sizes, with AES-128-CBC achieving 4.24 MB/s and AES-256-CBC reaching 3.39 MB/s (at 8192-byte blocks). See Table \ref{OpenSSL-Benchmarks-table}.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+    \textbf{\begin{tabular}[c]{@{}l@{}}Block Size\\ (bytes)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}AES-128-CBC\\ (No HW)\\ (KB/s)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}AES-128-CBC\\ (HW)\\ (KB/s)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}AES-256-CBC\\ (No HW)\\ (KB/s)\end{tabular}} & \textbf{\begin{tabular}[c]{@{}l@{}}AES-256-CBC\\ (HW)\\ (KB/s)\end{tabular}} \\ \hline
+    16                                                                    & 569.82                                                & 751.23                                             & 492.58                                                & 1065.34                                            \\ \hline
+    64                                                                    & 879.49                                                & 1569.70                                            & 700.22                                                & 2242.60                                            \\ \hline
+    256                                                                   & 1035.23                                               & 3435.13                                            & 796.41                                                & 3100.24                                            \\ \hline
+    1024                                                                  & 1096.36                                               & 4146.81                                            & 831.49                                                & 3165.50                                            \\ \hline
+    8192                                                                  & 1091.36                                               & 4246.01                                            & 830.09                                                & 3391.24                                            \\ \hline
+    \end{tabular}
+    \caption{OpenSSL Benchmarks Table}
+    \label{OpenSSL-Benchmarks-table}
+\end{table}
+
+\newpage
+\subsection{Application: Server and Client Encryption/Decryption}
+\label{ApplicationDefinition}
+The application aims to evaluate how processor core count affects encryption throughput by implementing a multi-threaded encryption server that can handle simultaneous client requests. The server application runs on the SCPNS, utilizing the full Python standard library available through Buildroot Linux (\ie, not MicroPython). This grants us robust thread management, network programming, and subprocess handling capabilities, typical of regular Python.
+
+We will be making a basic OpenSSL subprocess call to utilise our hardware-accelerated AES instructions through the LibreSSL patch. For testing purposes, we use pre-computed key and initialisation vector values:
+
+\begin{verbatim}
+    openssl enc -aes-128-cbc -K "0000000000000000" -iv "0000000000000000" 
+-nosalt [-nopad]
+\end{verbatim}
+
+The -nopad flag is used for all chunks except the final one to ensure proper CBC block alignment in the TCP stream. Note that while using key/IV pairs consisting of all zeroes would be insecure in production, it allows us to focus purely on gathering encryption performance metrics.
+
+The server implements client handling through Python's ThreadPoolExecutor, maintaining up to 10 concurrent client connections with one processing thread per connected client. This limit was chosen, not because the processor could not handle more, but because if the client count exceeded 10, there would be significant slowdown due to resource contention around the ethernet buffers and the main RAM module. So, instead, the additional clients are queued (using a thread-safe `Queue'), to allow for faster reconnectivity once another client exits.
+
+Each client connection operates on a stream of 1MB chunks to balance memory usage with transfer efficiency. The chunk size limit also allows for numerous clients to be simultaneously processed without exceeding memory usage. Figure \ref{server-client-exchange} shows the client/server relationship.
+
+\begin{figure}[!hb]
+    \begin{center}
+        \caption{Full Server-Client Exchange Diagram}
+        \label{server-client-exchange}
+        \includegraphics[width=1\textwidth]{./Chapter3/diagrams/server-client-exchange.png}
+    \end{center}
+\end{figure}
+
+The complete encryption process follows three stages: initial handshake with optional queuing, chunked file transfer with immediate processing feedback, and completion with metrics collection. Additionally, since all devices exist on the same physical link through an ethernet switch, several TCP options are tweaked to reduce overhead, since not as much TCP reliability mechanisms are necessary:
+\begin{itemize}
+    \item \texttt{TCP\_NODELAY} disables Nagle's algorithm, preventing transmission delays.
+    \item \texttt{SO\_SNDBUF/SO\_RCVBUF} set to 4MB to match the 1MB chunk processing.
+    \item \texttt{TCP\_QUICKACK} forces immediate acknowledgment.
+    \item \texttt{TCP\_SLOW\_START\_AFTER\_IDLE} disabled since bandwidth is consistent.
+    \item Keepalive settings tuned for faster connection recovery (60s idle, 10s interval).
+\end{itemize}
+
+
+\newpage
+\subsubsection{Test Orchestration}
+Now to create repeatable testing, we have implemented a test orchestration and metrics collection system. A python script, (tester.py) will be running on the master device (192.168.1.100) that manages test execution and data collection, while a receiving script (wait-for-commands.py), will be running on each Raspberry Pi in the cluster. The entire process comprises of three main components:
+
+\begin{enumerate}
+    \item Test Coordination (tester.py):
+    
+    Executes four standardised test scenarios by distributing instructions to each client device on port 8080 in wait-for-command.py. These instructions specify the number of client threads and filesizes to run for each of the Raspberry Pis. Furthermore, unique SQLite databases are created per test run, where the server and client threads can post metrics. Lastly, the completion of each client thread is monitored through HTTP endpoints.
+
+    \item Client Device Management (wait-for-command.py):
+    
+    Each Raspberry Pi (192.168.1.11-14) runs two services:
+    \begin{itemize}
+        \item Command server (same port as server-client, 8080, but different IP since it is wait-for-command.py running on the Raspberry Pis):
+        \begin{itemize}
+            \item Receives test parameters (encrypt or decrypt, size of file to send).
+            \item If the `test\_files/' directory containing the test files does not exist, then the suite of test files will be generated with random text.
+            \item Then, spawns client processes.
+        \end{itemize}
+        \item Completion Server (port 8081):
+        \begin{itemize}
+            \item Tracks the completion status of each client through polling them.
+            \item Notifies the orchestrator (tester.py), when a test is complete.
+        \end{itemize}
+    \end{itemize}
+    \item Metrics Collection (tester.py):
+    
+    Here, two types of schema are collected for server metrics and client metrics.
+
+    The server metrics will be a continuous sampling at 100ms intervals, containing:
+    \begin{itemize}
+        \item CPU/Memory usage.
+        \item XADC temperature readings.
+        \item Total bytes processed at sample time.
+    \end{itemize}
+    The client metrics will be posted to the HTTP metrics server at the completion of the server/client exchange, this schema consists of:
+    \begin{itemize}
+        \item The file size that was sent and the operation type (encryption or decryption).
+        \item A complete timing breakdown (time spent in queue, time spent on network transfers and time spent processing).
+        \item A true/false flag indicating whether the operation was successful or not.
+    \end{itemize}
+\end{enumerate}
+
+This comprehensive data collection provides a detailed performance comparison across different core configurations while maintaining consistent test conditions. A complete overview of the interactions between these processes can be seen in Figure \ref{software-overview}.
+
+\begin{figure}[!ht]
+    \begin{center}
+        \caption{Full Software Interactions Overview Diagram}
+        \label{software-overview}
+        \includegraphics[width=.9\textwidth]{./Chapter3/diagrams/software-overview.png}
+    \end{center}
+\end{figure}

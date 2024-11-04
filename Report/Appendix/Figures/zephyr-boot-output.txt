@@ -1,0 +1,68 @@
+lachlancomino@ubuntu-machine:~/zephyrproject/zephyr$ litex_term /dev/ttyUSB2
+ --speed 115200 --kernel build/zephyr/zephyr.bin
+     / /  (_) /____ | |/_/
+      / /__/ / __/ -_)>  <
+     /____/_/\__/\__/_/|_|
+   Build your hardware, easily!
+
+ (c) Copyright 2012-2024 Enjoy-Digital
+ (c) Copyright 2007-2015 M-Labs
+
+ BIOS CRC passed (02a8afa1)
+
+ LiteX git sha1: ef775e0b8
+
+--=============== SoC ==================--
+CPU:		VexRiscv SMP-STANDARD @ 100MHz
+BUS:		wishbone 32-bit @ 4GiB
+CSR:		32-bit data
+ROM:		64.0KiB
+SRAM:		16.0KiB
+L2:		8.0KiB
+SDRAM:		64.0MiB 16-bit @ 800MT/s (CL-7 CWL-5)
+MAIN-RAM:	256.0MiB
+
+--========== Initialization ============--
+Initializing SDRAM @0x40000000...
+Switching SDRAM to software control.
+Read leveling:
+  m0, b00: |00000000000000000000000000000000| delays: -
+  m0, b01: |00000000000000000000000000000000| delays: -
+  m0, b02: |11111111111000000000000000000000| delays: 05+-05
+  m0, b03: |00000000000001111111111111100000| delays: 19+-06
+  m0, b04: |00000000000000000000000000000011| delays: 30+-00
+  m0, b05: |00000000000000000000000000000000| delays: -
+  m0, b06: |00000000000000000000000000000000| delays: -
+  m0, b07: |00000000000000000000000000000000| delays: -
+  best: m0, b03 delays: 19+-06
+  m1, b00: |00000000000000000000000000000000| delays: -
+  m1, b01: |00000000000000000000000000000000| delays: -
+  m1, b02: |11111111111000000000000000000000| delays: 05+-05
+  m1, b03: |00000000000001111111111111100000| delays: 20+-06
+  m1, b04: |00000000000000000000000000000011| delays: 30+-00
+  m1, b05: |00000000000000000000000000000000| delays: -
+  m1, b06: |00000000000000000000000000000000| delays: -
+  m1, b07: |00000000000000000000000000000000| delays: -
+  best: m1, b03 delays: 19+-06
+Switching SDRAM to hardware control.
+Memtest at 0x40000000 (2.0MiB)...
+  Write: 0x40000000-0x40200000 2.0MiB     
+   Read: 0x40000000-0x40200000 2.0MiB     
+Memtest OK
+Memspeed at 0x40000000 (Sequential, 2.0MiB)...
+  Write speed: 161.0MiB/s
+   Read speed: 77.9MiB/s
+
+--============== Boot ==================--
+Booting from serial...
+Press Q or ESC to abort boot completely.
+sL5DdSMmkekro
+[LITEX-TERM] Received firmware download request from the device.
+[LITEX-TERM] Uploading build/zephyr/zephyr.bin to 0x40000000 (33982 bytes)...
+[LITEX-TERM] Upload calibration... (inter-frame: 10.00us, length: 64)
+[LITEX-TERM] Upload complete (9.9KB/s).
+[LITEX-TERM] Booting the device.
+[LITEX-TERM] Done.
+Executing booted program at 0x40000000
+
+--============= Liftoff! ===============--

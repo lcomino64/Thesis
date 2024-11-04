@@ -18,11 +18,17 @@
 %\end{center}
 
 % ********* Enter your text below this line: ********
-Start this section on a new page [this template will automatically handle this]. \\
+% Start this section on a new page [this template will automatically handle this]. \\
 
-\noindent
-The abstract should outline the main approach and findings of the thesis and normally must be between 300 and 800 words.
+% \noindent
+% The abstract should outline the main approach and findings of the thesis and normally must be between 300 and 800 words.
 
 % ***************************************************
 
 %\end{document}
+
+This thesis explores the implementation and evaluation of a network security processor using RISC-V softcores on FPGA hardware, with particular focus on hardware-accelerated AES encryption. Using the VexRiscvSMP processor and the Digilent Arty A7 FPGA platform, we developed and compared single-core, dual-core, and quad-core configurations to determine optimal performance characteristics for encrypting network traffic. Custom AES instructions, created by the maintainers of VexriscvSMP, were implemented and integrated into LibreSSL that achieved a 4x speedup in raw AES operations compared to software implementations.
+
+Performance analysis revealed significant bottlenecks in ethernet throughput and memory access patterns, particularly in multi-core configurations. The optimal design—an improved dual-core implementation running at 150MHz with expanded ethernet buffers—achieved a maximum throughput of 406 KB/s, representing an 84\% improvement over the baseline single-core configuration. However, comparative analysis with a Raspberry Pi 4B showed that our FPGA implementation achieved only 1/40th of the throughput of conventional ARM-based systems, highlighting current limitations of FPGA-based softcore processors for high-performance network security applications.
+
+This work demonstrates that while FPGA-based security processors are feasible, their practical application may be better suited to low-to-medium throughput scenarios where power efficiency and hardware-level security are prioritized over raw performance. The findings suggest that future improvements should focus on enhanced memory architectures, more cryptographic accelerators, and optimised network interfaces to better leverage the potential of FPGA-based security solutions.

@@ -12,6 +12,7 @@ List of Figures & Tables
 ## Motivation
 Same as before, except:
 - When mentioning IoT security, mention the 2024 story about the Dyn attack
+- Overview of RISC-V, it's current state in the market.
 ## Project Overview and Scope
 
 # Part 2 -Research------------------------------------
@@ -22,9 +23,10 @@ Same as before, except:
 #### Ethernet Interfaces
 ## Network Security Methods for Embedded Systems
 #### AES Encryption
-## RISC-V ISA
-Overview of RISC-V, it's current state in the market.
+## RISC-V Architecture
 ISA structure compared to other ISAs
+
+![[Pasted image 20241027173506.png]]
 ISA Extensions
 ISA modes: User, Supervisor, machine etc.
 ## FPGAs and Softcore CPUs
