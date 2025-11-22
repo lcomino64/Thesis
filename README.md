@@ -25,7 +25,7 @@ This thesis explores the implementation and evaluation of a network security pro
 ## Project Architecture
 
 ### Network Topology
-![Network Overview](./Report/Chapter3/diagrams/network-hardware-overview.png)
+![Network Overview](./Report/Chapter3/diagrams/network-hardware-overview.jpg)
 
 The test environment consists of:
 - **SCPNS** (Softcore Processor for Network Security): Arty A7 FPGA running VexRiscvSMP @ 100/150MHz
@@ -34,7 +34,7 @@ The test environment consists of:
 - **Network**: Local 100Mbps ethernet switch
 
 ### System Overview
-![Software Architecture](./Report/Chapter3/diagrams/software-overview.png)
+![Software Architecture](./Report/Chapter3/diagrams/software-overview.jpg)
 
 ---
 
