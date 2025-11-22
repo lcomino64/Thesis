@@ -88,9 +88,12 @@ The test environment consists of:
 
 ![Client Comparison](./Report/Chapter4/Results/2c_improved_results/arty-a7-2c-improved_large_scale_1000_20241007_123418.db_client_tasks.png)
 
-### Server (Arty A7) Performance
+### Server (Arty A7) Performance (Large Scale Test: 100 Clients)
 
 ![Server (Arty A7) Performance](./Report/Chapter4/Results/2c_improved_results/arty-a7-2c-improved_large_scale_1000_20241007_123418.db_server_metrics.png)
+
+### Overall Performance Throughput Across Configurations (Using Stress NG, Y-Axis is Logarithmic)
+![Overall Encryption Throughput Across Configurations](./Report/Chapter4/Figures/stress_ng.png)
 
 | Configuration | Throughput (KB/s) | Test Duration | Improvement |
 |--------------|------------------|---------------|-------------|
