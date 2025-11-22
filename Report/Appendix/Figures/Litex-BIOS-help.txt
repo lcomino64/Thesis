@@ -1,0 +1,48 @@
+--============= Console ================--
+
+litex> help
+
+LiteX BIOS, available commands:
+
+leds                     - Set Leds value
+flush_l2_cache           - Flush L2 cache
+flush_cpu_dcache         - Flush CPU data cache
+crc                      - Compute CRC32 of a part of the address space
+uptime                   - Uptime of the system since power-up
+ident                    - Identifier of the system
+help                     - Print this help
+
+netboot                  - Boot via Ethernet (TFTP)
+serialboot               - Boot from Serial (SFL)
+reboot                   - Reboot
+boot                     - Boot from Memory
+
+mem_cmp                  - Compare memory content
+mem_speed                - Test memory speed
+mem_test                 - Test memory access
+mem_copy                 - Copy address space
+mem_write                - Write address space
+mem_read                 - Read address space
+mem_list                 - List available memory regions
+
+flash_erase_range        - Erase flash range
+flash_from_sdcard        - Write file from SD card to flash
+flash_write              - Write to flash
+
+i2c_dev                  - List/Set I2C controller(s)
+i2c_scan                 - Scan for I2C slaves
+i2c_read                 - Read over I2C
+i2c_write                - Write over I2C
+i2c_reset                - Reset I2C line state
+
+sdram_spd                - Read SDRAM SPD EEPROM
+sdram_mr_write           - Write SDRAM Mode Register
+sdram_cal                - Calibrate SDRAM
+sdram_test               - Test SDRAM
+sdram_init               - Initialize SDRAM (Init + Calibration)
+sdram_force_wrphase      - Force write phase
+sdram_force_rdphase      - Force read phase
+
+mdio_dump                - Dump MDIO registers
+mdio_read                - Read MDIO register
+mdio_write               - Write MDIO register

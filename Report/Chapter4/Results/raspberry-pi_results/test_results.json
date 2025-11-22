@@ -1,0 +1,56 @@
+{
+  "raspberry-pi": {
+    "raspberry-pi_basic_2_20241004_140133.db": {
+      "max_clients": 10,
+      "max_cpu_usage": 88.2,
+      "max_memory_usage": 25.9,
+      "total_bytes_processed": 55574528,
+      "avg_bytes_per_second": 13853236.261851175,
+      "test_duration": 4.011663913726807,
+      "estimated_processing_time": 2.051626682281494,
+      "estimated_networking_time": 1.9600372314453125,
+      "avg_queue_time": 0.0340958833694458,
+      "successful_operations": 10,
+      "failed_operations": 0
+    },
+    "raspberry-pi_basic_1_20241004_140120.db": {
+      "max_clients": 1,
+      "max_cpu_usage": 37.0,
+      "max_memory_usage": 23.5,
+      "total_bytes_processed": 104857600,
+      "avg_bytes_per_second": 8042639.714021532,
+      "test_duration": 13.037709474563599,
+      "estimated_processing_time": 8.063870191574097,
+      "estimated_networking_time": 4.973839282989502,
+      "avg_queue_time": 0.002585172653198242,
+      "successful_operations": 1,
+      "failed_operations": 0
+    },
+    "raspberry-pi_large_scale_1000_20241004_140150.db": {
+      "max_clients": 10,
+      "max_cpu_usage": 92.5,
+      "max_memory_usage": 26.5,
+      "total_bytes_processed": 946864128,
+      "avg_bytes_per_second": 16829839.27919085,
+      "test_duration": 56.26103210449219,
+      "estimated_processing_time": 37.50024914741516,
+      "estimated_networking_time": 18.760782957077026,
+      "avg_queue_time": 0.026145312786102295,
+      "successful_operations": 100,
+      "failed_operations": 0
+    },
+    "raspberry-pi_basic_3_20241004_140137.db": {
+      "max_clients": 10,
+      "max_cpu_usage": 87.5,
+      "max_memory_usage": 26.2,
+      "total_bytes_processed": 217055232,
+      "avg_bytes_per_second": 17895553.542922407,
+      "test_duration": 12.129003524780273,
+      "estimated_processing_time": 8.129454612731934,
+      "estimated_networking_time": 3.99954891204834,
+      "avg_queue_time": 0.018428826332092287,
+      "successful_operations": 20,
+      "failed_operations": 0
+    }
+  }
+}

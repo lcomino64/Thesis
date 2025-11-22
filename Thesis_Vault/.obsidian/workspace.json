@@ -8,79 +8,20 @@
         "type": "tabs",
         "children": [
           {
-            "id": "39876696d81dcafa",
+            "id": "ef933da320f04ff2",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README FPGA Linux.md",
+                "file": "Poster&Demo Planning.md",
                 "mode": "source",
                 "source": false
-              }
-            }
-          },
-          {
-            "id": "c1430b0bb333d22c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "RESULTS.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "d5d0fc3bc9275e32",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Report Planning 2.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "5f072da946656e8f",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "README Kubernetes Cluster.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "193fd0fb38482015",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "README Microk8s kubectl Management Commands.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "8f6a5e5f52af5458",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "README FPGA Development Notes.md",
-                "mode": "source",
-                "source": false
-              }
+              },
+              "icon": "lucide-file",
+              "title": "Poster&Demo Planning"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -100,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
             }
           },
           {
@@ -115,7 +58,9 @@
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-search",
+              "title": "Search"
             }
           },
           {
@@ -123,14 +68,17 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {}
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "3871146c797d8bbd",
@@ -146,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Report Planning 2.md",
+                "file": "Report Proof of Encryption Section.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -154,7 +102,9 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Report Proof of Encryption Section"
             }
           },
           {
@@ -163,10 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Report Planning 2.md",
+                "file": "Report Proof of Encryption Section.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Report Proof of Encryption Section"
             }
           },
           {
@@ -177,7 +129,9 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true
-              }
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
             }
           },
           {
@@ -186,8 +140,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Report Planning 2.md"
-              }
+                "file": "Report Proof of Encryption Section.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Report Proof of Encryption Section"
             }
           }
         ]
@@ -207,27 +163,33 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d5d0fc3bc9275e32",
+  "active": "ef933da320f04ff2",
   "lastOpenFiles": [
-    "README FPGA Development Notes.md",
-    "README Microk8s kubectl Management Commands.md",
-    "README FPGA Linux.md",
-    "README Kubernetes Cluster.md",
-    "Report Planning 2.md",
-    "RESULTS.md",
-    "Report Planning.md",
+    "Report TLS Benchmarks.md",
+    "Report RESULTS.md",
+    "Report Proof of Encryption Section.md",
     "README Software.md",
+    "Poster&Demo Planning.md",
+    "Report Future Improvements.md",
     "README Board definition files.md",
+    "README FPGA Development Notes.md",
+    "README FPGA Linux.md",
+    "README Microk8s kubectl Management Commands.md",
+    "README Kubernetes Cluster.md",
     "README Dependencies.md",
-    "Bare_metal README.md",
-    "Seminar Feedback.md",
+    "Report Planning 2.md",
+    "Pasted image 20241027173506.png",
+    "Report Planning.md",
     "Seminar Notes.md",
+    "Seminar Feedback.md",
+    "Proposal Feedback.md",
+    "RESULTS.md",
+    "Bare_metal README.md",
     "Figures/example network overview.png",
     "Figures/FPGA_Architecture_1.svg",
     "Figures/Network_Overview.svg",
     "Figures/Network_Overview 1.svg",
     "Figures/tcp-ip-end-to-end.png",
-    "Proposal Feedback.md",
     "Pasted image 20240824160042.png",
     "Draft Proposal Notes.md",
     "Network_Overview Code.md",
@@ -240,7 +202,6 @@
     "Figures/FPGA_Architecture_1 Code.txt",
     "Figures/Untitled.md",
     "Figures/FPGA_Architecture_2.svg",
-    "Figures/FPGA_Architecture_2 Code.md",
     "Figures/Unconfirmed 767005.crdownload",
     "Figures/Unconfirmed 820128.crdownload",
     "Figures/Unconfirmed 925885.crdownload",
@@ -248,8 +209,6 @@
     "Figures/Unconfirmed 932486.crdownload",
     "Figures/Unconfirmed 536058.crdownload",
     "Figures",
-    "Unconfirmed 738353.crdownload",
-    "Thesis Topic Desc..md",
-    "Welcome.md"
+    "Unconfirmed 738353.crdownload"
   ]
 }

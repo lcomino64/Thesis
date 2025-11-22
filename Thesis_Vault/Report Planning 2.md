@@ -9,42 +9,76 @@ List of Figures & Tables
 
 # Part I -Introduction---------------------------------
 # Introduction
-## Motivation:
+## Motivation
 Same as before, except:
-- Introduce what RISC-V is used for, in industry and research
 - When mentioning IoT security, mention the 2024 story about the Dyn attack
-## Project Goal
-Same as before
+- Overview of RISC-V, it's current state in the market.
+## Project Overview and Scope
 
 # Part 2 -Research------------------------------------
 # Background
+## Computer Networks, TCP/IP
+#### Network Layer
+#### Link Layer and Ethernet PHY
+#### Ethernet Interfaces
+## Network Security Methods for Embedded Systems
+#### AES Encryption
+## RISC-V Architecture
+ISA structure compared to other ISAs
 
-# Literature Review
-
-## Related Works
-
-## Similar Projects with LiteX
-
-## Preexisting Solutions
-
+![[Pasted image 20241027173506.png]]
+ISA Extensions
+ISA modes: User, Supervisor, machine etc.
+## FPGAs and Softcore CPUs
+What are FPGAs and what are softcore CPUs? What is the current fastest softcore CPU?
+#### VexRiscv & SpinalHDL
+#### CPU Buses and Wishbone
+#### VexRiscvSMP Linux
+Si-Five PLIC/CLINT. How do cores synchronise?
+## LiteX Overview
+#### Cores, Liteeth
+#### Litex BIOS
+## Operating Systems
+#### Buildroot Linux
 
 # Part 3 -Complete Stack Overview-------------------
-## SCPNS Hardware Configuration
-
-## SCPNS Software Configuration
+## Hardware Setup
+#### FPGA Board: Digilent Arty A7-35T
+#### Custom AES Instructions
+OpenSSL Benchmarks (Put full output in the Appendix)
+Diagram of RTL
+Explanation of how it works and how the CPU "uses" it
+Instruction count with custom instructions vs without
+Discuss total footprint (FPGA utilisation) of custom instructions
+#### Proof of Encryption
+[[Report Proof of Encryption Section]]
+Methodology:
+Show that the device is actually encryption/decryption capable
+1. Create test text file.
+2. Take sha256sum of test file.
+3. Encrypt the test file via the board.
+4. Check that test file is encrypted.
+5. Decrypt the file via the board.
+6. Check if sha256sum is the same. 
+#### Raspberry Pi
+Specs of the Pi, but especially mention the gigabit ethernet
+#### Network Overview
+## Software Setup
 Different Boot methods time taken chart
-## Network Cluster Testbed
-
-## Debugging Configuration
+#### Buildroot Linux Configuration
+Show linux compilation graphs
+## Developer Setup
 
 
 # Part 4-Evaluation-----------------------------------
+## Raw Performance Benchmarks & Theoretical Results
 
 ## Results & Analysis
 
 ## Utilisation, Resources and Timing
 
-## Power Analysis
+## Improved Dual Core
+## Power Analysis*
 
 
 # Part 5-Conclusion----------------------------------
@@ -53,9 +87,12 @@ Different Boot methods time taken chart
 ## Limitations & Security Vulnerabilities
 
 ## Future Improvements
-
-# Appendix-------------------------------------------
-
+Different boards for more ethernet throughput and extra RAM dimensions/Ethernet Ports
+Use a board with hardcore CPUs attached, i.e. Zynq for ARM, PolarFire for RISC-V
+## Issues and Reductions in Scope During Development
+Zephyr not working
+Socat not working in buildroot linux, "File Descriptor error", had to use python instead
+Not enough RPi RAM for containers running python, therefore, python was just run natively.
 
 # Tests to Run
 ### Pi Cluster Full Kubernetes & SCPNS: 1 core, 2 core, 4 core
@@ -79,3 +116,25 @@ Clients spawn at a drowning rate for 60mins - how many clients can be handled in
 
 Challenges:
 - Storage may be a concern for the files of many clients. We may need to just throw out the result of an encryption/decryption, if the file already exists. That way all client threads on the same pod, can reference the same file. 
+
+# Demo Sections of priority:
+## Introduction
+## RISC-V Overview
+## AES sections
+Be able to explain how AES encryption works. 
+"Where" do the AES instructions exist on the board?
+Get an RTL schematic of the added instructions
+
+## LiteX and Vexriscv sections
+Find example of SpinalHDL vs Verilog vs VHDL
+## Results
+Do a graphical plot of all the final metrics for the tests
+## Utilisation and Timing
+Utilisation and timing for each FPGA processor
+Briefly mention timing constraints, whether or not they were met, failing endpoints etc.
+## Power Analysis
+What it says in Vivado vs. Real-life on multimeter
+## Ethernet Sections
+Entire ethernet throughput overview diagram displaying bottlenecks. This diagram will show the complete process for receiving/sending on the FPGA end.
+TCP Vs. UDP - i.e. why didn't I use UDP?
+## Stack overview

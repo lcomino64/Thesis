@@ -1,0 +1,26 @@
+// In riscv.h, the instruction is defined via:
+
+#define opcode_R(opcode, func3, func7, rs1, rs2)   \
+({                                             \
+    register unsigned long __v;                \
+    asm volatile(                              \
+     ".word ((" #opcode ") | (regnum_%0 << 7)  \ 
+    | (regnum_%1 << 15) | (regnum_%2 << 20)    \ 
+    | ((" #func3 ") << 12) | ((" #func7 ") << 25));"   \
+     : [rd] "=r" (__v)                          \
+     : "r" (rs1), "r" (rs2)        \
+    );                                         \
+    __v;                                       \
+})
+
+// Then the aes_custom.h envokes this instruction via the C MACROS:
+
+#define aes_enc_round(rs1, rs2, sel) 
+    opcode_R(CUSTOM0, 0x00, (sel << 3), rs1, rs2)
+#define aes_enc_round_last(rs1, rs2, sel) 
+    opcode_R(CUSTOM0, 0x00, (sel << 3) | 2, rs1, rs2)
+
+#define aes_dec_round(rs1, rs2, sel) 
+    opcode_R(CUSTOM0, 0x00, (sel << 3) | 1, rs1, rs2)
+#define aes_dec_round_last(rs1, rs2, sel) 
+    opcode_R(CUSTOM0, 0x00, (sel << 3) | 2 | 1, rs1, rs2)
