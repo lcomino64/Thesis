@@ -86,7 +86,11 @@ The test environment consists of:
 
 ### Throughput Comparison (Large Scale Test: 100 Clients)
 
-![Performance Comparison](./Report/Chapter4/Results/performance_comparison.png)
+![Client Comparison](./Report/Chapter4/Results/2c_improved_results/arty-a7-2c-improved_large_scale_1000_20241007_123418.db_client_tasks.png)
+
+### Server (Arty A7) Performance
+
+![Server (Arty A7) Performance](./Report/Chapter4/Results/2c_improved_results/arty-a7-2c-improved_large_scale_1000_20241007_123418.db_server_metrics.png)
 
 | Configuration | Throughput (KB/s) | Test Duration | Improvement |
 |--------------|------------------|---------------|-------------|
