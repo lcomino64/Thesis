@@ -253,16 +253,4 @@ The test environment consists of:
 
 ---
 
-## License
-
-This project integrates multiple open-source components with various licenses:
-- **LiteX/VexRiscv:** BSD-2-Clause
-- **Linux Kernel:** GPL-2.0
-- **OpenSBI:** BSD-2-Clause
-- **LibreSSL:** ISC License + OpenSSL License
-
-My original contributions (test framework, application code, thesis) are available under MIT License.
-
----
-
 *This repository serves as a portfolio demonstration of FPGA design, embedded Linux development, and performance analysis skills. The code is not intended for production use or direct replication without significant modification.*
